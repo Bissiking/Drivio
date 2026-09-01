@@ -1,0 +1,7 @@
+{
+  "asset": "formentor-night.png",
+  "useCase": "product-mockup",
+  "purpose": "Photographie synthetique du vehicule de demonstration Drivio",
+  "prompt": "Photographie editoriale realiste d'un crossover sportif compact cuivre, vue trois-quarts avant, stationne sur un parking en beton humide a l'heure bleue devant une ville francaise floue. Composition horizontale avec espace sombre a droite, sans personne, texte ni plaque lisible; calme et precise, sans neon ni imagerie de course.",
+  "synthetic": true
+}

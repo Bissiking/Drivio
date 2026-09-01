@@ -1,0 +1,7 @@
+{
+  "useCase": "ui-mockup",
+  "direction": "Registre technique nocturne",
+  "variant": "Registre ouvert a deux folios",
+  "prompt": "Dashboard desktop Drivio en francais compose comme un registre technique ouvert. Navigation laterale compacte, folio gauche avec photo panoramique synthetique de CUPRA Formentor, identite, kilometrage et tableau mensuel; folio droit continu avec echeance, depenses, activite et graphique. Graphite mat, blanc mineral, sauge et vert precis, regles fines et profondeur de papier enduit, sans compteurs automobiles ni mosaïque de cartes.",
+  "approved": false
+}

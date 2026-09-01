@@ -1,0 +1,5 @@
+<!-- src/app/icon.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#131715"/>
+  <path d="M18 17h13c11 0 18 5.7 18 15s-7 15-18 15H18V17Zm12.6 22.2c6.3 0 10-2.5 10-7.2s-3.7-7.2-10-7.2h-4.4v14.4h4.4Z" fill="#b8ef8d"/>
+</svg>

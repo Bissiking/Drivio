@@ -1,0 +1,166 @@
+// prisma/schema.postgresql.prisma
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String    @id @default(cuid())
+  kyrosSubject String    @unique
+  email        String?   @unique
+  name         String?
+  avatarUrl    String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  vehicles     Vehicle[]
+}
+
+model Vehicle {
+  id               String                @id @default(cuid())
+  userId           String
+  brand            String
+  model            String
+  trim             String
+  powertrain       String?
+  year             Int
+  registration     String?
+  vin              String?
+  purchaseDate     DateTime
+  purchaseMileage  Int
+  purchasePrice    Decimal?
+  saleDate         DateTime?
+  finalMileage     Int?
+  salePrice        Decimal?
+  status           String                @default("ACTIVE")
+  isPrimary        Boolean               @default(false)
+  photoPath        String?
+  photoUrl         String?
+  createdAt        DateTime              @default(now())
+  updatedAt        DateTime              @updatedAt
+  user             User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mileageReadings  MileageReading[]
+  maintenance      MaintenanceRecord[]
+  schedules        MaintenanceSchedule[]
+  expenses         Expense[]
+  fuelEntries      FuelEntry[]
+  imageRequests    VehicleImageRequest[]
+
+  @@index([userId, status])
+  @@index([userId, isPrimary])
+}
+
+model VehicleImageRequest {
+  id          String   @id @default(cuid())
+  vehicleId   String
+  color       String
+  bodyStyle   String
+  angle       String
+  scene       String
+  lighting    String
+  weather     String
+  imageStyle  String
+  aspectRatio String
+  details     String?
+  prompt      String
+  status      String   @default("PENDING")
+  resultPath  String?
+  resultUrl   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  vehicle     Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@index([vehicleId, createdAt])
+  @@index([vehicleId, status])
+}
+
+model MileageReading {
+  id                   String   @id @default(cuid())
+  vehicleId            String
+  mileage              Int
+  date                 DateTime
+  comment              String?
+  isCorrection         Boolean  @default(false)
+  distanceFromPrevious Int?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  vehicle              Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@index([vehicleId, date])
+  @@index([vehicleId, mileage])
+}
+
+model MaintenanceRecord {
+  id        String   @id @default(cuid())
+  vehicleId String
+  type      String
+  title     String
+  date      DateTime
+  mileage   Int?
+  cost      Decimal?
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  vehicle   Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@index([vehicleId, date])
+  @@index([vehicleId, type])
+}
+
+model MaintenanceSchedule {
+  id           String    @id @default(cuid())
+  vehicleId    String
+  type         String
+  title        String
+  dueDate      DateTime?
+  dueMileage   Int?
+  warningDays  Int       @default(30)
+  warningKm    Int       @default(1500)
+  notes        String?
+  completedAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  vehicle      Vehicle   @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@index([vehicleId, completedAt, dueDate])
+  @@index([vehicleId, completedAt, dueMileage])
+}
+
+model Expense {
+  id        String   @id @default(cuid())
+  vehicleId String
+  category  String
+  amount    Decimal
+  date      DateTime
+  mileage   Int?
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  vehicle   Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@index([vehicleId, date])
+  @@index([vehicleId, category])
+}
+
+model FuelEntry {
+  id                    String   @id @default(cuid())
+  vehicleId             String
+  date                  DateTime
+  mileage               Int
+  liters                Decimal
+  totalPrice             Decimal
+  unitPrice              Decimal
+  isFull                 Boolean  @default(true)
+  distanceSincePrevious  Int?
+  consumptionPer100Km    Decimal?
+  costPer100Km           Decimal?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  vehicle                Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@index([vehicleId, date])
+  @@index([vehicleId, mileage])
+}

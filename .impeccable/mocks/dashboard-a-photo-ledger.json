@@ -1,0 +1,8 @@
+{
+  "useCase": "ui-mockup",
+  "direction": "Registre technique nocturne",
+  "variant": "Photo-ledger asymetrique 65/35",
+  "prompt": "Dashboard desktop Drivio en francais, navigation laterale de 232 px, grande photographie nocturne synthetique d'une CUPRA Formentor cuivree, kilometrage actuel dominant, echeance et depenses a droite, graphique kilometrique et activite en second niveau. Monde visuel graphite mat, blanc mineral, vert precis, typographie grotesque a chiffres tabulaires. Interface semantique realisable, sans compteurs automobiles, neon, gradients, verre ni grille de cartes generiques.",
+  "approved": true,
+  "approvalNote": "Fusion approuvee avec la structure analytique de dashboard-c-horizontal-register.png"
+}

@@ -1,0 +1,8 @@
+{
+  "useCase": "ui-mockup",
+  "direction": "Registre technique nocturne",
+  "variant": "Registre horizontal analytique",
+  "prompt": "Dashboard desktop Drivio en francais avec rail lateral et lecture horizontale. Bandeau vehicule dominant associant photo nocturne synthetique, identite, kilometrage et prochaine echeance; vaste surface analytique en dessous avec faits, calculs, estimations et graphique; rail droit pour depenses et historique. Surfaces noir-vert et graphite, chiffres tabulaires, lignes de registre, sans jauges automobiles, neon, verre ou cartes flottantes generiques.",
+  "approved": true,
+  "approvalNote": "Fusion approuvee avec la photographie et la navigation de dashboard-a-photo-ledger.png"
+}

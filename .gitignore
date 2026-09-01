@@ -1,0 +1,16 @@
+# .gitignore
+node_modules/
+.next/
+.env
+.env.local
+dev.db
+dev.db-journal
+prisma/dev.db
+prisma/dev.db-journal
+public/uploads/*
+!public/uploads/.gitkeep
+*.log
+.DS_Store
+coverage/
+*.tsbuildinfo
+src/generated/

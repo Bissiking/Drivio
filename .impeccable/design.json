@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-31T18:22:16Z",
+  "title": "Design System: Drivio",
+  "extensions": {
+    "colorMeta": {
+      "ink": { "role": "neutral", "displayName": "Encre de fond", "canonical": "#0d100f", "tonalRamp": ["oklch(15% 0.006 155)", "oklch(24% 0.006 155)", "oklch(34% 0.006 155)", "oklch(46% 0.006 155)", "oklch(59% 0.006 155)", "oklch(71% 0.006 155)", "oklch(84% 0.006 155)", "oklch(95% 0.006 155)"] },
+      "navigation": { "role": "neutral", "displayName": "Noir de navigation", "canonical": "#0b0e0d", "tonalRamp": ["oklch(15% 0.005 155)", "oklch(24% 0.005 155)", "oklch(34% 0.005 155)", "oklch(46% 0.005 155)", "oklch(59% 0.005 155)", "oklch(71% 0.005 155)", "oklch(84% 0.005 155)", "oklch(95% 0.005 155)"] },
+      "surface": { "role": "neutral", "displayName": "Graphite mat", "canonical": "#131715", "tonalRamp": ["oklch(15% 0.009 155)", "oklch(24% 0.009 155)", "oklch(34% 0.009 155)", "oklch(46% 0.009 155)", "oklch(59% 0.009 155)", "oklch(71% 0.009 155)", "oklch(84% 0.009 155)", "oklch(95% 0.009 155)"] },
+      "surface-raised": { "role": "neutral", "displayName": "Graphite releve", "canonical": "#181d1a", "tonalRamp": ["oklch(15% 0.011 155)", "oklch(24% 0.011 155)", "oklch(34% 0.011 155)", "oklch(46% 0.011 155)", "oklch(59% 0.011 155)", "oklch(71% 0.011 155)", "oklch(84% 0.011 155)", "oklch(95% 0.011 155)"] },
+      "surface-soft": { "role": "neutral", "displayName": "Graphite actif", "canonical": "#1e2420", "tonalRamp": ["oklch(15% 0.013 155)", "oklch(24% 0.013 155)", "oklch(34% 0.013 155)", "oklch(46% 0.013 155)", "oklch(59% 0.013 155)", "oklch(71% 0.013 155)", "oklch(84% 0.013 155)", "oklch(95% 0.013 155)"] },
+      "surface-hover": { "role": "neutral", "displayName": "Graphite de survol", "canonical": "#283029", "tonalRamp": ["oklch(15% 0.018 145)", "oklch(24% 0.018 145)", "oklch(34% 0.018 145)", "oklch(46% 0.018 145)", "oklch(59% 0.018 145)", "oklch(71% 0.018 145)", "oklch(84% 0.018 145)", "oklch(95% 0.018 145)"] },
+      "line": { "role": "neutral", "displayName": "Regle minerale", "canonical": "#303832", "tonalRamp": ["oklch(15% 0.016 150)", "oklch(24% 0.016 150)", "oklch(34% 0.016 150)", "oklch(46% 0.016 150)", "oklch(59% 0.016 150)", "oklch(71% 0.016 150)", "oklch(84% 0.016 150)", "oklch(95% 0.016 150)"] },
+      "line-soft": { "role": "neutral", "displayName": "Regle minerale douce", "canonical": "#252c27", "tonalRamp": ["oklch(15% 0.014 150)", "oklch(24% 0.014 150)", "oklch(34% 0.014 150)", "oklch(46% 0.014 150)", "oklch(59% 0.014 150)", "oklch(71% 0.014 150)", "oklch(84% 0.014 150)", "oklch(95% 0.014 150)"] },
+      "text": { "role": "neutral", "displayName": "Blanc craie", "canonical": "#eef2ed", "tonalRamp": ["oklch(15% 0.009 140)", "oklch(24% 0.009 140)", "oklch(34% 0.009 140)", "oklch(46% 0.009 140)", "oklch(59% 0.009 140)", "oklch(71% 0.009 140)", "oklch(84% 0.009 140)", "oklch(95% 0.009 140)"] },
+      "muted": { "role": "neutral", "displayName": "Gris descriptif", "canonical": "#9ca9a1", "tonalRamp": ["oklch(15% 0.018 155)", "oklch(24% 0.018 155)", "oklch(34% 0.018 155)", "oklch(46% 0.018 155)", "oklch(59% 0.018 155)", "oklch(71% 0.018 155)", "oklch(84% 0.018 155)", "oklch(95% 0.018 155)"] },
+      "quiet": { "role": "neutral", "displayName": "Gris silencieux", "canonical": "#87938b", "tonalRamp": ["oklch(15% 0.017 155)", "oklch(24% 0.017 155)", "oklch(34% 0.017 155)", "oklch(46% 0.017 155)", "oklch(59% 0.017 155)", "oklch(71% 0.017 155)", "oklch(84% 0.017 155)", "oklch(95% 0.017 155)"] },
+      "accent": { "role": "primary", "displayName": "Vert de precision", "canonical": "#b8ef8d", "tonalRamp": ["oklch(15% 0.13 132)", "oklch(24% 0.13 132)", "oklch(34% 0.13 132)", "oklch(46% 0.13 132)", "oklch(59% 0.13 132)", "oklch(71% 0.13 132)", "oklch(84% 0.13 132)", "oklch(95% 0.13 132)"] },
+      "accent-ink": { "role": "primary", "displayName": "Encre technique", "canonical": "#15200f", "tonalRamp": ["oklch(15% 0.04 132)", "oklch(24% 0.04 132)", "oklch(34% 0.04 132)", "oklch(46% 0.04 132)", "oklch(59% 0.04 132)", "oklch(71% 0.04 132)", "oklch(84% 0.04 132)", "oklch(95% 0.04 132)"] },
+      "warning": { "role": "secondary", "displayName": "Ambre d'echeance", "canonical": "#e1b86b", "tonalRamp": ["oklch(15% 0.105 79)", "oklch(24% 0.105 79)", "oklch(34% 0.105 79)", "oklch(46% 0.105 79)", "oklch(59% 0.105 79)", "oklch(71% 0.105 79)", "oklch(84% 0.105 79)", "oklch(95% 0.105 79)"] },
+      "danger": { "role": "secondary", "displayName": "Rouge d'alerte", "canonical": "#ef9188", "tonalRamp": ["oklch(15% 0.115 25)", "oklch(24% 0.115 25)", "oklch(34% 0.115 25)", "oklch(46% 0.115 25)", "oklch(59% 0.115 25)", "oklch(71% 0.115 25)", "oklch(84% 0.115 25)", "oklch(95% 0.115 25)"] },
+      "chart-actual": { "role": "tertiary", "displayName": "Sauge mesuree", "canonical": "#9db19f", "tonalRamp": ["oklch(15% 0.035 148)", "oklch(24% 0.035 148)", "oklch(34% 0.035 148)", "oklch(46% 0.035 148)", "oklch(59% 0.035 148)", "oklch(71% 0.035 148)", "oklch(84% 0.035 148)", "oklch(95% 0.035 148)"] },
+      "chart-estimated": { "role": "tertiary", "displayName": "Sauge projetee", "canonical": "#7b887f", "tonalRamp": ["oklch(15% 0.024 150)", "oklch(24% 0.024 150)", "oklch(34% 0.024 150)", "oklch(46% 0.024 150)", "oklch(59% 0.024 150)", "oklch(71% 0.024 150)", "oklch(84% 0.024 150)", "oklch(95% 0.024 150)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Fait dominant", "purpose": "Kilometrage principal et nombres prioritaires." },
+      "headline": { "displayName": "Identite", "purpose": "Vehicule et titres de premier niveau." },
+      "title": { "displayName": "Titre de registre", "purpose": "Titre de page et valeurs de metriques." },
+      "body": { "displayName": "Lecture courante", "purpose": "Navigation, contexte, listes et controles." },
+      "label": { "displayName": "Provenance", "purpose": "Badges REEL, CALCULE et ESTIME." }
+    },
+    "shadows": [
+      { "name": "editorial-ambient", "value": "0 18px 50px rgba(0,0,0,.18)", "purpose": "Detache subtilement le bandeau vehicule de la toile." },
+      { "name": "overlay-ambient", "value": "0 18px 50px rgba(0,0,0,.42)", "purpose": "Signale le chevauchement du menu mobile Plus." }
+    ],
+    "motion": [
+      { "name": "state-transition", "value": "color, background-color, border-color, filter 150ms ease", "purpose": "Retour discret des survols et changements d'etat." },
+      { "name": "reduced-motion", "value": "0.01ms", "purpose": "Neutralise transitions et animations lorsque l'utilisateur prefere moins de mouvement." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Action principale courte et decisive.",
+      "html": "<button class=\"ds-btn-primary\">Enregistrer</button>",
+      "css": ".ds-btn-primary { height: 40px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; border: 0; border-radius: 12px; background: var(--accent, #b8ef8d); color: var(--accent-ink, #15200f); font: 500 14px/1.5 'Geist Sans', ui-sans-serif, system-ui, sans-serif; transition: filter 150ms ease; cursor: pointer; } .ds-btn-primary:hover { filter: brightness(.95); } .ds-btn-primary:active { filter: brightness(.9); } .ds-btn-primary:focus-visible { outline: 2px solid var(--accent, #b8ef8d); outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Action secondaire tonale sans elevation.",
+      "html": "<button class=\"ds-btn-secondary\">Modifier</button>",
+      "css": ".ds-btn-secondary { height: 40px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; border: 0; border-radius: 12px; background: var(--surface-soft, #1e2420); color: var(--text, #eef2ed); font: 500 14px/1.5 'Geist Sans', ui-sans-serif, system-ui, sans-serif; transition: background-color 150ms ease; cursor: pointer; } .ds-btn-secondary:hover { background: #283029; } .ds-btn-secondary:active { background: var(--line, #303832); } .ds-btn-secondary:focus-visible { outline: 2px solid var(--accent, #b8ef8d); outline-offset: 2px; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Action de niveau tertiaire encadree par une regle minerale.",
+      "html": "<button class=\"ds-btn-outline\">Annuler</button>",
+      "css": ".ds-btn-outline { height: 40px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; border: 1px solid var(--line, #303832); border-radius: 12px; background: transparent; color: var(--text, #eef2ed); font: 500 14px/1.5 'Geist Sans', ui-sans-serif, system-ui, sans-serif; transition: background-color 150ms ease; cursor: pointer; } .ds-btn-outline:hover { background: var(--surface-soft, #1e2420); } .ds-btn-outline:active { background: var(--surface-raised, #181d1a); } .ds-btn-outline:focus-visible { outline: 2px solid var(--accent, #b8ef8d); outline-offset: 2px; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Champ sombre, direct et sans halo decoratif.",
+      "html": "<label class=\"ds-field-label\" for=\"ds-mileage\">Kilometrage</label><input class=\"ds-input\" id=\"ds-mileage\" inputmode=\"numeric\" placeholder=\"35 124\">",
+      "css": ".ds-field-label { display: block; margin: 0 0 8px; color: var(--muted, #9ca9a1); font: 500 12px/1.4 'Geist Sans', ui-sans-serif, system-ui, sans-serif; } .ds-input { width: 100%; height: 44px; padding: 0 12px; border: 1px solid var(--line, #303832); border-radius: 12px; outline: 0; background: var(--surface, #131715); color: var(--text, #eef2ed); font: 400 14px/1.5 'Geist Sans', ui-sans-serif, system-ui, sans-serif; font-feature-settings: 'tnum' 1, 'ss01' 1; transition: border-color 150ms ease; } .ds-input::placeholder { color: var(--quiet, #87938b); } .ds-input:hover { border-color: var(--muted, #9ca9a1); } .ds-input:focus-visible { border-color: var(--accent, #b8ef8d); }"
+    },
+    {
+      "name": "Source Badges",
+      "kind": "chip",
+      "refersTo": "source-real",
+      "description": "Provenance explicite des faits, calculs et projections.",
+      "html": "<div class=\"ds-badge-row\"><span class=\"ds-source ds-source-real\">Reel</span><span class=\"ds-source ds-source-calculated\">Calcule</span><span class=\"ds-source ds-source-estimated\">Estime</span></div>",
+      "css": ".ds-badge-row { display: flex; align-items: center; gap: 8px; } .ds-source { display: inline-flex; padding: 2px 6px; border: 1px solid; border-radius: 6px; background: transparent; font: 500 10px/1.2 'Geist Sans', ui-sans-serif, system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; } .ds-source-real { border-color: color-mix(in srgb, var(--accent, #b8ef8d) 35%, transparent); color: var(--accent, #b8ef8d); } .ds-source-calculated { border-color: var(--line, #303832); color: var(--muted, #9ca9a1); } .ds-source-estimated { border-color: color-mix(in srgb, var(--warning, #e1b86b) 45%, transparent); border-style: dashed; color: var(--warning, #e1b86b); }"
+    },
+    {
+      "name": "Register Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Fragment de registre mat, structure par des regles internes.",
+      "html": "<section class=\"ds-panel\"><header class=\"ds-panel-head\"><h3>Kilometrage mensuel</h3><p>Les mois futurs prolongent votre rythme moyen actuel.</p></header><div class=\"ds-panel-body\"><strong>2 144 km</strong><span>Cette annee</span></div></section>",
+      "css": ".ds-panel { overflow: hidden; border-radius: 16px; background: var(--surface, #131715); color: var(--text, #eef2ed); font-family: 'Geist Sans', ui-sans-serif, system-ui, sans-serif; } .ds-panel-head { padding: 16px 20px; border-bottom: 1px solid var(--line-soft, #252c27); } .ds-panel-head h3 { margin: 0; font-size: 16px; font-weight: 500; } .ds-panel-head p { margin: 4px 0 0; color: var(--muted, #9ca9a1); font-size: 14px; line-height: 1.5; } .ds-panel-body { display: flex; align-items: end; justify-content: space-between; gap: 16px; padding: 20px; } .ds-panel-body strong { font-size: 24px; font-weight: 500; letter-spacing: -.03em; font-feature-settings: 'tnum' 1; } .ds-panel-body span { color: var(--muted, #9ca9a1); font-size: 14px; }"
+    },
+    {
+      "name": "Desktop Navigation",
+      "kind": "nav",
+      "description": "Rail explicite avec destination active tonale et icone verte.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Navigation principale\"><a class=\"ds-nav-item ds-nav-active\" href=\"#dashboard\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M3 3v18h18M7 16v2m4-7v7m4-11v11m4-8v8\"/></svg>Dashboard</a><a class=\"ds-nav-item\" href=\"#garage\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 17h14l-1.5-5a2 2 0 0 0-2-1.5h-7A2 2 0 0 0 6.5 12L5 17Zm0 0v2m14-2v2M8 14h.01M16 14h.01\"/></svg>Garage</a></nav>",
+      "css": ".ds-nav { width: 240px; padding: 16px; background: #0b0e0d; font-family: 'Geist Sans', ui-sans-serif, system-ui, sans-serif; } .ds-nav-item { height: 44px; display: flex; align-items: center; gap: 12px; padding: 0 12px; border-radius: 12px; color: var(--muted, #9ca9a1); font-size: 14px; text-decoration: none; transition: color 150ms ease, background-color 150ms ease; } .ds-nav-item svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; } .ds-nav-item:hover { background: var(--surface, #131715); color: var(--text, #eef2ed); } .ds-nav-item:focus-visible { outline: 2px solid var(--accent, #b8ef8d); outline-offset: 2px; } .ds-nav-active { background: var(--surface-soft, #1e2420); color: var(--text, #eef2ed); } .ds-nav-active svg { color: var(--accent, #b8ef8d); }"
+    },
+    {
+      "name": "Mobile Navigation",
+      "kind": "nav",
+      "description": "Quatre destinations directes et un menu Plus fonctionnel.",
+      "html": "<nav class=\"ds-mobile-nav\" aria-label=\"Navigation mobile\"><a class=\"ds-mobile-item ds-mobile-active\" href=\"#dashboard\">Dashboard</a><a class=\"ds-mobile-item\" href=\"#garage\">Garage</a><a class=\"ds-mobile-item\" href=\"#kilometrage\">Kilometrage</a><a class=\"ds-mobile-item\" href=\"#entretiens\">Entretiens</a><details class=\"ds-more\"><summary>Plus</summary><div class=\"ds-more-menu\"><a href=\"#carburant\">Carburant</a><a href=\"#depenses\">Depenses</a><a href=\"#historique\">Historique</a><a href=\"#parametres\">Parametres</a></div></details></nav>",
+      "css": ".ds-mobile-nav { position: relative; height: 72px; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 0 8px; border-top: 1px solid var(--line, #303832); background: rgba(11,14,13,.95); font-family: 'Geist Sans', ui-sans-serif, system-ui, sans-serif; } .ds-mobile-item, .ds-more summary { min-width: 0; display: flex; align-items: center; justify-content: center; padding: 0 4px; color: var(--quiet, #87938b); font-size: 10px; text-align: center; text-decoration: none; cursor: pointer; list-style: none; } .ds-more summary::-webkit-details-marker { display: none; } .ds-mobile-item:hover, .ds-more summary:hover, .ds-mobile-active, .ds-more[open] summary { color: var(--accent, #b8ef8d); } .ds-mobile-item:focus-visible, .ds-more summary:focus-visible, .ds-more-menu a:focus-visible { outline: 2px solid var(--accent, #b8ef8d); outline-offset: -2px; } .ds-more-menu { position: absolute; right: 4px; bottom: 82px; width: 224px; overflow: hidden; border-radius: 16px; background: var(--surface-raised, #181d1a); box-shadow: 0 18px 50px rgba(0,0,0,.42); } .ds-more-menu a { height: 48px; display: flex; align-items: center; padding: 0 16px; border-bottom: 1px solid var(--line-soft, #252c27); color: var(--text, #eef2ed); font-size: 14px; text-decoration: none; } .ds-more-menu a:last-child { border-bottom: 0; } .ds-more-menu a:hover { background: var(--surface-soft, #1e2420); }"
+    },
+    {
+      "name": "Mileage Metric",
+      "kind": "custom",
+      "description": "Fait chiffre dominant avec unite et provenance explicite.",
+      "html": "<div class=\"ds-mileage\"><div><strong>35 124</strong><span>km</span></div><div class=\"ds-mileage-source\"><small>Reel</small><p>Dernier releve enregistre</p></div></div>",
+      "css": ".ds-mileage { padding: 24px; background: var(--surface, #131715); color: var(--text, #eef2ed); font-family: 'Geist Sans', ui-sans-serif, system-ui, sans-serif; font-feature-settings: 'tnum' 1, 'ss01' 1; } .ds-mileage > div:first-child { display: flex; align-items: end; gap: 12px; } .ds-mileage strong { font-size: clamp(48px, 8vw, 60px); line-height: 1; font-weight: 500; letter-spacing: -.04em; } .ds-mileage > div:first-child span { padding-bottom: 4px; color: var(--muted, #9ca9a1); font-size: 24px; } .ds-mileage-source { display: flex; align-items: center; gap: 12px; margin-top: 16px; } .ds-mileage-source small { padding: 2px 6px; border: 1px solid color-mix(in srgb, var(--accent, #b8ef8d) 35%, transparent); border-radius: 6px; color: var(--accent, #b8ef8d); font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; } .ds-mileage-source p { margin: 0; color: var(--quiet, #87938b); font-size: 12px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Registre technique nocturne",
+    "overview": "Drivio ressemble a un registre d'atelier consulte la nuit : sombre, mat et mesure, avec la precision calme d'un instrument de suivi plutot que le spectacle d'un cockpit. Les faits viennent avant les ornements. La photographie automobile nocturne donne un ancrage editorial, puis les donnees reprennent immediatement le dessus dans une trame de surfaces graphite et de regles minerales.\n\nLe systeme organise une lecture continue : voir le vehicule, comprendre son rythme, puis agir sur la prochaine echeance. Le vert clair ne peint pas l'interface ; il signale les faits reels, l'etat actif et les actions utiles. Les nombres dominants, les libelles courts et les sources explicites donnent au produit son autorite tranquille.\n\nLe langage refuse le tableau de bord compose d'une mosaique de tuiles decoratives, les compteurs automobiles skeuomorphes, les halos neon et la surcharge. Les panneaux restent des fragments d'un meme registre, relies par leur rythme, leurs alignements et leurs separateurs.",
+    "keyCharacteristics": [
+      "Graphite mat et profondeur obtenue d'abord par couches tonales.",
+      "Photographie nocturne editoriale, recadree comme une piece de dossier.",
+      "Chiffres tabulaires dominants, titres compacts et libelles factuels.",
+      "Vert precis et rare pour le reel, l'actif et l'actionnable.",
+      "Regles minerales fines qui structurent sans enfermer.",
+      "Distinction visible entre donnees reelles, calculees et estimees."
+    ],
+    "rules": [
+      { "name": "The Precision Green Rule", "body": "Le vert est un signe, jamais un remplissage d'ambiance : il marque le reel, l'actif, le focus ou l'action.", "section": "colors" },
+      { "name": "The Source Honesty Rule", "body": "Reel, calcule et estime restent differenciables par le texte, la couleur et, pour l'estimation, un contour discontinu ; la couleur seule ne porte jamais le sens.", "section": "colors" },
+      { "name": "The Tabular Fact Rule", "body": "Toute valeur kilometrique, monetaire, datee ou comparative conserve les chiffres tabulaires actives globalement.", "section": "typography" },
+      { "name": "The Quiet Label Rule", "body": "Les libelles secondaires restent petits et sobres ; ils orientent la lecture sans concurrencer le fait chiffre.", "section": "typography" },
+      { "name": "The Continuous Register Rule", "body": "Les metriques et listes apparentees partagent une surface et se separent par des regles ; elles ne deviennent pas une collection de cartes flottantes.", "section": "layout" },
+      { "name": "The Tonal-First Rule", "body": "Une difference de niveau utilise d'abord une nuance graphite et une regle ; l'ombre est reservee au chevauchement.", "section": "elevation" },
+      { "name": "The Mineral Edge Rule", "body": "Les rayons adoucissent le registre sans le transformer en interface ludique ; chaque courbe doit appartenir a une surface ou un controle reel.", "section": "shapes" }
+    ],
+    "dos": [
+      "Do commencer la lecture par le vehicule, le fait dominant et la prochaine action utile.",
+      "Do utiliser les surfaces graphite, les regles de 1 px et les alignements pour construire la profondeur avant toute ombre.",
+      "Do garder REEL, CALCULE et ESTIME textuellement explicites dans les mesures et projections.",
+      "Do reserver le vert de precision aux faits reels, a l'etat actif, au focus et aux actions utiles.",
+      "Do conserver des actions clavieres, un focus visible et une navigation mobile dont le menu Plus fonctionne reellement.",
+      "Do recadrer la photographie automobile comme une image editoriale nocturne, jamais comme un fond decoratif illisible."
+    ],
+    "donts": [
+      "Don't transformer le dashboard en mosaique de tuiles independantes lorsque des bandes ou listes continues racontent mieux le registre.",
+      "Don't ajouter de compteurs, cadrans, textures carbone, chromes, neon ou autres metaphores de cockpit.",
+      "Don't utiliser des ombres sur les panneaux au repos ; elles signalent seulement un chevauchement reel.",
+      "Don't confondre donnees mesurees, calculs derives et estimations, meme si leurs valeurs semblent proches.",
+      "Don't surutiliser l'accent vert, arrondir les controles en pilules ou multiplier les couleurs d'ambiance.",
+      "Don't masquer une action prioritaire derriere la barre mobile ni introduire un defilement horizontal global."
+    ]
+  }
+}
