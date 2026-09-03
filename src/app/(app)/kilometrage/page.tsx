@@ -14,7 +14,7 @@ export const metadata: Metadata = { title: "Kilométrage" };
 export default async function MileagePage() {
   const user = await requirePageUser();
   const vehicles = await db.vehicle.findMany({ where: { userId: user.id, status: "ACTIVE" }, select: { id: true, brand: true, model: true } });
-  const readings = await db.mileageReading.findMany({ where: { vehicle: { userId: user.id } }, orderBy: { date: "desc" }, include: { vehicle: { select: { brand: true, model: true } } }, take: 100 });
+  const readings = await db.mileageReading.findMany({ where: { vehicle: { userId: user.id } }, orderBy: [{ date: "desc" }, { mileage: "desc" }], include: { vehicle: { select: { brand: true, model: true } } }, take: 100 });
   return <div className="space-y-8">
     <PageHeader title="Kilométrage" description="Chaque relevé enrichit vos moyennes et projections. Les corrections restent identifiables." />
     {vehicles.length ? <details className="rounded-2xl bg-[var(--surface)]" open={readings.length === 0}><summary className="flex cursor-pointer list-none items-center gap-3 px-5 py-4 text-sm font-medium sm:px-6"><Plus className="size-4 text-[var(--accent)]" />Ajouter un relevé</summary><div className="border-t border-[var(--line-soft)] p-5 sm:p-6"><MileageForm vehicles={vehicles} /></div></details> : <p className="text-sm text-[var(--warning)]">Ajoutez d’abord un véhicule actif dans le Garage.</p>}
