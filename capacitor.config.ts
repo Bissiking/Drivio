@@ -6,11 +6,8 @@ const config: CapacitorConfig = {
   webDir: "out",
   server: {
     androidScheme: "https",
-    // En dev, pointer vers le serveur local Next.js
-    // En prod, commenter ces lignes pour charger depuis out/ (fichiers statiques)
-    // ou déployer l'app Next.js et pointer vers l'URL de production
-    url: "http://192.168.1.63:3000",
-    cleartext: true,
+    url: "https://drivio.mhemery.fr",
+    cleartext: false,
     allowNavigation: ["*"],
   },
   plugins: {

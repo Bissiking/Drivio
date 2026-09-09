@@ -140,6 +140,33 @@ npm run build
 npm audit --omit=dev
 ```
 
+## Version Android signée
+
+Créer une seule fois la clé de signature Drivio :
+
+```bash
+npm run mobile:signing:setup
+```
+
+La clé et sa configuration privée sont conservées dans `~/.config/drivio/`. Ces deux fichiers doivent être sauvegardés ensemble dans un emplacement sécurisé : leur perte empêcherait toute mise à jour des installations existantes.
+
+Construire puis installer la version release :
+
+```bash
+npm run mobile:build:android:release
+npm run mobile:install:android:release
+```
+
+L’APK signé est généré dans `android/app/build/outputs/apk/release/app-release.apk`. Une application précédemment installée en debug doit être désinstallée une dernière fois avant la première installation release. Les mises à jour release suivantes conservent les données, à condition de garder `com.drivio.app`, cette même clé et un `versionCode` supérieur.
+
+La version Android est dérivée de la version du `package.json` : `1.0.2` devient `versionName 1.0.2` et `versionCode 10002`. Avant une nouvelle livraison :
+
+```bash
+npm version patch --no-git-tag-version
+npm run mobile:build:android:release
+npm run mobile:install:android:release
+```
+
 Les données sont systématiquement filtrées par l’utilisateur Kyros côté serveur. Les entrées sont validées avec Zod et les erreurs métier sont affichées dans les formulaires.
 
 ## Sécurité

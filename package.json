@@ -1,6 +1,6 @@
 {
   "name": "drivio",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -17,11 +17,15 @@
     "db:studio": "prisma studio",
     "db:migrate:postgres": "cross-env RUST_LOG=info prisma migrate deploy --schema prisma/schema.postgresql.prisma",
     "db:validate:postgres": "prisma validate --schema prisma/schema.postgresql.prisma",
+    "mobile:signing:setup": "node scripts/setup-android-signing.mjs",
+    "mobile:assets:android": "tsx scripts/generate-android-icons.ts",
     "mobile:sync": "npx cap sync",
     "mobile:ios": "npx cap sync && npx cap open ios",
     "mobile:android": "npx cap sync && npx cap open android",
     "mobile:run:ios": "npx cap run ios",
-    "mobile:run:android": "npx cap run android"
+    "mobile:run:android": "npm run mobile:assets:android && npx cap run android",
+    "mobile:build:android:release": "npm run mobile:assets:android && npx cap sync android && cd android && ./gradlew -I ../scripts/android-signing.gradle assembleRelease",
+    "mobile:install:android:release": "npx native-run android --app android/app/build/outputs/apk/release/app-release.apk"
   },
   "dependencies": {
     "@capacitor-community/sqlite": "^8.1.1",
