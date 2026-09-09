@@ -1,7 +1,7 @@
 <!-- README.md -->
 # Drivio
 
-Drivio 1.0.0 est une application web personnelle de suivi automobile. Elle réunit le garage, les relevés kilométriques, les entretiens, les pleins, les dépenses et leur historique dans une interface responsive sombre.
+Drivio 1.0.3 est une application web personnelle de suivi automobile. Elle réunit le garage, les relevés kilométriques, les entretiens, les pleins, les dépenses et leur historique dans une interface responsive sombre.
 
 ## Fonctionnalités
 
@@ -50,7 +50,8 @@ Drivio exécute le flux suivant :
 3. redirection vers `/authorize` avec le `request_uri` ;
 4. contrôle de `state` et de `iss` au callback ;
 5. échange du code sur `/token` avec le `code_verifier` ;
-6. vérification RS256 depuis `/sso/v4/jwks`, puis contrôle de `iss`, `aud`, `resource_aud`, `exp` et `nbf`.
+6. vérification RS256 depuis `/sso/v4/jwks`, puis contrôle de `iss`, `aud`, `resource_aud`, `exp` et `nbf` ;
+7. conservation chiffrée du refresh token dans le cookie `HttpOnly`, avec rotation silencieuse avant expiration de l'access token.
 
 Variables requises :
 
@@ -62,7 +63,7 @@ Variables requises :
 - `KYROS_CLIENT_SECRET` si le client est confidentiel
 - `KYROS_AUDIENCE` (audience JWT globale, généralement `kyros-modules`)
 - `KYROS_RESOURCE_AUDIENCE`
-- `KYROS_SCOPES`
+- `KYROS_SCOPES` (inclure `offline_access`)
 
 Il n’existe pas de mot de passe local ni de contournement d’authentification en développement.
 
@@ -145,7 +146,8 @@ Les données sont systématiquement filtrées par l’utilisateur Kyros côté s
 ## Sécurité
 
 - aucun secret n’est versionné ;
-- cookies de session `HttpOnly`, `SameSite=Lax` et `Secure` en production ;
+- cookie de session chiffré `A256GCM`, `HttpOnly`, `SameSite=Lax` et `Secure` en production ;
+- refresh Kyros v4 rotatif, sérialisé contre les requêtes concurrentes et révoqué à la déconnexion ;
 - validation stricte du type et de la taille des photos ;
 - callback Kyros exact et jetons limités à RS256 ;
 - propriété des véhicules vérifiée avant toute mutation.

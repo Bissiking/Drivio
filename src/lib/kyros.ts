@@ -1,8 +1,21 @@
-// src/lib/kyros.ts
 import { createHash, randomBytes } from "node:crypto";
 import { createRemoteJWKSet, jwtVerify, type JWTPayload } from "jose";
 
-type KyrosTokenResponse = { access_token?: string; error?: string; error_description?: string };
+export type KyrosTokenResponse = {
+  access_token: string;
+  expires_in: number;
+  refresh_token: string;
+  refresh_token_expires_at: string;
+};
+
+type KyrosErrorPayload = { error?: string; error_description?: string };
+
+export class KyrosTokenError extends Error {
+  constructor(message: string, public readonly code: string, public readonly retryable: boolean) {
+    super(message);
+    this.name = "KyrosTokenError";
+  }
+}
 
 export function getKyrosConfig() {
   const baseUrl = process.env.KYROS_BASE_URL?.replace(/\/$/, "");
@@ -18,9 +31,23 @@ export function getKyrosConfig() {
     clientSecret: process.env.KYROS_CLIENT_SECRET,
     audience: process.env.KYROS_AUDIENCE ?? "kyros-modules",
     resourceAudience: process.env.KYROS_RESOURCE_AUDIENCE ?? "kyros:drivio",
-    scopes: process.env.KYROS_SCOPES ?? process.env.KYROS_REQUESTED_SCOPE ?? "profile email",
+    scopes: process.env.KYROS_SCOPES ?? process.env.KYROS_REQUESTED_SCOPE ?? "profile email offline_access",
     redirectUri: `${appUrl}/auth/callback`,
   };
+}
+
+function handshake() {
+  return {
+    kyros_sso_version: "v4",
+    kyros_edition: "standard",
+    kyros_application_scope: "standard",
+  };
+}
+
+function requestSignal() {
+  const configured = Number(process.env.KYROS_TIMEOUT_SECONDS ?? 5);
+  const seconds = Number.isFinite(configured) && configured > 0 ? configured : 5;
+  return AbortSignal.timeout(seconds * 1000);
 }
 
 export function createPkce() {
@@ -42,13 +69,12 @@ export async function createAuthorizationRequest(state: string, challenge: strin
       state,
       code_challenge: challenge,
       code_challenge_method: "S256",
-      kyros_sso_version: "v4",
-      kyros_edition: "standard",
-      kyros_application_scope: "standard",
+      ...handshake(),
     }),
     cache: "no-store",
+    signal: requestSignal(),
   });
-  const payload = (await response.json()) as { request_uri?: string; error?: string; error_description?: string };
+  const payload = (await response.json()) as { request_uri?: string } & KyrosErrorPayload;
   if (!response.ok || !payload.request_uri) {
     throw new Error(payload.error_description ?? payload.error ?? "Kyros a refusé la requête PAR.");
   }
@@ -58,29 +84,108 @@ export async function createAuthorizationRequest(state: string, challenge: strin
   return authorize;
 }
 
+function parseTokenResponse(payload: Partial<KyrosTokenResponse> & KyrosErrorPayload, ok: boolean) {
+  if (
+    !ok ||
+    typeof payload.access_token !== "string" ||
+    typeof payload.refresh_token !== "string" ||
+    typeof payload.expires_in !== "number" ||
+    typeof payload.refresh_token_expires_at !== "string"
+  ) {
+    const code = payload.error ?? "invalid_token_response";
+    const retryable = !["invalid_refresh_token", "refresh_token_reuse", "invalid_client", "invalid_client_secret"].includes(code);
+    throw new KyrosTokenError(
+      payload.error_description ?? payload.error ?? "Kyros n'a pas émis une paire de jetons complète.",
+      code,
+      retryable,
+    );
+  }
+  return payload as KyrosTokenResponse;
+}
+
+async function requestTokens(body: Record<string, string | undefined>) {
+  const config = getKyrosConfig();
+  let response: Response;
+  try {
+    response = await fetch(`${config.baseUrl}/token`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(body),
+      cache: "no-store",
+      signal: requestSignal(),
+    });
+  } catch {
+    throw new KyrosTokenError("Kyros est temporairement indisponible.", "network_error", true);
+  }
+  const payload = (await response.json().catch(() => ({}))) as Partial<KyrosTokenResponse> & KyrosErrorPayload;
+  if (response.status >= 500 || response.status === 429) {
+    throw new KyrosTokenError(
+      payload.error_description ?? payload.error ?? "Kyros est temporairement indisponible.",
+      payload.error ?? "temporarily_unavailable",
+      true,
+    );
+  }
+  if (!response.ok) {
+    throw new KyrosTokenError(
+      payload.error_description ?? payload.error ?? "Kyros a refusé le rafraîchissement.",
+      payload.error ?? "token_request_rejected",
+      false,
+    );
+  }
+  return parseTokenResponse(payload, response.ok);
+}
+
 export async function exchangeAuthorizationCode(code: string, verifier: string) {
   const config = getKyrosConfig();
-  const response = await fetch(`${config.baseUrl}/token`, {
+  return requestTokens({
+    grant_type: "authorization_code",
+    client_id: config.clientId,
+    client_secret: config.clientSecret || undefined,
+    code,
+    code_verifier: verifier,
+    redirect_uri: config.redirectUri,
+    ...handshake(),
+  });
+}
+
+const refreshRequests = new Map<string, { expiresAt: number; promise: Promise<KyrosTokenResponse> }>();
+
+export function refreshKyrosTokens(refreshToken: string) {
+  const key = createHash("sha256").update(refreshToken).digest("hex");
+  const now = Date.now();
+  for (const [candidate, entry] of refreshRequests) {
+    if (entry.expiresAt <= now) refreshRequests.delete(candidate);
+  }
+  const existing = refreshRequests.get(key);
+  if (existing) return existing.promise;
+
+  const config = getKyrosConfig();
+  const promise = requestTokens({
+    grant_type: "refresh_token",
+    client_id: config.clientId,
+    client_secret: config.clientSecret || undefined,
+    refresh_token: refreshToken,
+    ...handshake(),
+  });
+  refreshRequests.set(key, { expiresAt: now + 30_000, promise });
+  void promise.catch(() => refreshRequests.delete(key));
+  return promise;
+}
+
+export async function revokeKyrosToken(refreshToken: string) {
+  const config = getKyrosConfig();
+  await fetch(`${config.baseUrl}/revoke`, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({
-      grant_type: "authorization_code",
       client_id: config.clientId,
       client_secret: config.clientSecret || undefined,
-      code,
-      code_verifier: verifier,
-      redirect_uri: config.redirectUri,
-      kyros_sso_version: "v4",
-      kyros_edition: "standard",
-      kyros_application_scope: "standard",
+      refresh_token: refreshToken,
+      ...handshake(),
     }),
     cache: "no-store",
+    signal: requestSignal(),
   });
-  const payload = (await response.json()) as KyrosTokenResponse;
-  if (!response.ok || !payload.access_token) {
-    throw new Error(payload.error_description ?? payload.error ?? "Kyros n'a pas émis de jeton.");
-  }
-  return payload.access_token;
 }
 
 export async function verifyKyrosToken(token: string): Promise<JWTPayload> {
