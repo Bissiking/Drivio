@@ -1,57 +1,61 @@
-<!-- DESIGN.md -->
 ---
 name: Drivio
-description: Un registre automobile nocturne, factuel et precis.
+description: Un registre automobile personnel, graphite et cuivre.
 colors:
-  ink: "#0d100f"
-  navigation: "#0b0e0d"
-  surface: "#131715"
-  surface-raised: "#181d1a"
-  surface-soft: "#1e2420"
-  surface-hover: "#283029"
-  line: "#303832"
-  line-soft: "#252c27"
-  text: "#eef2ed"
-  muted: "#9ca9a1"
-  quiet: "#87938b"
-  accent: "#b8ef8d"
-  accent-ink: "#15200f"
-  warning: "#e1b86b"
-  danger: "#ef9188"
-  chart-actual: "#9db19f"
-  chart-estimated: "#7b887f"
+  ink: "#111214"
+  navigation: "#141518"
+  surface: "#1a1b1e"
+  surface-raised: "#222327"
+  surface-soft: "#2a2b30"
+  line: "#404148"
+  line-soft: "#303137"
+  text: "#f4f0eb"
+  muted: "#b2aea9"
+  quiet: "#96938e"
+  accent: "#e7b58b"
+  accent-ink: "#2b1b11"
+  warning: "#edc379"
+  danger: "#f19a96"
 typography:
   display:
-    fontFamily: "Geist Sans, ui-sans-serif, system-ui, sans-serif"
     fontSize: "3.75rem"
     fontWeight: 500
     lineHeight: 1
     letterSpacing: "-0.04em"
-    fontFeature: '"tnum" 1, "ss01" 1'
+    fontFamily: "Geist Sans, ui-sans-serif, system-ui, sans-serif"
+    fontFeature: "\"tnum\" 1, \"ss01\" 1"
   headline:
-    fontFamily: "Geist Sans, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "1.875rem"
+    fontSize: "2.25rem"
     fontWeight: 500
-    lineHeight: 1.2
-    letterSpacing: "-0.04em"
-  title:
+    lineHeight: "2.5rem"
+    letterSpacing: "-0.035em"
     fontFamily: "Geist Sans, ui-sans-serif, system-ui, sans-serif"
+    fontFeature: "\"tnum\" 1, \"ss01\" 1"
+  title:
     fontSize: "1.5rem"
     fontWeight: 500
-    lineHeight: 1.33
+    lineHeight: "2rem"
     letterSpacing: "-0.03em"
-  body:
     fontFamily: "Geist Sans, ui-sans-serif, system-ui, sans-serif"
+    fontFeature: "\"tnum\" 1, \"ss01\" 1"
+  body:
     fontSize: "0.875rem"
     fontWeight: 400
-    lineHeight: 1.5
-    fontFeature: '"tnum" 1, "ss01" 1'
-  label:
+    lineHeight: "1.25rem"
     fontFamily: "Geist Sans, ui-sans-serif, system-ui, sans-serif"
+    fontFeature: "\"tnum\" 1, \"ss01\" 1"
+  label:
+    fontSize: "0.75rem"
+    fontWeight: 500
+    lineHeight: "1rem"
+    fontFamily: "Geist Sans, ui-sans-serif, system-ui, sans-serif"
+    fontFeature: "\"tnum\" 1, \"ss01\" 1"
+  source:
     fontSize: "0.625rem"
     fontWeight: 500
-    lineHeight: 1.2
     letterSpacing: "0.08em"
+    fontFamily: "Geist Sans, ui-sans-serif, system-ui, sans-serif"
+    fontFeature: "\"tnum\" 1, \"ss01\" 1"
 rounded:
   bar: "4px"
   badge: "6px"
@@ -59,7 +63,6 @@ rounded:
   control: "12px"
   panel: "16px"
 spacing:
-  hairline: "1px"
   xs: "4px"
   sm: "8px"
   md: "12px"
@@ -91,6 +94,20 @@ components:
     rounded: "{rounded.control}"
     padding: "0 16px"
     height: "40px"
+  button-ghost:
+    backgroundColor: "transparent"
+    textColor: "{colors.muted}"
+    typography: "{typography.body}"
+    rounded: "{rounded.control}"
+    padding: "0 16px"
+    height: "40px"
+  button-danger:
+    backgroundColor: "color-mix(in srgb, var(--danger) 12%, transparent)"
+    textColor: "{colors.danger}"
+    typography: "{typography.body}"
+    rounded: "{rounded.control}"
+    padding: "0 16px"
+    height: "40px"
   input:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.text}"
@@ -102,23 +119,22 @@ components:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.text}"
     rounded: "{rounded.panel}"
-    padding: "20px"
   source-real:
     backgroundColor: "transparent"
     textColor: "{colors.accent}"
-    typography: "{typography.label}"
+    typography: "{typography.source}"
     rounded: "{rounded.badge}"
     padding: "2px 6px"
   source-calculated:
     backgroundColor: "transparent"
     textColor: "{colors.muted}"
-    typography: "{typography.label}"
+    typography: "{typography.source}"
     rounded: "{rounded.badge}"
     padding: "2px 6px"
   source-estimated:
     backgroundColor: "transparent"
     textColor: "{colors.warning}"
-    typography: "{typography.label}"
+    typography: "{typography.source}"
     rounded: "{rounded.badge}"
     padding: "2px 6px"
 ---
@@ -129,171 +145,172 @@ components:
 
 **Creative North Star: "Registre technique nocturne"**
 
-Drivio ressemble a un registre d'atelier consulte la nuit : sombre, mat et mesure, avec la precision calme d'un instrument de suivi plutot que le spectacle d'un cockpit. Les faits viennent avant les ornements. La photographie automobile nocturne donne un ancrage editorial, puis les donnees reprennent immediatement le dessus dans une trame de surfaces graphite et de regles minerales.
+Drivio est un registre automobile personnel sombre, mat et précis. Les surfaces graphite, les règles minérales et les chiffres tabulaires font passer les faits avant les ornements. Le cuivre apporte une chaleur mesurée aux commandes et aux informations utiles ; le logo associe un éclair angulaire cuivre au mot-symbole blanc.
 
-Le systeme organise une lecture continue : voir le vehicule, comprendre son rythme, puis agir sur la prochaine echeance. Le vert clair ne peint pas l'interface ; il signale les faits reels, l'etat actif et les actions utiles. Les nombres dominants, les libelles courts et les sources explicites donnent au produit son autorite tranquille.
-
-Le langage refuse le tableau de bord compose d'une mosaique de tuiles decoratives, les compteurs automobiles skeuomorphes, les halos neon et la surcharge. Les panneaux restent des fragments d'un meme registre, relies par leur rythme, leurs alignements et leurs separateurs.
+La photographie donne au véhicule sa place dans le dossier, puis les données reprennent la lecture. Une photo personnelle est prioritaire ; les images de modèles générées servent de fallback et portent une mention explicite d'illustration. Les panneaux restent lisibles par leur hiérarchie, leurs alignements et leurs séparateurs.
 
 **Key Characteristics:**
 
-- Graphite mat et profondeur obtenue d'abord par couches tonales.
-- Photographie nocturne editoriale, recadree comme une piece de dossier.
-- Chiffres tabulaires dominants, titres compacts et libelles factuels.
-- Vert precis et rare pour le reel, l'actif et l'actionnable.
-- Regles minerales fines qui structurent sans enfermer.
-- Distinction visible entre donnees reelles, calculees et estimees.
+- Graphite mat et profondeur par couches tonales.
+- Cuivre fonctionnel pour les actions, la sélection et les données visualisées.
+- Geist Sans, chiffres tabulaires et titres directs.
+- Photographies personnelles prioritaires, illustrations générées identifiées.
+- Registres continus et séparateurs fins.
+- Provenance Réel, Calculé et Estimé explicitement lisible.
 
 ## Colors
 
-La palette est un nocturne mineral : noirs verts, graphites faiblement chromatiques et accents fonctionnels peu nombreux.
+Le graphite neutre accueille un accent cuivre chaud ; les alertes ont leurs propres couleurs sémantiques.
 
 ### Primary
 
-- **Vert de precision** (`accent`): reserve aux faits reels, a la navigation active, aux actions textuelles et aux focus ; sa rarete maintient la hierarchie.
-- **Encre technique** (`accent-ink`): assure un contraste sombre net sur les commandes pleines vertes.
+- **Cuivre utile** (`accent`) : boutons principaux, actions textuelles, icônes actives, focus, mesures réelles et graphiques calculés.
+- **Encre cuivre** (`accent-ink`) : texte sombre des commandes pleines cuivre.
 
 ### Secondary
 
-- **Ambre d'echeance** (`warning`): distingue les maintenances et les estimations, avec des contours en pointilles lorsqu'une valeur n'est pas mesuree.
-- **Rouge d'alerte** (`danger`): limite aux retards, erreurs et actions dangereuses.
-
-### Tertiary
-
-- **Sauge mesuree** (`chart-actual`): remplit les barres de donnees observees sans rivaliser avec l'accent interactif.
-- **Sauge projetee** (`chart-estimated`): trace les projections sous forme de contours discontinus.
+- **Ambre d'échéance** (`warning`) : entretiens, échéances et valeurs estimées.
+- **Rouge d'alerte** (`danger`) : retards, erreurs et commandes de suppression.
 
 ### Neutral
 
-- **Encre de fond** (`ink`): toile generale de l'application.
-- **Noir de navigation** (`navigation`): rail et barre mobile, legerement plus profonds que la toile.
-- **Graphite mat** (`surface`): panneaux, champs et bandeaux principaux.
-- **Graphite releve** (`surface-raised`): surfaces qui chevauchent le contenu, notamment le menu mobile Plus.
-- **Graphite actif** (`surface-soft`): navigation selectionnee, commandes secondaires et etats de survol.
-- **Graphite de survol** (`surface-hover`): reponse plus claire des commandes secondaires.
-- **Regle minerale** (`line`): contours de controles et separations fortes.
-- **Regle minerale douce** (`line-soft`): divisions internes et rythme du registre.
-- **Blanc craie** (`text`): texte principal et chiffres decisifs.
-- **Gris descriptif** (`muted`): contexte, unites et texte secondaire.
-- **Gris silencieux** (`quiet`): dates, aides et navigation inactive ; sa valeur normative est `#87938b`.
+- **Graphite de fond** (`ink`) : toile générale et cadre sombre des images.
+- **Graphite de navigation** (`navigation`) : rail et barre mobile.
+- **Graphite mat** (`surface`) : panneaux, champs et registres.
+- **Graphite relevé** (`surface-raised`) : menu Plus, tooltips et survol secondaire.
+- **Graphite actif** (`surface-soft`) : destination sélectionnée, commandes secondaires et réponses de survol.
+- **Règle minérale** (`line`) : champs, contours et séparations fortes.
+- **Règle douce** (`line-soft`) : divisions internes des listes et panneaux.
+- **Blanc chaud** (`text`) : textes et faits dominants.
+- **Gris descriptif** (`muted`) : descriptions, unités et navigation inactive de bureau.
+- **Gris discret** (`quiet`) : dates, placeholders, graduations et navigation inactive mobile.
 
 ### Named Rules
 
-**The Precision Green Rule.** Le vert est un signe, jamais un remplissage d'ambiance : il marque le reel, l'actif, le focus ou l'action.
+**The Useful Copper Rule.** Le cuivre indique une action, une sélection, un focus ou une donnée visualisée ; il ne remplit pas les surfaces d'ambiance.
 
-**The Source Honesty Rule.** Reel, calcule et estime restent differenciables par le texte, la couleur et, pour l'estimation, un contour discontinu ; la couleur seule ne porte jamais le sens.
+**The Source Honesty Rule.** Réel, Calculé et Estimé gardent leur libellé explicite ; l'estimation ajoute un contour discontinu. La couleur seule ne porte jamais la provenance.
 
 ## Typography
 
-**Display Font:** Geist Sans (avec `ui-sans-serif`, `system-ui`, `sans-serif`)
-**Body Font:** Geist Sans (avec `ui-sans-serif`, `system-ui`, `sans-serif`)
-**Label/Mono Font:** Geist Sans avec chiffres tabulaires
+**Display Font:** Geist Sans avec `ui-sans-serif`, `system-ui`, `sans-serif`.
+**Body Font:** Geist Sans avec les mêmes fallbacks.
+**Label/Mono Font:** Geist Sans avec chiffres tabulaires, sans famille mono distincte.
 
-**Character:** Une seule famille neo-grotesque garde le registre direct et contemporain. La personnalite vient de la densite, des espacements de lettres serres sur les grands titres, et de chiffres tabulaires qui stabilisent les comparaisons.
+**Character:** Une famille néo-grotesque unique donne une lecture directe. Les grands titres utilisent un espacement resserré, les chiffres tabulaires stabilisent montants, kilométrages et comparaisons.
 
 ### Hierarchy
 
-- **Display** (medium, `display`, interligne compact): kilometrage principal et mesures qui doivent etre lues avant tout le reste.
-- **Headline** (medium, `headline`, interligne serre): identite du vehicule et titres de premier niveau expressifs.
-- **Title** (medium, `title`): titre de page et valeurs de metriques.
-- **Body** (regular, `body`): navigation, descriptions, lignes d'historique et controles.
-- **Label** (medium, `label`, capitales espacees): badges de provenance REEL, CALCULE et ESTIME.
+- **Display** (`display`) : compteur principal ; variante mobile de 3 rem avant le passage à 3.75 rem à partir de 640 px.
+- **Headline** (`headline`) : titres de page ; variante mobile de 1.875 rem, puis 2.25 rem à partir de 640 px.
+- **Title** (`title`) : titre du registre et valeurs importantes ; les titres de panneaux restent plus compacts à 1 rem, medium.
+- **Body** (`body`) : contrôles, navigation, descriptions et lignes de registre. Les descriptions de page utilisent un interligne de 1.5 rem et une largeur maximale de 42 rem.
+- **Label** (`label`) : libellés de champs et métadonnées courtes.
+- **Source** (`source`) : badges de provenance en capitales espacées ; ce traitement ne devient pas un surtitre de page.
 
 ### Named Rules
 
-**The Tabular Fact Rule.** Toute valeur kilometrique, monetaire, datee ou comparative conserve les chiffres tabulaires actives globalement.
+**The Tabular Fact Rule.** Les nombres kilométriques, monétaires et comparatifs conservent les chiffres tabulaires activés globalement.
 
-**The Quiet Label Rule.** Les libelles secondaires restent petits et sobres ; ils orientent la lecture sans concurrencer le fait chiffre.
+**The Direct Title Rule.** Un titre de page commence directement par son intitulé ; les badges de provenance restent attachés aux valeurs qu'ils qualifient.
 
 ## Layout
 
-Le bureau repose sur un rail fixe de 240 px et une zone de travail fluide dont les marges passent de 36 px a 48 px sur les grands ecrans. Le rythme vertical principal est de 28 px. Le premier bandeau est une composition horizontale en trois parties — photographie, identite avec kilometrage dominant, prochaine echeance — puis les quatre metriques forment une seule bande divisee plutot que quatre cartes autonomes. L'analyse et l'historique suivent dans une grille asymetrique avec un rail droit de 360 px.
+La coque de bureau utilise un rail fixe de 240 px à partir de 1024 px. Le contenu est fluide, avec des marges latérales de 16 px sur mobile, 28 px à partir de 640 px, 36 px à partir de 1024 px et 48 px à partir de 1280 px. L'espacement courant entre groupes est de 28 px.
 
-A partir de 1024 px, le rail lateral est visible et le bandeau adopte sa composition horizontale. En dessous, la navigation devient une barre inferieure fixe de 72 px et le bandeau se replie verticalement sans perdre l'ordre de lecture. A partir de 640 px, les metriques utilisent deux colonnes ; en dessous, elles forment un registre monocolonne. Le contenu mobile conserve 16 px de marge laterale et 112 px de reserve basse afin que la navigation ne masque jamais les actions.
+Sous 1024 px, une barre inférieure fixe de 72 px remplace le rail. La réserve basse du contenu est de 112 px ; les champs et ancres gardent une marge de défilement adaptée à cette barre. Les formulaires sont monocolonne sur mobile et peuvent passer à deux colonnes à partir de 640 px. Les bandes de statistiques restent en deux colonnes sur mobile et passent à quatre sur grand écran lorsqu'elles comportent quatre valeurs.
 
-La grille suit un rythme de base de 4 px, avec 12 a 16 px dans les controles, 20 a 24 px dans les panneaux et 28 a 32 px entre les groupes. Aucun defilement horizontal global n'est admis ; les graphiques adaptent leur densite et leurs libelles au viewport.
+Le rythme repose sur des pas de 4 px : 12 à 16 px dans les contrôles, 20 à 24 px dans les panneaux, 28 à 32 px entre les groupes. Les tableaux larges défilent horizontalement dans leur panneau. Ce défilement local ne doit pas produire de défilement horizontal global.
 
-**The Continuous Register Rule.** Les metriques et listes apparentées partagent une surface et se separent par des regles ; elles ne deviennent pas une collection de cartes flottantes.
+**The Continuous Register Rule.** Les mesures apparentées et les listes partagent une surface et se séparent par des règles ; leur lecture reste alignée et continue.
 
 ## Elevation & Depth
 
-Le systeme est plat par defaut. La profondeur vient de la progression `ink` → `surface` → `surface-raised`, des lignes fines et du recadrage photographique. Une ombre ambiante apparait uniquement lorsqu'une surface doit clairement chevaucher une autre : le bandeau editorial porte une ombre tres diffuse, et le menu mobile Plus une ombre plus dense. Les panneaux ordinaires n'ont pas d'ombre.
+Les panneaux courants et les bandeaux photographiques sont plats au repos. La profondeur vient des graphites, des séparateurs et du cadre photographique. Le menu mobile Plus utilise une ombre diffuse parce qu'il chevauche le contenu ; les tooltips combinent surface relevée et contour minéral.
 
 ### Shadow Vocabulary
 
-- **Editorial ambient** (`0 18px 50px rgba(0,0,0,.18)`): sous le bandeau vehicule pour le detacher subtilement du fond.
-- **Overlay ambient** (`0 18px 50px rgba(0,0,0,.42)`): sous le menu mobile Plus, seul panneau reellement superpose.
+- **Overlay ambient** (`0 18px 50px rgba(0,0,0,.42)`) : menu mobile Plus.
 
 ### Named Rules
 
-**The Tonal-First Rule.** Une difference de niveau utilise d'abord une nuance graphite et une regle ; l'ombre est reservee au chevauchement.
+**The Tonal-First Rule.** Un niveau visuel utilise d'abord une nuance graphite et une règle ; l'ombre signale une surface superposée.
 
 ## Shapes
 
-Les formes sont doucement techniques : panneaux a angles arrondis de 16 px, controles a 12 px, petits controles a 8 px et badges a 6 px. Les courbes restent contenues ; aucune pilule gratuite ni silhouette de compteur n'est utilisee. Les panneaux decoupent leurs contenus avec des regles de 1 px et `overflow: hidden` lorsque l'image ou les lignes doivent suivre exactement le rayon externe.
+Les panneaux ont des angles arrondis contenus (`panel`), les contrôles des angles plus serrés (`control`), les petits contrôles et sélecteurs de véhicule des coins compacts (`control-sm`), et les badges de provenance de petites courbes (`badge`). Les règles mesurent 1 px. Les images et lignes sont découpées au rayon du panneau quand elles rejoignent son bord.
 
-Les barres du graphique ont un sommet legerement adouci de 4 px, tandis que leur base reste alignee sur la ligne de mesure. Les icones sont lineaires, generalement entre 16 et 20 px, avec un trait fin proche de 1.7.
-
-**The Mineral Edge Rule.** Les rayons adoucissent le registre sans le transformer en interface ludique ; chaque courbe doit appartenir a une surface ou un controle reel.
+Les sommets des barres de données utilisent le petit rayon `bar`, avec une base alignée. Les icônes Lucide sont linéaires, généralement de 16 à 20 px, avec un trait de 1.7 dans la navigation. La chronologie peut utiliser des repères circulaires fonctionnels ; cette forme n'étend pas les contrôles ordinaires en pilules.
 
 ## Components
 
 ### Buttons
 
-- **Shape:** controle compact et stable, haut de 40 px avec angles doucement courbes (`control`). Les tailles observees vont de 32 px a 48 px.
-- **Primary:** fond vert de precision, texte encre technique, graisse medium et 16 px de padding horizontal.
-- **Hover / Focus:** leger assombrissement au survol ; focus visible par un contour vert de 2 px decale de 2 px. Les animations respectent `prefers-reduced-motion`.
-- **Secondary / Outline / Danger / Ghost:** graphite doux devenant graphite de survol ; contour mineral transparent au repos ; danger rouge sur teinte translucide ; ghost gris devenant blanc sur graphite.
+Commandes compactes, explicites et stables.
+
+- **Shape:** hauteur courante de 40 px, coins `control`, padding horizontal de 16 px ; petite taille de 32 px et grande taille de 48 px.
+- **Primary:** cuivre utile avec texte encre cuivre et graisse medium.
+- **Hover / Focus:** léger assombrissement du primaire ; contour cuivre de 2 px au clavier. Les transitions respectent `prefers-reduced-motion`.
+- **Secondary / Outline / Ghost / Danger:** graphite actif vers graphite relevé ; contour minéral vers graphite actif ; texte descriptif vers blanc chaud ; rouge sur fond rouge translucide pour les actions dangereuses.
+- **Disabled:** interaction neutralisée et opacité réduite ; la forme du contrôle reste identifiable.
 
 ### Chips
 
-- **Style:** badge de provenance en capitales de 10 px, espacement de 0.08em, padding de 2 px × 6 px et rayon de 6 px.
-- **State:** REEL utilise un contour vert translucide ; CALCULE un contour mineral plein ; ESTIME un contour ambre discontinu. Le libelle reste toujours visible.
+La provenance est courte et explicite.
+
+- **Style:** `source`, capitales, padding de 2 px × 6 px, coins `badge`.
+- **State:** Réel en cuivre avec contour translucide ; Calculé en gris descriptif avec contour minéral ; Estimé en ambre avec contour discontinu.
 
 ### Cards / Containers
 
-- **Corner Style:** panneau arrondi contenu (`panel`).
-- **Background:** graphite mat ; graphite releve uniquement pour les chevauchements.
-- **Shadow Strategy:** aucune ombre sur les panneaux courants ; voir Elevation & Depth pour les deux exceptions.
-- **Border:** pas de cadre externe systematique ; des regles douces divisent les en-tetes, lignes et colonnes.
-- **Internal Padding:** 20 px sur mobile, generalement 24 px sur ecran large, jusqu'a 32 px dans le bandeau editorial.
+Des fragments de registre, divisés intérieurement.
+
+- **Corner Style:** `panel`, avec découpe des images lorsque nécessaire.
+- **Background:** graphite mat ; graphite relevé pour les superpositions.
+- **Shadow Strategy:** plat au repos ; voir Elevation & Depth.
+- **Border:** séparateurs internes doux ; les champs et tableaux peuvent utiliser une règle plus forte.
+- **Internal Padding:** généralement 20 px sur mobile et 24 px sur écran large ; jusqu'à 32 px dans les compositions véhicule.
 
 ### Inputs / Fields
 
-- **Style:** champ graphite de 44 px, contour mineral, angles de 12 px, texte de 14 px et padding horizontal de 12 px.
-- **Focus:** le contour bascule vers le vert de precision sans halo decoratif.
-- **Error / Disabled:** les erreurs utilisent le rouge d'alerte ; un controle desactive conserve sa structure avec une opacite de 50 % et ne devient pas interactif.
+Champs sombres, lisibles et sobres.
+
+- **Style:** hauteur de 44 px, fond graphite mat, contour minéral, coins `control`, texte `body` et padding horizontal de 12 px. Les zones de texte démarrent à 96 px et se redimensionnent verticalement.
+- **Focus:** contour cuivre, sans halo décoratif ; caret cuivre.
+- **Error / Disabled:** messages explicites et rouge sémantique ; les champs désactivés utilisent une opacité réduite.
 
 ### Navigation
 
-Le bureau utilise un rail fixe noir de 240 px, avec marque en haut, huit destinations explicites et contexte de version en bas. Chaque destination mesure 44 px, utilise une icone lineaire et un libelle de 14 px ; l'etat actif gagne un fond graphite doux, un texte blanc et une icone verte.
+Le rail de bureau affiche onze destinations avec icône linéaire et libellé. Les lignes mesurent 44 px, avec texte de 14 px et icône de 18 px. L'état actif combine graphite actif, texte blanc chaud, icône cuivre et `aria-current`.
 
-Sur mobile, la barre inferieure comporte exactement quatre destinations directes — Dashboard, Garage, Kilometrage et Entretiens — puis un bouton Plus fonctionnel. Plus ouvre au-dessus de la barre un menu de 224 px contenant Carburant, Depenses, Historique et Parametres ; `aria-expanded`, `aria-controls`, `aria-current` et la fermeture apres navigation sont conserves. La barre mesure 72 px, reste fixe et utilise un fond noir a 95 % avec flou d'arriere-plan.
+La barre mobile affiche Dashboard, Garage, Kilométrage, Entretiens et Plus. Plus ouvre les sept destinations restantes dans un menu de 224 px, limité à 65dvh avec défilement local. Les liens mesurent 48 px. Le bouton expose `aria-expanded` et `aria-controls` ; le menu se ferme après navigation et via Échap. Le cuivre distingue la destination active.
 
-### Vehicle Register
+### Vehicle Image
 
-Le bandeau vehicule est la signature du systeme. La photo nocturne ouvre la lecture, l'identite et le kilometrage occupent le centre, et la prochaine echeance termine la phrase. Sur mobile, ces trois fragments deviennent une pile continue dans la meme surface ; l'image reste en tete et aucune information prioritaire n'est repliee.
+La photo personnelle locale précède l'URL personnelle, puis l'illustration du modèle ou l'illustration générique. Les images générées portent « Illustration · image générée » et un texte alternatif explicite. L'image occupe son cadre sombre ; elle est recadrée sur mobile et contenue sur bureau. La photo se change dans le Garage.
 
 ### Data Chart
 
-Les mesures reelles sont des barres sauge pleines. Les mois futurs utilisent des contours sauge discontinus et transparents. La grille est horizontale, fine et pointillee ; le tooltip reprend le graphite releve, la regle minerale et un rayon de 10 px. La legende repete les badges de provenance.
+Les séries calculées utilisent le cuivre ; les projections utilisent un contour gris discontinu et transparent. La grille horizontale est fine et pointillée, les graduations en gris discret. Les tooltips reprennent le graphite relevé et le contour minéral. Les légendes indiquent Calculé et Estimé lorsque les deux provenances coexistent ; les séries manquantes ne sont pas reliées artificiellement.
 
 ## Do's and Don'ts
 
 ### Do:
 
-- **Do** commencer la lecture par le vehicule, le fait dominant et la prochaine action utile.
-- **Do** utiliser les surfaces graphite, les regles de 1 px et les alignements pour construire la profondeur avant toute ombre.
-- **Do** garder REEL, CALCULE et ESTIME textuellement explicites dans les mesures et projections.
-- **Do** reserver le vert de precision aux faits reels, a l'etat actif, au focus et aux actions utiles.
-- **Do** conserver des actions clavieres, un focus visible et une navigation mobile dont le menu Plus fonctionne reellement.
-- **Do** recadrer la photographie automobile comme une image editoriale nocturne, jamais comme un fond decoratif illisible.
+- **Do** utiliser les surfaces graphite, les règles fines et les alignements pour construire la profondeur.
+- **Do** réserver le cuivre aux actions, sélections, focus et données visualisées.
+- **Do** garder Réel, Calculé et Estimé textuellement explicites.
+- **Do** conserver Geist Sans et les chiffres tabulaires pour les faits comparables.
+- **Do** privilégier la photo personnelle et identifier les images générées comme illustrations.
+- **Do** garder un focus clavier visible, des libellés explicites et le menu mobile Plus fonctionnel.
+- **Do** contenir le défilement des tableaux dans leur panneau.
 
 ### Don't:
 
-- **Don't** transformer le dashboard en mosaique de tuiles independantes lorsque des bandes ou listes continues racontent mieux le registre.
-- **Don't** ajouter de compteurs, cadrans, textures carbone, chromes, neon ou autres metaphores de cockpit.
-- **Don't** utiliser des ombres sur les panneaux au repos ; elles signalent seulement un chevauchement reel.
-- **Don't** confondre donnees mesurees, calculs derives et estimations, meme si leurs valeurs semblent proches.
-- **Don't** surutiliser l'accent vert, arrondir les controles en pilules ou multiplier les couleurs d'ambiance.
-- **Don't** masquer une action prioritaire derriere la barre mobile ni introduire un defilement horizontal global.
+- **Don't** ajouter un surtitre décoratif au-dessus des titres de page.
+- **Don't** transformer les registres apparentés en mosaïque de tuiles décoratives.
+- **Don't** ajouter des compteurs skeuomorphes, des textures carbone ou des halos néon.
+- **Don't** utiliser une illustration générée comme preuve photographique du véhicule personnel.
+- **Don't** confondre fait mesuré, calcul et estimation.
+- **Don't** ajouter une ombre aux panneaux au repos ou multiplier les couleurs d'ambiance.
+- **Don't** masquer une action derrière la navigation mobile ou créer un défilement horizontal global.

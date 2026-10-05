@@ -2,7 +2,6 @@
 import path from "node:path";
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import { PrismaClient } from "../src/generated/prisma/client";
-import { buildVehicleImagePrompt } from "../src/lib/vehicle-image-prompts";
 
 const configured = process.env.DATABASE_URL ?? "file:./prisma/dev.db";
 const url = configured.startsWith("file:./") ? `file:${path.resolve(process.cwd(), configured.slice(5))}` : configured;
@@ -29,23 +28,8 @@ async function main() {
       purchasePrice: 34_900,
       status: "ACTIVE",
       isPrimary: true,
-      photoPath: "/demo/formentor-night.png",
+      photoPath: null,
     },
-  });
-
-  const imageOptions = {
-    color: "Cuivre métallisé",
-    bodyStyle: "SUV compact",
-    angle: "Trois-quarts avant, hauteur naturelle",
-    scene: "Architecture urbaine sobre, parking en béton",
-    lighting: "Heure bleue, lumière douce et réaliste",
-    weather: "Temps calme, sol légèrement humide",
-    imageStyle: "Photographie éditoriale automobile premium, naturelle et précise",
-    aspectRatio: "paysage 3:2",
-    details: "Jantes sombres, carrosserie de série et véhicule entièrement visible",
-  };
-  await db.vehicleImageRequest.create({
-    data: { vehicleId: vehicle.id, ...imageOptions, prompt: buildVehicleImagePrompt(vehicle, imageOptions) },
   });
 
   const readings = [
@@ -56,6 +40,8 @@ async function main() {
     ["2026-06-30", 34_402, 376],
     ["2026-07-31", 34_781, 379],
     ["2026-08-31", 35_124, 343],
+    ["2026-09-30", 35_524, 400],
+    ["2026-10-04", 35_612, 88],
   ] as const;
   await db.mileageReading.createMany({ data: readings.map(([date, mileage, distance], index) => ({ vehicleId: vehicle.id, date: new Date(`${date}T08:00:00Z`), mileage, distanceFromPrevious: distance, comment: index === readings.length - 1 ? "Relevé de fin de mois" : null })) });
 
@@ -64,6 +50,8 @@ async function main() {
     { date: "2026-06-29", mileage: 34_389, liters: 17.1, totalPrice: 30.45, distance: 221, consumption: 7.74, cost: 13.78 },
     { date: "2026-07-18", mileage: 34_632, liters: 18.36, totalPrice: 32.88, distance: 243, consumption: 7.56, cost: 13.53 },
     { date: "2026-08-06", mileage: 34_866, liters: 17.42, totalPrice: 31.18, distance: 234, consumption: 7.44, cost: 13.32 },
+    { date: "2026-09-14", mileage: 35_301, liters: 16.48, totalPrice: 29.17, distance: 212, consumption: 7.77, cost: 13.76 },
+    { date: "2026-10-03", mileage: 35_588, liters: 21.02, totalPrice: 36.91, distance: 287, consumption: 7.32, cost: 12.86 },
     { date: "2026-08-26", mileage: 35_089, liters: 16.95, totalPrice: 30.34, distance: 223, consumption: 7.6, cost: 13.61 },
   ];
   for (const entry of fuelEntries) {
@@ -93,6 +81,10 @@ async function main() {
     { vehicleId: vehicle.id, type: "CONTROLE_TECHNIQUE", title: "Premier contrôle technique", dueDate: new Date("2028-02-15T10:00:00Z"), warningDays: 60 },
     { vehicleId: vehicle.id, type: "PNEUS", title: "Permutation des pneus", dueMileage: 36_000, warningKm: 1_000 },
   ] });
+  await db.warranty.create({ data: { vehicleId: vehicle.id, title: "Extension de garantie", type: "EXTENSION", startDate: new Date("2026-03-02"), endDate: new Date("2027-12-31"), maxMileage: 60000 } });
+  await db.technicalInspection.create({ data: { vehicleId: vehicle.id, date: new Date("2026-03-01"), nextDate: new Date("2028-03-01"), result: "FAVORABLE" } });
+  await db.insurancePolicy.create({ data: { vehicleId: vehicle.id, company: "Assurance démo", contractReference: "DEMO-2026", startDate: new Date("2026-03-02"), renewalDate: new Date("2027-03-02"), cost: 82.4, frequency: "MONTHLY", includeInCosts: true } });
+  await db.tireSet.create({ data: { vehicleId: vehicle.id, brand: "Pneus démo", model: "Touring", dimensions: "225/45 R18", type: "ETE", position: "COMPLET", mountedAt: new Date("2026-03-02"), mountedMileage: 32980 } });
   console.info(`Seed Drivio créé pour ${subject} (${vehicle.brand} ${vehicle.model}).`);
 }
 

@@ -1,7 +1,7 @@
 // src/components/forms/fuel-form.tsx
 import { ApiForm } from "./api-form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Field } from "./field";
 import { Select } from "@/components/ui/select";
 import { toDateInput } from "@/lib/format";
 
@@ -20,4 +20,3 @@ export function FuelForm({ vehicles }: { vehicles: VehicleOption[] }) {
     <label className="flex items-center gap-3 text-sm text-[var(--muted)]"><input name="isFull" type="checkbox" value="true" defaultChecked className="size-4 accent-[var(--accent)]" /> Plein complet — nécessaire pour une consommation fiable</label>
   </ApiForm>;
 }
-function Field({ label, children }: { label: string; children: React.ReactNode }) { return <div><Label>{label}</Label>{children}</div>; }

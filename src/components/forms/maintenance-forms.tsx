@@ -3,7 +3,7 @@
 
 import { ApiForm } from "./api-form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Field } from "./field";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { LABELS, MAINTENANCE_TYPES } from "@/lib/constants";
@@ -28,4 +28,3 @@ export function MaintenanceScheduleForm({ vehicles }: { vehicles: VehicleOption[
     <Field label="Notes"><Textarea name="notes" /></Field>
   </ApiForm>;
 }
-function Field({ label, children }: { label: string; children: React.ReactNode }) { return <div><Label>{label}</Label>{children}</div>; }

@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     if (!(await ownedVehicle(user.id, data.vehicleId))) return NextResponse.json({ error: "Véhicule introuvable." }, { status: 404 });
     const record = await db.$transaction(async (tx) => {
       const created = await tx.maintenanceRecord.create({ data });
-      if (data.cost && data.cost > 0) await tx.expense.create({ data: { vehicleId: data.vehicleId, category: "ENTRETIEN", amount: data.cost, date: data.date, mileage: data.mileage, comment: data.title } });
+      if (data.cost && data.cost > 0) await tx.expense.create({ data: { vehicleId: data.vehicleId, maintenanceRecordId: created.id, category: "ENTRETIEN", amount: data.cost, date: data.date, mileage: data.mileage, comment: data.title } });
       return created;
     });
     return NextResponse.json({ record }, { status: 201 });

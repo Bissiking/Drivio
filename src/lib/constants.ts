@@ -10,6 +10,7 @@ export const MAINTENANCE_TYPES = [
   "CONTROLE_TECHNIQUE",
   "ENTRETIEN_CONSTRUCTEUR",
   "PERSONNALISE",
+  "PLAQUETTES", "DISQUES", "BATTERIE", "ESSUIE_GLACES", "LIQUIDE_FREIN", "BOUGIES",
 ] as const;
 
 export const EXPENSE_CATEGORIES = [
@@ -26,6 +27,7 @@ export const EXPENSE_CATEGORIES = [
 ] as const;
 
 export const LABELS: Record<string, string> = {
+  PLAQUETTES: "Plaquettes", DISQUES: "Disques", BATTERIE: "Batterie", ESSUIE_GLACES: "Essuie-glaces", LIQUIDE_FREIN: "Liquide de frein", BOUGIES: "Bougies",
   ACTIVE: "Actif",
   ARCHIVED: "Archivé",
   VIDANGE: "Vidange",

@@ -1,7 +1,7 @@
 // src/components/forms/mileage-form.tsx
 import { ApiForm } from "./api-form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Field } from "./field";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { toDateInput } from "@/lib/format";
@@ -19,5 +19,3 @@ export function MileageForm({ vehicles }: { vehicles: VehicleOption[] }) {
     <label className="flex items-start gap-3 text-sm leading-6 text-[var(--muted)]"><input type="checkbox" name="allowCorrection" value="true" className="mt-1 size-4 accent-[var(--accent)]" /> Correction explicite : autoriser une valeur inférieure au relevé précédent.</label>
   </ApiForm>;
 }
-
-function Field({ label, children }: { label: string; children: React.ReactNode }) { return <div><Label>{label}</Label>{children}</div>; }

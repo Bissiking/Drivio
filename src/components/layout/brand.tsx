@@ -7,6 +7,6 @@ export function Brand() {
       <path d="M10.5 1.5h15L19 13H8L10.5 1.5Z" />
       <path d="M8.5 15h11L10 30.5H0L8.5 15Z" />
     </svg>
-    <span className="text-[27px] font-semibold tracking-[-0.045em] text-[var(--text)]">Drivio</span>
+    <span className="text-[27px] font-semibold tracking-[-0.04em] text-[var(--text)]">Drivio</span>
   </Link>;
 }

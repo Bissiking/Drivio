@@ -14,3 +14,5 @@ public/uploads/*
 coverage/
 *.tsbuildinfo
 src/generated/
+
+/storage/

@@ -13,8 +13,9 @@ const archiveSchema = z.object({
 const photoSchema = z.object({
   action: z.literal("photo"),
   photoPath: z.string().startsWith("/uploads/").optional(),
-  photoUrl: z.url().optional(),
-}).refine((data) => data.photoPath || data.photoUrl, { message: "Ajoutez un fichier ou une URL." });
+  photoUrl: z.url().refine(url => /^https?:\/\//.test(url), "Utilisez une URL HTTP ou HTTPS.").optional(),
+  reset: z.boolean().optional(),
+}).refine((data) => data.reset || data.photoPath || data.photoUrl, { message: "Ajoutez un fichier ou une URL." });
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const user = await apiUser();

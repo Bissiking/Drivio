@@ -1,0 +1,26 @@
+{
+  "cupra-formentor": {
+    "prompt": "Use case: product-mockup. Create one wide photorealistic editorial car photograph for a personal vehicle tracking app Drivio. Subject: a 2024 CUPRA Formentor, metallic graphite gray, accurate recognizable front three-quarter view, whole vehicle visible, nose to the left. Scene: minimal warm gray concrete studio, softly lit with warm copper reflections, no other vehicles or people. Wide landscape 1536x1024 composition, car centered, ample margin around it suitable for cropping to square. Crisp realistic body and wheels, restrained premium photographic style, no text, no watermark, no readable license plate. This is an illustrative generated model image, not an official catalog photo.",
+    "source": "/Users/matheohemery/.codex/generated_images/01a10c5f-3d13-74b3-8ad5-884c1d1b4e6b/exec-2e178460-d21c-4266-a434-db3cc79c9473.png",
+    "tool": "image_gen built-in",
+    "illustrative": true
+  },
+  "renault-clio": {
+    "prompt": "Use case: product-mockup. Generate a wide photorealistic editorial car photo for Drivio car tracking app. Subject: 2023 Renault Clio V hatchback, metallic slate blue, accurate front three-quarter view, nose pointing left, full vehicle and wheels visible with ample surrounding space for square crops. Scene: warm gray minimal concrete photo studio, soft broad lighting with delicate warm copper reflections, realistic proportions. Landscape 1536x1024. No text, no watermarks, no people, no other cars, no readable license plate. Illustrative AI generated car model photo, not an official catalog image.",
+    "source": "/Users/matheohemery/.codex/generated_images/01a10c5f-3d13-74b3-8ad5-884c1d1b4e6b/exec-3a217572-50d0-4c43-8374-b15ccf2c5f0f.png",
+    "tool": "image_gen built-in",
+    "illustrative": true
+  },
+  "peugeot-308": {
+    "prompt": "Use case: product-mockup. Single photorealistic automotive photograph for the Drivio vehicle app model library. Subject: a 2023 Peugeot 308 hatchback metallic olive gray, recognizable Peugeot 308 third generation, front three-quarter view, nose to the left, complete car visible centered with generous margin for square crop. Warm gray minimalist concrete studio with broad soft lighting and copper toned reflections, realistic wheels and body proportions. Landscape 1536x1024. No text, no watermark, no people, no readable license plate. AI generated illustrative model photo.",
+    "source": "/Users/matheohemery/.codex/generated_images/01a10c5f-3d13-74b3-8ad5-884c1d1b4e6b/exec-096fd69c-a1ab-4540-855a-4b42e98a2f34.png",
+    "tool": "image_gen built-in",
+    "illustrative": true
+  },
+  "generic": {
+    "prompt": "Use case: product-mockup. Generate one wide photorealistic car photo for Drivio's generic vehicle fallback. An unbranded contemporary compact graphite gray crossover, without recognizable logos, front three-quarter view, nose to the left, full vehicle visible centered and ample margins for square crop. Warm gray minimalist concrete photography studio, soft light, subtle copper reflections, realistic proportions and tires. Landscape 1536x1024. No people, no other cars, no text, no watermark, no license plate lettering. Understated practical automobile illustration.",
+    "source": "/Users/matheohemery/.codex/generated_images/01a10c5f-3d13-74b3-8ad5-884c1d1b4e6b/exec-f0714fcb-ca07-4be7-89c9-a15107860b55.png",
+    "tool": "image_gen built-in",
+    "illustrative": true
+  }
+}

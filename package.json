@@ -1,6 +1,6 @@
 {
   "name": "drivio",
-  "version": "1.0.3",
+  "version": "1.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -15,8 +15,10 @@
     "db:migrate": "cross-env RUST_LOG=info prisma migrate dev",
     "db:seed": "prisma db seed",
     "db:studio": "prisma studio",
-    "db:migrate:postgres": "cross-env RUST_LOG=info prisma migrate deploy --schema prisma/schema.postgresql.prisma",
-    "db:validate:postgres": "prisma validate --schema prisma/schema.postgresql.prisma"
+    "db:migrate:postgres": "cross-env RUST_LOG=info prisma migrate deploy --config prisma.postgresql.config.ts",
+    "db:validate:postgres": "prisma validate --config prisma.postgresql.config.ts",
+    "notifications:send": "tsx scripts/send-notifications.ts",
+    "db:deploy": "cross-env RUST_LOG=info prisma migrate deploy"
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "^7.10.0",

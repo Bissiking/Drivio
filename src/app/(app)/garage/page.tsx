@@ -1,4 +1,7 @@
 // src/app/(app)/garage/page.tsx
+import { vehicleImage } from "@/lib/vehicle-images";
+import Link from "next/link";
+import { PhotoForm } from "@/components/forms/photo-form";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { Check, Plus } from "lucide-react";
@@ -24,12 +27,13 @@ export default async function GaragePage() {
     </details>
     {vehicles.length ? <div className="space-y-5">{vehicles.map((vehicle) => {
       const current = vehicle.mileageReadings[0]?.mileage ?? vehicle.finalMileage ?? vehicle.purchaseMileage;
-      const image = vehicle.photoPath || vehicle.photoUrl || "/demo/vehicle-default.png";
+      const image = vehicleImage(vehicle);
       return <article key={vehicle.id} className="overflow-hidden rounded-2xl bg-[var(--surface)] lg:grid lg:grid-cols-[320px_1fr]">
-        <div className="relative min-h-56"><Image src={image} alt={`${vehicle.brand} ${vehicle.model}`} fill priority={vehicle.isPrimary} unoptimized={Boolean(vehicle.photoUrl && !vehicle.photoPath)} sizes="(max-width:1024px) 100vw, 320px" className="object-cover" /></div>
+        <div className="relative min-h-56"><Image src={image.src} alt={image.illustrative ? `Illustration de ${vehicle.brand} ${vehicle.model}` : `${vehicle.brand} ${vehicle.model}`} fill priority={vehicle.isPrimary} unoptimized={Boolean(vehicle.photoUrl && !vehicle.photoPath)} sizes="(max-width:1024px) 100vw, 320px" className="object-cover lg:object-contain" />{image.illustrative ? <span className="absolute bottom-3 left-3 rounded-md bg-[var(--ink)]/90 px-2 py-1 text-[10px] text-[var(--muted)]">Illustration · image générée</span> : null}</div>
         <div className="p-5 sm:p-7"><div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between"><div><div className="flex flex-wrap items-center gap-2"><h2 className="text-2xl font-medium tracking-[-0.03em]">{vehicle.brand} {vehicle.model}</h2>{vehicle.isPrimary ? <span className="rounded-md border border-[var(--accent)]/35 px-2 py-1 text-[10px] uppercase tracking-[.08em] text-[var(--accent)]">Principal</span> : null}{vehicle.status === "ARCHIVED" ? <span className="rounded-md border border-[var(--line)] px-2 py-1 text-[10px] uppercase tracking-[.08em] text-[var(--muted)]">Archivé</span> : null}</div><p className="mt-2 text-sm text-[var(--muted)]">{vehicle.year} · {vehicle.trim}{vehicle.powertrain ? ` · ${vehicle.powertrain}` : ""}</p></div><p className="text-3xl font-medium tracking-[-0.035em]">{formatNumber(current, " km")}</p></div>
           <dl className="mt-8 grid gap-4 border-y border-[var(--line-soft)] py-5 text-sm sm:grid-cols-3"><div><dt className="text-[var(--quiet)]">Achat</dt><dd className="mt-1">{formatDate(vehicle.purchaseDate)}</dd></div><div><dt className="text-[var(--quiet)]">Kilométrage initial</dt><dd className="mt-1">{formatNumber(vehicle.purchaseMileage, " km")}</dd></div><div><dt className="text-[var(--quiet)]">Prix d’achat</dt><dd className="mt-1">{vehicle.purchasePrice ? formatCurrency(Number(vehicle.purchasePrice)) : "Non renseigné"}</dd></div></dl>
           <div className="mt-5 flex flex-wrap gap-3">{vehicle.status === "ACTIVE" && !vehicle.isPrimary ? <ApiActionButton endpoint={`/api/vehicles/${vehicle.id}`} body={{ action: "primary" }}><Check className="size-3.5" />Définir principal</ApiActionButton> : null}{vehicle.status === "ARCHIVED" ? <ApiActionButton endpoint={`/api/vehicles/${vehicle.id}`} body={{ action: "restore" }}>Restaurer</ApiActionButton> : null}</div>
+          <div className="mt-5 flex flex-wrap gap-5 text-sm text-[var(--accent)]"><Link href={`/suivi?vehicle=${vehicle.id}`}>Suivi véhicule</Link><Link href={`/documents?vehicle=${vehicle.id}`}>Documents</Link><Link href={`/statistiques?vehicle=${vehicle.id}`}>Coût et statistiques</Link></div><PhotoForm vehicleId={vehicle.id} />
           {vehicle.status === "ACTIVE" ? <VehicleArchiveForm vehicleId={vehicle.id} currentMileage={current} /> : null}
         </div>
       </article>;

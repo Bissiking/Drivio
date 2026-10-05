@@ -9,91 +9,76 @@ datasource db {
 }
 
 model User {
-  id           String    @id @default(cuid())
-  kyrosSubject String    @unique
-  email        String?   @unique
-  name         String?
-  avatarUrl    String?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  vehicles     Vehicle[]
+  id                     String                 @id @default(cuid())
+  kyrosSubject           String                 @unique
+  email                  String?                @unique
+  name                   String?
+  avatarUrl              String?
+  createdAt              DateTime               @default(now())
+  updatedAt              DateTime               @updatedAt
+  vehicles               Vehicle[]
+  notificationSettings   NotificationSettings?
+  notificationDeliveries NotificationDelivery[]
 }
 
 model Vehicle {
-  id              String                @id @default(cuid())
-  userId          String
-  brand           String
-  model           String
-  trim            String
-  powertrain      String?
-  year            Int
-  registration    String?
-  vin             String?
-  purchaseDate    DateTime
-  purchaseMileage Int
-  purchasePrice   Decimal?
-  saleDate        DateTime?
-  finalMileage    Int?
-  salePrice       Decimal?
-  status          String                @default("ACTIVE")
-  isPrimary       Boolean               @default(false)
-  photoPath       String?
-  photoUrl        String?
-  createdAt       DateTime              @default(now())
-  updatedAt       DateTime              @updatedAt
-  user            User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  mileageReadings MileageReading[]
-  maintenance     MaintenanceRecord[]
-  schedules       MaintenanceSchedule[]
-  expenses        Expense[]
-  fuelEntries     FuelEntry[]
-  imageRequests   VehicleImageRequest[]
+  id                String                @id @default(cuid())
+  userId            String
+  brand             String
+  model             String
+  trim              String
+  powertrain        String?
+  year              Int
+  registration      String?
+  vin               String?
+  purchaseDate      DateTime
+  purchaseMileage   Int
+  purchasePrice     Decimal?
+  saleDate          DateTime?
+  finalMileage      Int?
+  salePrice         Decimal?
+  status            String                @default("ACTIVE")
+  isPrimary         Boolean               @default(false)
+  photoPath         String?
+  photoUrl          String?
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+  user              User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mileageReadings   MileageReading[]
+  maintenance       MaintenanceRecord[]
+  schedules         MaintenanceSchedule[]
+  expenses          Expense[]
+  fuelEntries       FuelEntry[]
+  warranties        Warranty[]
+  inspections       TechnicalInspection[]
+  insurancePolicies InsurancePolicy[]
+  documents         VehicleDocument[]
+  tireSets          TireSet[]
 
   @@index([userId, status])
   @@index([userId, isPrimary])
 }
 
-model VehicleImageRequest {
-  id          String   @id @default(cuid())
-  vehicleId   String
-  color       String
-  bodyStyle   String
-  angle       String
-  scene       String
-  lighting    String
-  weather     String
-  imageStyle  String
-  aspectRatio String
-  details     String?
-  prompt      String
-  status      String   @default("PENDING")
-  resultPath  String?
-  resultUrl   String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  vehicle     Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
-
-  @@index([vehicleId, createdAt])
-  @@index([vehicleId, status])
-}
-
 model MileageReading {
-  id                   String   @id @default(cuid())
+  id                   String      @id @default(cuid())
   vehicleId            String
   mileage              Int
   date                 DateTime
   comment              String?
-  isCorrection         Boolean  @default(false)
+  source               String      @default("MANUAL")
+  fuelEntries          FuelEntry[]
+  isCorrection         Boolean     @default(false)
   distanceFromPrevious Int?
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
-  vehicle              Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  createdAt            DateTime    @default(now())
+  updatedAt            DateTime    @updatedAt
+  vehicle              Vehicle     @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
 
   @@index([vehicleId, date])
   @@index([vehicleId, mileage])
 }
 
 model MaintenanceRecord {
+  expense   Expense?
   id        String   @id @default(cuid())
   vehicleId String
   type      String
@@ -130,37 +115,158 @@ model MaintenanceSchedule {
 }
 
 model Expense {
-  id        String   @id @default(cuid())
-  vehicleId String
-  category  String
-  amount    Decimal
-  date      DateTime
-  mileage   Int?
-  comment   String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  vehicle   Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  fuelEntryId         String?            @unique
+  maintenanceRecordId String?            @unique
+  fuelEntry           FuelEntry?         @relation(fields: [fuelEntryId], references: [id], onDelete: SetNull)
+  maintenanceRecord   MaintenanceRecord? @relation(fields: [maintenanceRecordId], references: [id], onDelete: SetNull)
+  id                  String             @id @default(cuid())
+  vehicleId           String
+  category            String
+  amount              Decimal
+  date                DateTime
+  mileage             Int?
+  comment             String?
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  vehicle             Vehicle            @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
 
   @@index([vehicleId, date])
   @@index([vehicleId, category])
 }
 
 model FuelEntry {
-  id                    String   @id @default(cuid())
+  mileageReadingId      String?
+  mileageReading        MileageReading? @relation(fields: [mileageReadingId], references: [id], onDelete: SetNull)
+  expense               Expense?
+  id                    String          @id @default(cuid())
   vehicleId             String
   date                  DateTime
   mileage               Int
   liters                Decimal
   totalPrice            Decimal
   unitPrice             Decimal
-  isFull                Boolean  @default(true)
+  isFull                Boolean         @default(true)
   distanceSincePrevious Int?
   consumptionPer100Km   Decimal?
   costPer100Km          Decimal?
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
-  vehicle               Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+  vehicle               Vehicle         @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
 
   @@index([vehicleId, date])
   @@index([vehicleId, mileage])
+}
+
+model Warranty {
+  id         String   @id @default(cuid())
+  vehicleId  String
+  title      String
+  type       String
+  startDate  DateTime
+  endDate    DateTime
+  maxMileage Int?
+  notes      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  vehicle    Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@index([vehicleId, endDate])
+}
+
+model TechnicalInspection {
+  id               String    @id @default(cuid())
+  vehicleId        String
+  date             DateTime
+  nextDate         DateTime
+  result           String
+  requiresFollowUp Boolean   @default(false)
+  followUpDeadline DateTime?
+  notes            String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  vehicle          Vehicle   @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@index([vehicleId, date])
+}
+
+model InsurancePolicy {
+  id                String   @id @default(cuid())
+  vehicleId         String
+  company           String
+  contractReference String?
+  startDate         DateTime
+  renewalDate       DateTime
+  cost              Decimal?
+  frequency         String   @default("MONTHLY")
+  includeInCosts    Boolean  @default(false)
+  notes             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  vehicle           Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@index([vehicleId, startDate])
+}
+
+model VehicleDocument {
+  id           String   @id @default(cuid())
+  vehicleId    String
+  title        String
+  category     String
+  date         DateTime
+  description  String?
+  storageKey   String   @unique
+  originalName String
+  mimeType     String
+  size         Int
+  createdAt    DateTime @default(now())
+  vehicle      Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@index([vehicleId, date])
+}
+
+model TireSet {
+  id             String    @id @default(cuid())
+  vehicleId      String
+  brand          String
+  model          String?
+  dimensions     String
+  type           String
+  position       String
+  mountedAt      DateTime
+  mountedMileage Int
+  removedAt      DateTime?
+  removedMileage Int?
+  notes          String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  vehicle        Vehicle   @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+
+  @@index([vehicleId, mountedAt])
+}
+
+model NotificationSettings {
+  enabledTypes   String   @default("maintenanceSoon,maintenanceOverdue,maintenanceMileage,warrantySoon,warrantyExpired,inspectionSoon,inspectionOverdue,insurance")
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  enabled        Boolean  @default(false)
+  maintenance    Boolean  @default(true)
+  warranty       Boolean  @default(true)
+  inspection     Boolean  @default(true)
+  insurance      Boolean  @default(true)
+  warningDays    Int      @default(30)
+  warningKm      Int      @default(1500)
+  tokenEncrypted String?
+  updatedAt      DateTime @updatedAt
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model NotificationDelivery {
+  id        String    @id @default(cuid())
+  userId    String
+  key       String
+  sentAt    DateTime?
+  claimedAt DateTime?
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, key])
 }

@@ -1,7 +1,7 @@
 // src/components/forms/expense-form.tsx
 import { ApiForm } from "./api-form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Field } from "./field";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { EXPENSE_CATEGORIES, LABELS } from "@/lib/constants";
@@ -21,4 +21,3 @@ export function ExpenseForm({ vehicles }: { vehicles: VehicleOption[] }) {
     <Field label="Commentaire"><Textarea name="comment" /></Field>
   </ApiForm>;
 }
-function Field({ label, children }: { label: string; children: React.ReactNode }) { return <div><Label>{label}</Label>{children}</div>; }

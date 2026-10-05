@@ -7,7 +7,7 @@ import { LoaderCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export function ApiForm({ endpoint, children, submitLabel, className, transform }: { endpoint: string; children: React.ReactNode; submitLabel: string; className?: string; transform?: (data: Record<string, FormDataEntryValue>) => Record<string, unknown> }) {
+export function ApiForm({ endpoint, children, submitLabel, className, transform, method = "POST", resetOnSuccess = true }: { endpoint: string; method?: "POST" | "PATCH"; resetOnSuccess?: boolean; children: React.ReactNode; submitLabel: string; className?: string; transform?: (data: Record<string, FormDataEntryValue>) => Record<string, unknown> }) {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const [pending, setPending] = useState(false);
@@ -19,11 +19,11 @@ export function ApiForm({ endpoint, children, submitLabel, className, transform 
     const raw = Object.fromEntries(new FormData(event.currentTarget));
     const body = transform ? transform(raw) : raw;
     try {
-      const response = await fetch(endpoint, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+      const response = await fetch(endpoint, { method, headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
       const payload = (await response.json()) as { error?: string };
       if (!response.ok) throw new Error(payload.error ?? "L'enregistrement a échoué.");
-      formRef.current?.reset();
-      setMessage({ type: "success", text: "Enregistrement ajouté." });
+      if (resetOnSuccess) formRef.current?.reset();
+      setMessage({ type: "success", text: method === "PATCH" ? "Modifications enregistrées." : "Enregistrement ajouté." });
       router.refresh();
     } catch (error) {
       setMessage({ type: "error", text: error instanceof Error ? error.message : "Une erreur est survenue." });

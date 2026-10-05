@@ -17,7 +17,7 @@ Des particuliers qui souhaitent conserver une vision fiable, personnelle et cons
 
 ## Product Purpose
 
-Drivio centralise le garage personnel, les releves kilometriques, les entretiens, les pleins et les depenses. La V1 doit permettre de saisir les evenements courants rapidement, puis de comprendre la situation actuelle et les prochaines echeances sans calcul manuel.
+Drivio centralise le garage personnel, les releves kilometriques, les entretiens, les pleins et les depenses. L’application doit permettre de saisir les evenements courants rapidement, puis de comprendre la situation actuelle et les prochaines echeances sans calcul manuel.
 
 ## Positioning
 
@@ -32,7 +32,9 @@ Le produit est utilise sur ordinateur et mobile, principalement lors d'un plein,
 - Authentification exclusivement via Kyros SSO v4 : PAR, PKCE S256, callback strict et verification des jetons RS256 depuis le JWKS.
 - Gestion des vehicules actifs ou archives, avec un seul vehicule principal par utilisateur.
 - Photo televersee sur le stockage de fichiers local en priorite, avec URL externe comme alternative.
-- Studio images sans service payant : constitution et historique de prompts détaillés, import manuel du résultat ou application directe d'une photographie personnelle.
+- Photos classiques dans le Garage, avec illustrations de modèles en fallback.
+- Garanties, contrôle technique, assurance, pneus et documents privés par véhicule.
+- Coût de possession, statistiques annuelles et notifications Gotify côté serveur.
 - Releves kilometriques monotones par defaut ; une correction inferieure exige une confirmation explicite.
 - Entretiens bases sur une date, un kilometrage ou les deux, avec statut et projection.
 - Depenses, pleins et chronologie unifiee.
@@ -42,7 +44,7 @@ Le produit est utilise sur ordinateur et mobile, principalement lors d'un plein,
 
 ## Brand Commitments
 
-Le produit s'appelle Drivio, version initiale 1.0.0. L'interface est sombre par defaut, sobre, premium, moderne et orientee dashboard. Elle evite les compteurs automobiles decoratifs et la surcharge visuelle. La langue produit de la V1 est le francais. Le logo approuve associe un symbole eclair angulaire vert au mot-symbole Drivio blanc.
+Le produit s'appelle Drivio, version affichée depuis package.json. L'interface est sombre par defaut, sobre, premium, moderne et orientee dashboard. Elle evite les compteurs automobiles decoratifs et la surcharge visuelle. La langue produit de la V1 est le francais. Le logo approuve associe un symbole eclair angulaire cuivre au mot-symbole Drivio blanc.
 
 ## Evidence on Hand
 
@@ -53,7 +55,7 @@ Le logo Drivio a ete valide par l'utilisateur. Les photographies de vehicule et 
 - Faire apparaitre l'etat utile avant les details.
 - Garder chaque saisie courte, explicite et recuperable.
 - Ne jamais melanger fait mesure, calcul derive et estimation.
-- Preserver une architecture directe et lisible pour la V1.
+- Preserver une architecture directe et lisible pour le suivi quotidien.
 - Faire fonctionner chaque action exposee.
 
 ## Accessibility & Inclusion

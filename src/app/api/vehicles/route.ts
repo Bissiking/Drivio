@@ -13,7 +13,9 @@ export async function POST(request: NextRequest) {
     const makePrimary = data.isPrimary || count === 0;
     const vehicle = await db.$transaction(async (tx) => {
       if (makePrimary) await tx.vehicle.updateMany({ where: { userId: user.id }, data: { isPrimary: false } });
-      return tx.vehicle.create({ data: { ...data, userId: user.id, isPrimary: makePrimary } });
+      const created = await tx.vehicle.create({ data: { ...data, userId: user.id, isPrimary: makePrimary && data.status === "ACTIVE" } });
+      await tx.mileageReading.create({ data: { vehicleId: created.id, mileage: data.purchaseMileage, date: data.purchaseDate, comment: "Kilométrage à l’achat" } });
+      return created;
     });
     return NextResponse.json({ vehicle }, { status: 201 });
   } catch (error) {

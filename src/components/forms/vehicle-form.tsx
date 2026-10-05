@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Field } from "./field";
 import { Select } from "@/components/ui/select";
 import { toDateInput } from "@/lib/format";
 
@@ -65,8 +65,4 @@ export function VehicleForm() {
     {message.success ? <p role="status" className="text-sm text-[var(--accent)]">{message.success}</p> : null}
     <Button type="submit" disabled={pending}>{pending ? "Ajout en cours…" : "Ajouter le véhicule"}</Button>
   </form>;
-}
-
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return <div><Label>{label}</Label>{children}</div>;
 }

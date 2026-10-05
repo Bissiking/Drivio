@@ -1,0 +1,225 @@
+{
+  "errors": [],
+  "report": [
+    {
+      "flow": "warranty form",
+      "status": "passed"
+    },
+    {
+      "flow": "document upload/download",
+      "status": "passed"
+    },
+    {
+      "flow": "mileage correction",
+      "status": "passed"
+    },
+    {
+      "flow": "second vehicle creation",
+      "status": "passed"
+    },
+    {
+      "flow": "fuel with automatic mileage",
+      "status": "passed"
+    },
+    {
+      "route": "/dashboard",
+      "viewport": "desktop",
+      "width": 1440,
+      "documentWidth": 1440,
+      "brokenImages": 0,
+      "heading": "Votre registre"
+    },
+    {
+      "route": "/garage",
+      "viewport": "desktop",
+      "width": 1440,
+      "documentWidth": 1440,
+      "brokenImages": 0,
+      "heading": "Garage"
+    },
+    {
+      "route": "/carburant",
+      "viewport": "desktop",
+      "width": 1440,
+      "documentWidth": 1440,
+      "brokenImages": 0,
+      "heading": "Carburant"
+    },
+    {
+      "route": "/kilometrage",
+      "viewport": "desktop",
+      "width": 1440,
+      "documentWidth": 1440,
+      "brokenImages": 0,
+      "heading": "Kilométrage"
+    },
+    {
+      "route": "/entretiens",
+      "viewport": "desktop",
+      "width": 1440,
+      "documentWidth": 1440,
+      "brokenImages": 0,
+      "heading": "Entretiens"
+    },
+    {
+      "route": "/depenses",
+      "viewport": "desktop",
+      "width": 1440,
+      "documentWidth": 1440,
+      "brokenImages": 0,
+      "heading": "Dépenses"
+    },
+    {
+      "route": "/historique",
+      "viewport": "desktop",
+      "width": 1440,
+      "documentWidth": 1440,
+      "brokenImages": 0,
+      "heading": "Historique"
+    },
+    {
+      "route": "/suivi",
+      "viewport": "desktop",
+      "width": 1440,
+      "documentWidth": 1440,
+      "brokenImages": 0,
+      "heading": "Suivi véhicule"
+    },
+    {
+      "route": "/documents",
+      "viewport": "desktop",
+      "width": 1440,
+      "documentWidth": 1440,
+      "brokenImages": 0,
+      "heading": "Documents"
+    },
+    {
+      "route": "/statistiques",
+      "viewport": "desktop",
+      "width": 1440,
+      "documentWidth": 1440,
+      "brokenImages": 0,
+      "heading": "Statistiques"
+    },
+    {
+      "route": "/parametres",
+      "viewport": "desktop",
+      "width": 1440,
+      "documentWidth": 1440,
+      "brokenImages": 0,
+      "heading": "Paramètres"
+    },
+    {
+      "route": "/connexion",
+      "viewport": "desktop",
+      "width": 1440,
+      "documentWidth": 1440,
+      "brokenImages": 0,
+      "heading": "Votre automobile, consignée avec précision."
+    },
+    {
+      "route": "/dashboard",
+      "viewport": "mobile",
+      "width": 390,
+      "documentWidth": 390,
+      "brokenImages": 0,
+      "heading": "Votre registre"
+    },
+    {
+      "route": "/garage",
+      "viewport": "mobile",
+      "width": 390,
+      "documentWidth": 390,
+      "brokenImages": 0,
+      "heading": "Garage"
+    },
+    {
+      "route": "/carburant",
+      "viewport": "mobile",
+      "width": 390,
+      "documentWidth": 390,
+      "brokenImages": 0,
+      "heading": "Carburant"
+    },
+    {
+      "route": "/kilometrage",
+      "viewport": "mobile",
+      "width": 390,
+      "documentWidth": 390,
+      "brokenImages": 0,
+      "heading": "Kilométrage"
+    },
+    {
+      "route": "/entretiens",
+      "viewport": "mobile",
+      "width": 390,
+      "documentWidth": 390,
+      "brokenImages": 0,
+      "heading": "Entretiens"
+    },
+    {
+      "route": "/depenses",
+      "viewport": "mobile",
+      "width": 390,
+      "documentWidth": 390,
+      "brokenImages": 0,
+      "heading": "Dépenses"
+    },
+    {
+      "route": "/historique",
+      "viewport": "mobile",
+      "width": 390,
+      "documentWidth": 390,
+      "brokenImages": 0,
+      "heading": "Historique"
+    },
+    {
+      "route": "/suivi",
+      "viewport": "mobile",
+      "width": 390,
+      "documentWidth": 390,
+      "brokenImages": 0,
+      "heading": "Suivi véhicule"
+    },
+    {
+      "route": "/documents",
+      "viewport": "mobile",
+      "width": 390,
+      "documentWidth": 390,
+      "brokenImages": 0,
+      "heading": "Documents"
+    },
+    {
+      "route": "/statistiques",
+      "viewport": "mobile",
+      "width": 390,
+      "documentWidth": 390,
+      "brokenImages": 0,
+      "heading": "Statistiques"
+    },
+    {
+      "route": "/parametres",
+      "viewport": "mobile",
+      "width": 390,
+      "documentWidth": 390,
+      "brokenImages": 0,
+      "heading": "Paramètres"
+    },
+    {
+      "route": "/connexion",
+      "viewport": "mobile",
+      "width": 390,
+      "documentWidth": 390,
+      "brokenImages": 0,
+      "heading": "Votre automobile, consignée avec précision."
+    },
+    {
+      "flow": "mobile Plus navigation",
+      "status": "passed"
+    },
+    {
+      "flow": "Studio removal",
+      "status": "passed"
+    }
+  ]
+}

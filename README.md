@@ -1,7 +1,7 @@
 <!-- README.md -->
 # Drivio
 
-Drivio 1.0.3 est une application web personnelle de suivi automobile. Elle réunit le garage, les relevés kilométriques, les entretiens, les pleins, les dépenses et leur historique dans une interface responsive sombre.
+Drivio 1.2.0 est une application web personnelle de suivi automobile. Elle réunit le garage, les relevés kilométriques, les entretiens, les pleins, les dépenses et leur historique dans une interface responsive sombre.
 
 ## Fonctionnalités
 
@@ -12,7 +12,10 @@ Drivio 1.0.3 est une application web personnelle de suivi automobile. Elle réun
 - dépenses consolidées et coût par kilomètre ;
 - pleins avec prix au litre automatique et consommation fiable entre pleins complets ;
 - chronologie unifiée ;
-- Studio images sans abonnement : demandes détaillées à copier, suivi des résultats et import de sa propre photo ;
+- garanties, contrôles techniques, contre-visites, assurance et pneumatiques par véhicule ;
+- documents privés et téléchargement authentifié ;
+- coût de possession et comparaisons annuelles ;
+- notifications Gotify côté serveur avec token chiffré et seuils configurables ;
 - authentification Kyros SSO v4 uniquement.
 
 ## Stack
@@ -93,7 +96,11 @@ La génération PostgreSQL doit précéder le build de production afin que le cl
 
 Les téléversements JPG, PNG et WebP sont limités à 5 Mo et écrits sous `public/uploads`. Le contenu de ce dossier est ignoré par Git. En production, monter ce dossier sur un volume persistant. Une URL externe peut être fournie à la place.
 
-Le Studio images ne contacte aucun service d’IA. Il construit et conserve un prompt détaillé à utiliser manuellement dans l’outil choisi par l’utilisateur. Le résultat peut ensuite être téléversé ou référencé par URL et devient l’image active du véhicule. Une photo personnelle peut être appliquée directement, sans créer de demande. Les véhicules sans photo utilisent le fallback générique `public/demo/vehicle-default.png`.
+Les photos se changent dans le Garage, par upload ou URL. En l’absence de photo personnelle, des illustrations générées de CUPRA Formentor, Renault Clio et Peugeot 308 sont sélectionnées par modèle ; les autres véhicules reçoivent une illustration générique. Ces images sont explicitement étiquetées et ne constituent pas des photographies officielles. Les assets et prompts se trouvent dans `public/vehicles`.
+
+## Version 1.2.0
+
+Lire [le guide de mise à niveau](docs/UPGRADE_1.2.0.md) pour les migrations, le stockage privé des documents, les conventions de calcul et la planification Gotify. Voir [le changelog](CHANGELOG.md). La version affichée dans l’interface est importée de `package.json`.
 
 ## Calculs
 
@@ -104,7 +111,9 @@ Le Studio images ne contacte aucun service d’IA. Il construit et conserve un p
 - prix au litre : prix total divisé par les litres ;
 - consommation fiable : litres cumulés depuis le plein complet précédent divisés par la distance, multipliés par 100 ;
 - coût aux 100 km : coût carburant de la période divisé par la distance, multiplié par 100 ;
-- coût par kilomètre : dépenses totales divisées par les kilomètres parcourus depuis l’achat.
+- coût de possession : achat + coûts d’utilisation − revente ; moyennes rapportées à la durée de possession ;
+- coût par kilomètre : coût de possession divisé par la distance positive depuis l’achat ;
+- assurance : échéances calculées opt-in, remplacées par les dépenses manuelles du même mois.
 
 Les fonctions pures et leurs tests se trouvent dans `src/lib/calculations.ts` et `src/lib/calculations.test.ts`.
 
@@ -114,7 +123,7 @@ Les fonctions pures et leurs tests se trouvent dans `src/lib/calculations.ts` et
 src/
   app/
     (app)/                 pages authentifiées
-    api/                   SSO, uploads, demandes d’images et mutations métier
+    api/                   SSO, photos, documents privés, notifications et mutations métier
   components/
     dashboard/             graphiques
     forms/                 formulaires connectés aux API
@@ -122,7 +131,8 @@ src/
     ui/                    composants shadcn/ui locaux
   lib/                     auth, Kyros, Prisma, calculs, validation Zod
 prisma/
-  migrations/              migration SQLite V1
+  migrations/              migrations SQLite
+  migrations-postgresql/   migrations PostgreSQL
   schema.prisma            développement SQLite
   schema.postgresql.prisma production PostgreSQL
   seed.ts                  données de démonstration

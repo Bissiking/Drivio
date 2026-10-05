@@ -1,4 +1,5 @@
 // src/app/connexion/page.tsx
+import { APP_VERSION } from "@/lib/version";
 import type { Metadata } from "next";
 import { ArrowRight, BookOpenText, ShieldCheck } from "lucide-react";
 
@@ -15,7 +16,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           <h1 className="max-w-xl text-6xl font-medium leading-[.98] tracking-[-0.04em]">Votre automobile, consignée avec précision.</h1>
           <p className="mt-7 max-w-lg text-lg leading-8 text-[var(--muted)]">Kilométrage, entretien, carburant et dépenses réunis dans un registre personnel clair.</p>
         </div>
-        <p className="text-sm text-[var(--quiet)]">Drivio 1.0 · Registre technique personnel</p>
+        <p className="text-sm text-[var(--quiet)]">Drivio {APP_VERSION} · Registre technique personnel</p>
       </section>
       <section className="flex min-h-screen items-center justify-center p-6 sm:p-12">
         <div className="w-full max-w-md">

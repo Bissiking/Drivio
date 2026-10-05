@@ -1,4 +1,5 @@
 // src/lib/calculations.ts
+import { observedDistance, monthKey, previousMonthKey, yearOf } from "./analytics";
 const DAY_MS = 86_400_000;
 
 export type ReadingPoint = { mileage: number; date: Date };
@@ -7,34 +8,23 @@ function diffDays(start: Date, end: Date) {
   return Math.max(1, (end.getTime() - start.getTime()) / DAY_MS);
 }
 
-function distanceWithin(readings: ReadingPoint[], start: Date, end: Date) {
-  const ordered = readings
-    .filter((reading) => reading.date <= end)
-    .sort((a, b) => a.date.getTime() - b.date.getTime());
-  const last = ordered.at(-1);
-  if (!last) return 0;
-  const baseline = [...ordered].reverse().find((reading) => reading.date <= start) ?? ordered[0];
-  return Math.max(0, last.mileage - baseline.mileage);
-}
-
 export function calculateMileageStats(readings: ReadingPoint[], now = new Date()) {
-  const ordered = [...readings].sort((a, b) => a.date.getTime() - b.date.getTime());
+  const ordered = readings.filter(r => r.date <= now).sort((a, b) => a.date.getTime() - b.date.getTime());
   const first = ordered[0];
   const last = ordered.at(-1);
   if (!first || !last) {
-    return { current: 0, month: 0, year: 0, averageDaily: 0, averageMonthly: 0, annualProjection: 0, total: 0 };
+    return { current: 0, month: 0, previousMonth: 0, year: 0, averageDaily: 0, averageMonthly: 0, annualProjection: 0, total: 0 };
   }
 
-  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-  const yearStart = new Date(now.getFullYear(), 0, 1);
   const total = Math.max(0, last.mileage - first.mileage);
   const averageDaily = total / diffDays(first.date, last.date);
   const elapsedMonths = Math.max(1, diffDays(first.date, last.date) / 30.4375);
 
   return {
     current: last.mileage,
-    month: distanceWithin(ordered, monthStart, now),
-    year: distanceWithin(ordered, yearStart, now),
+    month: observedDistance(ordered, d => monthKey(d) === monthKey(now), now),
+    previousMonth: observedDistance(ordered, d => monthKey(d) === previousMonthKey(now), now),
+    year: observedDistance(ordered, d => yearOf(d) === yearOf(now), now),
     averageDaily,
     averageMonthly: total / elapsedMonths,
     annualProjection: averageDaily * 365,
@@ -63,7 +53,7 @@ export function calculateScheduleState(
     kmRemaining !== null && averageDaily > 0
       ? new Date(now.getTime() + Math.max(0, kmRemaining / averageDaily) * DAY_MS)
       : null;
-  const overdue = (daysRemaining !== null && daysRemaining < 0) || (kmRemaining !== null && kmRemaining < 0);
+  const overdue = (daysRemaining !== null && daysRemaining <= 0) || (kmRemaining !== null && kmRemaining <= 0);
   const soon =
     (daysRemaining !== null && daysRemaining <= schedule.warningDays) ||
     (kmRemaining !== null && kmRemaining <= schedule.warningKm);

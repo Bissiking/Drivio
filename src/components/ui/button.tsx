@@ -10,7 +10,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-[var(--accent)] text-[var(--accent-ink)] hover:brightness-95",
-        secondary: "bg-[var(--surface-soft)] text-[var(--text)] hover:bg-[#283029]",
+        secondary: "bg-[var(--surface-soft)] text-[var(--text)] hover:bg-[var(--surface-raised)]",
         outline: "border border-[var(--line)] text-[var(--text)] hover:bg-[var(--surface-soft)]",
         danger: "bg-[var(--danger)]/12 text-[var(--danger)] hover:bg-[var(--danger)]/20",
         ghost: "text-[var(--muted)] hover:bg-[var(--surface-soft)] hover:text-[var(--text)]",
