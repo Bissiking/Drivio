@@ -19,24 +19,30 @@ npm run build
 
 Les migrations PostgreSQL sont dans `prisma/migrations-postgresql`, avec un fichier de verrouillage PostgreSQL. Le script utilise `prisma.postgresql.config.ts` pour ne jamais exécuter les migrations SQLite sur PostgreSQL.
 
-Sur une base neuve, ou une base dont la migration initiale PostgreSQL est déjà enregistrée :
+Pour une mise à niveau de production, utiliser de préférence la commande protégée :
 
 ```bash
 npm install
 npm run db:generate:postgres
 npm run db:validate:postgres
-npm run db:migrate:postgres
+npm run db:migrate:postgres:safe
 npm run build
 ```
 
-Sur une base Drivio ancienne créée avec `prisma db push` et sans historique de migrations, vérifier d’abord que ses tables, colonnes et index correspondent à la version déployée avant 1.2.0 (la migration initiale représente ce schéma). Sauvegarder puis enregistrer cette migration comme déjà appliquée, sans exécuter son SQL de création :
+`db:migrate:postgres:safe` couvre les deux cas suivants :
+
+- historique Prisma déjà sain : il lance simplement `prisma migrate deploy` ;
+- ancienne base Drivio créée avec `prisma db push` : il vérifie que le schéma 1.0.x attendu est présent et qu’aucun marqueur 1.2.0 n’existe déjà, puis enregistre `20260831173755_init` comme appliquée avant de lancer la migration 1.2.0.
+
+Si la base est dans un état ambigu, partiellement migré ou différent du schéma 1.0.x attendu, la commande s’arrête sans lancer la migration 1.2.0.
+
+La commande Prisma directe reste disponible pour une base neuve ou déjà correctement baselinée :
 
 ```bash
-RUST_LOG=info npx prisma migrate resolve --applied 20260831173755_init --config prisma.postgresql.config.ts
 npm run db:migrate:postgres
 ```
 
-Ne pas baseliner une base présentant des différences de schéma non résolues. Si elle possède déjà un historique de migrations différent, réconcilier cet historique avec le déploiement existant avant la commande ci-dessus.
+Ne jamais utiliser `prisma migrate reset` sur une base de production.
 
 La génération du client PostgreSQL doit précéder le build de production ; la génération SQLite doit précéder les vérifications et l’exécution locale avec SQLite.
 
@@ -51,7 +57,7 @@ La génération du client PostgreSQL doit précéder le build de production ; la
 
 Dans Paramètres, renseigner le token d’une **application** Gotify du compte concerné, choisir chaque type d’alerte (bientôt dû, dépassé, seuil kilométrique, garantie, contrôle, assurance), les seuils en jours et kilomètres, puis activer Gotify. Le token est chiffré dans la base ; les pages ne reçoivent que `hasToken`. L’URL est définie côté serveur, par défaut `https://notify.mhemery.fr`.
 
-Les envois utilisent l’en-tête `X-Gotify-Key` décrit dans la [documentation officielle Gotify](https://gotify.net/docs/pushmsg). Aucun token n’est ajouté à l’URL. Aucun envoi réel n’a été effectué pendant la validation locale.
+Les envois utilisent l’en-tête `X-Gotify-Key` décrit dans la documentation officielle Gotify. Aucun token n’est ajouté à l’URL. Aucun envoi réel n’a été effectué pendant la validation locale.
 
 Prévisualisation sans envoi :
 
