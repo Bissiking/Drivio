@@ -1,3 +1,4 @@
+// src/lib/auth.ts
 import { createHash } from "node:crypto";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -12,6 +13,7 @@ export type DrivioSession = {
   refreshToken: string;
   accessExpiresAt: number;
   refreshExpiresAt: number;
+  loginId?: string;
 };
 
 function sessionSecret() {
@@ -29,7 +31,7 @@ function encryptionKey() {
 }
 
 export async function createSessionToken(session: DrivioSession) {
-  return new EncryptJWT({ uid: session.userId, rt: session.refreshToken, aexp: session.accessExpiresAt, rexp: session.refreshExpiresAt })
+  return new EncryptJWT({ uid: session.userId, rt: session.refreshToken, aexp: session.accessExpiresAt, rexp: session.refreshExpiresAt, lid: session.loginId })
     .setProtectedHeader({ alg: "dir", enc: "A256GCM" })
     .setSubject(session.subject)
     .setIssuedAt()
@@ -47,7 +49,7 @@ export async function readSessionToken(token: string): Promise<DrivioSession | n
       typeof payload.uid !== "string" || typeof payload.sub !== "string" || typeof payload.rt !== "string" ||
       typeof payload.aexp !== "number" || typeof payload.rexp !== "number"
     ) return null;
-    return { userId: payload.uid, subject: payload.sub, refreshToken: payload.rt, accessExpiresAt: payload.aexp, refreshExpiresAt: payload.rexp };
+    return { userId: payload.uid, subject: payload.sub, refreshToken: payload.rt, accessExpiresAt: payload.aexp, refreshExpiresAt: payload.rexp, ...(typeof payload.lid === "string" ? { loginId: payload.lid } : {}) };
   } catch {
     return null;
   }

@@ -102,6 +102,16 @@ Les photos se changent dans le Garage, par upload ou URL. En l’absence de phot
 
 Lire [le guide de mise à niveau](docs/UPGRADE_1.2.0.md) pour les migrations, le stockage privé des documents, les conventions de calcul et la planification Gotify. Voir [le changelog](CHANGELOG.md). La version affichée dans l’interface est importée de `package.json`.
 
+## Prévisions, rapports et prix officiels
+
+Les pages **Prévisions** et **Rapports PDF** complètent le registre existant : usure estimée des pneus, projections d'entretien, budgets à 3/6/12 mois, rapports privés et recherche des stations officielles françaises.
+
+Le job Drivio **fuel-prices-sync** expose le contrat Node Aion V1 ; Aion conserve la planification et la supervision. Configuration serveur : `AION_API_KEY`, `AION_API_VERSION=1.0`, `AION_MODULE_ID=drivio`. Lancer le premier import depuis Aion, puis configurer une fréquence de 15 minutes.
+
+Lire [le guide des évolutions et du déploiement](docs/EVOLUTIONS.md), [l'audit initial](docs/EVOLUTIONS-AUDIT.md) et [les résultats de validation](docs/EVOLUTIONS-VALIDATION.md).
+
+Voir aussi [les jauges d’entretien et l’estimation des pneus](docs/JAUGES-ENTRETIEN.md).
+
 ## Calculs
 
 - distance : nouveau kilométrage moins relevé précédent ;

@@ -1,4 +1,5 @@
 // src/app/auth/callback/route.ts
+import { randomUUID } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { createSessionToken, sessionCookieOptions, SESSION_COOKIE } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -44,6 +45,7 @@ export async function GET(request: NextRequest) {
       refreshToken: tokens.refresh_token,
       accessExpiresAt: Date.now() + tokens.expires_in * 1000,
       refreshExpiresAt,
+      loginId: randomUUID(),
     });
     const response = NextResponse.redirect(new URL("/dashboard", appUrl));
     response.cookies.set(SESSION_COOKIE, session, sessionCookieOptions(refreshExpiresAt));

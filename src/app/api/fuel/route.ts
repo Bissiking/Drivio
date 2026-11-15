@@ -1,3 +1,4 @@
+// src/app/api/fuel/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { apiError, apiUser, ownedVehicle } from "@/lib/api";
 import { db } from "@/lib/db";
@@ -10,6 +11,7 @@ export async function POST(request: NextRequest) {
   try {
     const data = fuelSchema.parse(await request.json());
     if (!(await ownedVehicle(user.id, data.vehicleId))) return NextResponse.json({ error: "Véhicule introuvable." }, { status: 404 });
+    if (data.stationId && (!data.fuelType || !await db.fuelStation.findUnique({ where: { id: data.stationId } }))) return NextResponse.json({ error: "Choisissez un carburant et un identifiant officiel de station connu dans la recherche." }, { status: 400 });
     const fuel = await db.$transaction(async tx => {
       await tx.vehicle.update({ where: { id: data.vehicleId }, data: { updatedAt: new Date() } });
       await validateMileage(tx, data.vehicleId, data.mileage, data.date);
@@ -18,7 +20,7 @@ export async function POST(request: NextRequest) {
       if ((before && data.mileage <= before.mileage) || (after && data.mileage >= after.mileage)) throw new MileageConflict("Le kilométrage doit se situer entre les pleins voisins, sans doublon.");
       let reading = await tx.mileageReading.findFirst({ where: { vehicleId: data.vehicleId, date: data.date, mileage: data.mileage } });
       reading ??= await tx.mileageReading.create({ data: { vehicleId: data.vehicleId, date: data.date, mileage: data.mileage, source: "FUEL", comment: "Relevé issu d’un plein" } });
-      const created = await tx.fuelEntry.create({ data: { vehicleId: data.vehicleId, date: data.date, mileage: data.mileage, liters: data.liters, totalPrice: data.totalPrice, unitPrice: data.unitPrice ?? data.totalPrice / data.liters, isFull: data.isFull, mileageReadingId: reading.id } });
+      const created = await tx.fuelEntry.create({ data: { vehicleId: data.vehicleId, date: data.date, mileage: data.mileage, liters: data.liters, totalPrice: data.totalPrice, unitPrice: data.unitPrice ?? data.totalPrice / data.liters, isFull: data.isFull, stationId: data.stationId, fuelType: data.fuelType, mileageReadingId: reading.id } });
       await tx.expense.create({ data: { vehicleId: data.vehicleId, fuelEntryId: created.id, category: "CARBURANT", amount: data.totalPrice, date: data.date, mileage: data.mileage, comment: `Plein · ${data.liters.toFixed(2)} L` } });
       await recalculateMileage(tx, data.vehicleId);
       await recalculateFuel(tx, data.vehicleId);

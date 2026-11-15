@@ -9,6 +9,7 @@ import { PageHeader } from "@/components/layout/page-header";
 import { Panel } from "@/components/layout/panel";
 import { Button } from "@/components/ui/button";
 import { requirePageUser } from "@/lib/auth";
+import { FuelPreferences } from "@/components/forms/fuel-preferences";
 
 export const metadata: Metadata = { title: "Paramètres" };
 
@@ -20,6 +21,7 @@ export default async function SettingsPage() {
   return <div className="space-y-8">
     <PageHeader title="Paramètres" description="Compte, sécurité et environnement de votre registre." />
     <Panel title="Drivio" description={`Version ${APP_VERSION} · Graphite & cuivre`}>{null}</Panel>
+    <Panel title="Formulaire après connexion" description="Ouverture automatique facultative, désactivée par défaut."><div className="max-w-3xl p-5 sm:p-6"><FuelPreferences mobile={user.autoFuelMobile} desktop={user.autoFuelDesktop} /></div></Panel>
     <Panel title="Notifications Gotify" description="Alertes côté serveur, selon vos catégories et seuils."><div className="max-w-3xl p-5 sm:p-6"><NotificationForm settings={preferences} /></div></Panel>
     <div className="grid gap-6 xl:grid-cols-2">
       <Panel title="Compte Kyros"><div className="p-5 sm:p-6"><div className="flex items-center gap-4"><span className="flex size-12 items-center justify-center rounded-full bg-[var(--surface-soft)] text-lg font-medium text-[var(--accent)]">{(user.name ?? user.email ?? "D").slice(0, 1).toUpperCase()}</span><div><p className="font-medium">{user.name ?? "Utilisateur Drivio"}</p><p className="mt-1 text-sm text-[var(--muted)]">{user.email ?? "Adresse non transmise par Kyros"}</p></div></div><div className="mt-6 flex items-start gap-3 border-t border-[var(--line-soft)] pt-5"><ShieldCheck className="mt-0.5 size-5 text-[var(--accent)]" /><div><p className="text-sm font-medium">Kyros SSO v4</p><p className="mt-1 text-xs leading-5 text-[var(--muted)]">Session issue d’un flux PAR + PKCE S256. Aucun mot de passe n’est stocké par Drivio.</p></div></div><form action="/api/auth/logout" method="post" className="mt-7"><Button type="submit" variant="outline"><LogOut className="size-4" />Se déconnecter</Button></form></div></Panel>

@@ -1,8 +1,31 @@
+// src/lib/analytics.test.ts
 import { describe, expect, it } from "vitest";
 import { annualStats, fuelStats, fuelIntervals, insuranceCharges, monthKey, operatingCosts, ownershipStats, percentChange, tireDistance, warrantyState } from "./analytics";
 const date = (value: string) => new Date(value);
 const fuel = (mileage: number, liters: number, isFull: boolean, day: string, vehicleId = "car") => ({ vehicleId, mileage, liters, isFull, date: date(day), totalPrice: liters * 2 });
 describe("statistiques carburant fiables", () => {
+  it("le plein du 14 novembre clôture le trajet du 3 au 14, sans attendre le suivant", () => {
+    const entries = [
+      { ...fuel(38467, 41, true, "2026-11-03"), id: "nov-3", totalPrice: 86.51 },
+      { ...fuel(39099, 42.6, true, "2026-11-14"), id: "nov-14", totalPrice: 83.01 },
+    ];
+    const intervals = fuelStats(entries, date("2026-11-15")).intervals;
+    expect(intervals[0]).toMatchObject({ entryId: "nov-3", periodStart: null, consumption: null, costPer100: null });
+    expect(intervals[1]).toMatchObject({ entryId: "nov-14", periodStart: date("2026-11-03"), date: date("2026-11-14"), reliableDistance: 632 });
+    expect(intervals[1].consumption).toBeCloseTo(6.7405, 4);
+    expect(intervals[1].costPer100).toBeCloseTo(13.1345, 4);
+    // Advancing time without another refill never adds a future or ongoing interval.
+    expect(fuelStats(entries, date("2026-11-20")).intervals).toEqual(intervals);
+  });
+  it("la période calculée part du plein complet et inclut les appoints intermédiaires", () => {
+    const intervals = fuelIntervals([
+      { ...fuel(1000, 30, true, "2026-11-01"), id: "start" },
+      { ...fuel(1100, 10, false, "2026-11-03"), id: "partial" },
+      { ...fuel(1500, 20, true, "2026-11-14"), id: "end" },
+    ]);
+    expect(intervals[1]).toMatchObject({ periodStart: null, consumption: null });
+    expect(intervals[2]).toMatchObject({ periodStart: date("2026-11-01"), distance: 400, reliableDistance: 500, consumption: 6 });
+  });
   it("cumule les appoints et pondère la consommation par les kilomètres", () => {
     const entries = [fuel(1000, 30, true, "2026-01-01"), fuel(1100, 10, false, "2026-01-03"), fuel(1500, 20, true, "2026-01-10"), fuel(1600, 10, true, "2026-01-15")];
     const stats = fuelStats(entries, date("2026-01-20"));
