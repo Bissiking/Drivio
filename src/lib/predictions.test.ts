@@ -12,15 +12,18 @@ describe("prévisions fondées sur les données observées", () => {
     expect(drivingRate([{ date: new Date("2025-01-01"), mileage: 1000 }, { date: new Date("2025-03-01"), mileage: 2000 }], now).confidence).toBe("LOW");
     expect(drivingRate([{ date: new Date("2026-01-01"), mileage: 50000 }, { date: new Date("2026-09-01"), mileage: 1000 }, { date: now, mileage: 1300 }], now).daily).toBe(10);
   });
-  it("ne fabrique ni recommandation constructeur ni profondeur physique", () => {
-    const car = vehicle({ tireSets: [{ id: "tires", brand: "Test", position: "Avant", mountedMileage: 5000, removedAt: null, measurements: [] }] });
-    expect(wearPredictions(car, now)[0]).toMatchObject({ measuredDepth: null, dueMileage: null, dueDate: null, confidence: "LOW" });
+  it("estime les pneus avec une hypothèse explicite, sans fabriquer de mesure physique", () => {
+    const car = vehicle({ tireSets: [{ id: "tires", brand: "Test", position: "Avant", mountedAt: new Date("2026-01-01"), mountedMileage: 5000, removedAt: null }] });
+    const prediction = wearPredictions(car, now)[0];
+    expect(prediction).toMatchObject({ dueMileage: 45000, confidence: "LOW", origin: "ESTIMATED" });
+    expect(prediction.explanation).toContain("contrôle manuel nécessaire");
+    expect(prediction).not.toHaveProperty("measuredDepth");
   });
-  it("projette seulement depuis deux mesures physiques et un seuil choisi", () => {
-    const car = vehicle({ tireSets: [{ id: "tires", brand: "Test", position: "Avant", mountedMileage: 5000, removedAt: null, targetDepthMm: 2, measurements: [{ date: new Date("2026-07-01"), mileage: 14000, treadDepthMm: 6 }, { date: new Date("2026-09-01"), mileage: 17000, treadDepthMm: 4 }] }] });
-    expect(wearPredictions(car, now)[0]).toMatchObject({ measuredDepth: 4, dueMileage: 20000, confidence: "LOW" });
-    car.tireSets[0].measurements[1].treadDepthMm = 7;
-    expect(wearPredictions(car, now)[0].dueMileage).toBeNull();
+  it("utilise la longévité supposée réglable pour la date et le compteur de remplacement", () => {
+    const car = vehicle({ tireSets: [{ id: "tires", brand: "Test", position: "Avant", mountedAt: new Date("2026-01-01"), mountedMileage: 5000, removedAt: null, estimatedLifeKm: 15000 }] });
+    expect(wearPredictions(car, now)[0]).toMatchObject({ dueMileage: 20000, confidence: "LOW", origin: "ESTIMATED", dueDate: new Date("2026-10-21") });
+    car.tireSets[0].estimatedLifeKm = 30000;
+    expect(wearPredictions(car, now)[0].dueMileage).toBe(35000);
   });
   it("date une échéance kilométrique depuis le dernier relevé, pas depuis aujourd'hui", () => {
     const car = vehicle({ schedules: [{ id: "s", type: "VIDANGE", title: "Vidange", dueDate: new Date("2027-01-01"), dueMileage: 19500, warningDays: 30, warningKm: 1500, completedAt: null }] });

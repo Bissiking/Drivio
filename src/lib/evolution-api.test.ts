@@ -1,5 +1,6 @@
 // src/lib/evolution-api.test.ts
 import { beforeAll, afterAll, describe, expect, it, vi } from "vitest";
+import { NextRequest } from "next/server";
 import { PDFDocument } from "pdf-lib";
 import { testDatabase } from "@/test/database";
 const state = vi.hoisted(() => ({ db: null as unknown as import("@/generated/prisma/client").PrismaClient, userId: "owner" as string | null, loginId: "login-one", sync: vi.fn() }));
@@ -20,7 +21,7 @@ import { POST as startJob } from "@/app/api/aion/jobs/[slug]/start/route";
 import { reportContent, reportSchema, generateReport } from "./reports";
 import { vehicleWorkspace } from "./vehicle-workspace";
 let fixture: Awaited<ReturnType<typeof testDatabase>>;
-const request = (body: object, method = "POST") => new Request("http://localhost/api", { method, headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+const request = (body: object, method = "POST") => new NextRequest("http://localhost/api", { method, headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
 const options = { vehicleId: "car", template: "sale", from: "2026-01-01", to: "2026-12-31", sections: ["vehicle", "mileage", "statistics", "costs", "maintenance", "schedules"] };
 beforeAll(async () => {
   fixture = await testDatabase(); state.db = fixture.client;

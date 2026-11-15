@@ -43,18 +43,18 @@ describe("jauges de marge avant entretien et de gomme mesurée", () => {
     expect(maintenanceGauges(car, now)).toEqual([]);
     car.schedules = [schedule]; expect(maintenanceGauges(car, now)[0].percent).toBeNull();
   });
-  it("calcule la marge de gomme relativement à une mesure, jamais à un pneu neuf supposé", () => {
-    const car = vehicle({ schedules: [], tireSets: [{ id: "tires", brand: "Test", position: "AVANT", removedAt: null, targetDepthMm: 2, measurements: [{ date: new Date("2026-01-01"), mileage: 30000, treadDepthMm: 6 }, { date: now, mileage: 45000, treadDepthMm: 4 }] }] });
+  it("estime les pneus depuis le montage avec une longévité supposée modifiable", () => {
+    const car = vehicle({ schedules: [], tireSets: [{ id: "tires", brand: "Test", position: "AVANT", mountedAt: new Date("2026-01-01"), mountedMileage: 30000, removedAt: null, estimatedLifeKm: 30000 }] });
     const gauge = maintenanceGauges(car, now)[0];
-    expect(gauge).toMatchObject({ percent: 50, kind: "TIRE", measuredDepth: 4, referenceDepth: 6, targetDepth: 2 });
-    expect(gauge.explanation).toContain("pas un pneu neuf");
-    car.tireSets[0].measurements[1].treadDepthMm = 0;
+    expect(gauge).toMatchObject({ percent: 50, kind: "TIRE", isEstimate: true, distanceSinceMount: 15000, kmRemaining: 15000 });
+    expect(gauge.explanation).toContain("contrôle manuel nécessaire");
+    car.mileageReadings = [{ date: now, mileage: 60000 }];
     expect(maintenanceGauges(car, now)[0]).toMatchObject({ percent: 0, status: "OVERDUE" });
   });
-  it("laisse une jauge inconnue sans mesures, sans seuil ou avec une série incohérente", () => {
-    const tire = { id: "tires", brand: "Test", position: "COMPLET", removedAt: null, measurements: [] };
-    expect(maintenanceGauges(vehicle({ schedules: [], tireSets: [tire] }), now)[0].percent).toBeNull();
-    const car = vehicle({ schedules: [], tireSets: [{ ...tire, targetDepthMm: 2, measurements: [{ date: new Date("2026-01-01"), mileage: 30000, treadDepthMm: 4 }, { date: now, mileage: 45000, treadDepthMm: 6 }] }] });
+  it("fonctionne sans mesure de gomme et ignore les montages incohérents ou démontés", () => {
+    const tire = { id: "tires", brand: "Test", position: "COMPLET", mountedAt: new Date("2026-01-01"), mountedMileage: 30000, removedAt: null };
+    expect(maintenanceGauges(vehicle({ schedules: [], tireSets: [tire] }), now)[0]).toMatchObject({ percent: 62.5, estimatedLifeKm: 40000, isEstimate: true });
+    const car = vehicle({ schedules: [], tireSets: [{ ...tire, mountedMileage: 50000 }] });
     expect(maintenanceGauges(car, now)[0].percent).toBeNull();
     car.tireSets[0].removedAt = now; expect(maintenanceGauges(car, now)).toEqual([]);
   });
