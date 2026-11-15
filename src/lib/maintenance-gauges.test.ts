@@ -4,7 +4,7 @@ import { maintenanceGauges, type GaugeVehicle } from "./maintenance-gauges";
 const now = new Date("2026-11-15T00:00:00Z");
 const schedule = { id: "oil", type: "VIDANGE", title: "Vidange + filtre à huile", dueDate: null, dueMileage: 60000, warningDays: 30, warningKm: 1500, completedAt: null };
 const vehicle = (patch: Partial<GaugeVehicle> = {}): GaugeVehicle => ({ id: "car", purchaseMileage: 30000, finalMileage: null, mileageReadings: [{ date: new Date("2026-10-15"), mileage: 44000 }, { date: now, mileage: 45000 }], maintenance: [], schedules: [schedule], tireSets: [], ...patch });
-describe("jauges de marge avant entretien et de gomme mesurée", () => {
+describe("jauges de marge avant entretien et d'usure estimée des pneus", () => {
   it("ne déduit pas un pourcentage des seuls kilomètres restants", () => {
     expect(maintenanceGauges(vehicle(), now)[0]).toMatchObject({ percent: null, status: "UNKNOWN", kmRemaining: 15000 });
   });
