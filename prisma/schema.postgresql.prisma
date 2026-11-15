@@ -99,22 +99,24 @@ model MaintenanceRecord {
 }
 
 model MaintenanceSchedule {
-  id            String    @id @default(cuid())
-  vehicleId     String
-  type          String
-  title         String
-  dueDate       DateTime?
-  dueMileage    Int?
-  warningDays   Int       @default(30)
-  warningKm     Int       @default(1500)
-  notes         String?
-  provenance    String    @default("USER")
-  reference     String?
-  estimatedCost Decimal?
-  completedAt   DateTime?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  vehicle       Vehicle   @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  id                String    @id @default(cuid())
+  vehicleId         String
+  type              String
+  title             String
+  dueDate           DateTime?
+  dueMileage        Int?
+  warningDays       Int       @default(30)
+  warningKm         Int       @default(1500)
+  notes             String?
+  provenance        String    @default("USER")
+  reference         String?
+  estimatedCost     Decimal?
+  cycleStartDate    DateTime?
+  cycleStartMileage Int?
+  completedAt       DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  vehicle           Vehicle   @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
 
   @@index([vehicleId, completedAt, dueDate])
   @@index([vehicleId, completedAt, dueMileage])
@@ -248,6 +250,7 @@ model TireSet {
   notes           String?
   targetDepthMm   Decimal?
   replacementCost Decimal?
+  estimatedLifeKm Int               @default(40000)
   measurements    TireMeasurement[]
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt

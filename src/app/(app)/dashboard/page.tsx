@@ -15,6 +15,8 @@ import { calculateMileageStats, calculateScheduleState } from "@/lib/calculation
 import { db } from "@/lib/db";
 import { formatCurrency, formatDate, formatNumber } from "@/lib/format";
 import { mergeHistory } from "@/lib/history";
+import { maintenanceGauges } from "@/lib/maintenance-gauges";
+import { ConsumableGauges } from "@/components/maintenance/consumable-gauges";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
@@ -37,7 +39,7 @@ export default async function DashboardPage() {
       warranties: { orderBy: { endDate: "desc" } },
       inspections: { orderBy: { date: "desc" } },
       insurancePolicies: { orderBy: { renewalDate: "desc" } },
-      schedules: { where: { completedAt: null } },
+      schedules: true,
       tireSets: { include: { measurements: true } },
     },
   });
@@ -50,13 +52,14 @@ export default async function DashboardPage() {
   const yearExpenses = costs.filter(e => yearOf(e.date) === yearOf(now)).reduce((sum, e) => sum + Number(e.amount), 0);
   const fuel = fuelStats(vehicle.fuelEntries, now);
   const change = percentChange(stats.month, stats.previousMonth);
-  const predictiveAlerts = wearPredictions(vehicle, now).filter(p => p.status !== "OK" && (p.id.startsWith("tire-") || p.id.startsWith("repeat-"))).map(p => ({ key: `prediction-${p.id}`, title: `${vehicle.brand} ${vehicle.model} · ${p.title}`, detail: `${p.origin === "OBSERVED" && p.status === "OVERDUE" ? "Seuil choisi atteint sur la dernière mesure physique" : "Intervention estimée à confirmer"} · confiance ${confidenceLabels[p.confidence]}`, urgent: p.origin === "OBSERVED" && p.status === "OVERDUE", href: `/previsions?vehicle=${vehicle.id}` }));
+  const predictiveAlerts = wearPredictions(vehicle, now).filter(p => p.status !== "OK" && (p.id.startsWith("tire-") || p.id.startsWith("repeat-"))).map(p => ({ key: `prediction-${p.id}`, title: `${vehicle.brand} ${vehicle.model} · ${p.title}`, detail: `${"Intervention estimée à confirmer"} · confiance ${confidenceLabels[p.confidence]}`, urgent: false, href: `/previsions?vehicle=${vehicle.id}` }));
   const alerts = [...vehicleAlerts(vehicle, now), ...predictiveAlerts].sort((a, b) => Number(b.urgent) - Number(a.urgent));
   const warranty = vehicle.warranties.find(w => ["ACTIVE", "SOON"].includes(warrantyState(w, stats.current, now).status)) ?? vehicle.warranties[0];
   const warrantyStatus = warranty ? warrantyState(warranty, stats.current, now) : null;
   const inspection = vehicle.inspections.find(i => i.date <= now);
   const insurance = vehicle.insurancePolicies.find(p => p.startDate <= now);
-  const schedules = vehicle.schedules.map((schedule) => ({ schedule, state: calculateScheduleState(schedule, stats.current, stats.averageDaily, now) }));
+  const gauges = maintenanceGauges(vehicle, now);
+  const schedules = vehicle.schedules.filter(s => !s.completedAt).map((schedule) => ({ schedule, state: calculateScheduleState(schedule, stats.current, stats.averageDaily, now) }));
   const next = schedules.sort((a, b) => {
     const aValue = Math.min(a.state.daysRemaining ?? Infinity, (a.state.kmRemaining ?? Infinity) / Math.max(stats.averageDaily, 1));
     const bValue = Math.min(b.state.daysRemaining ?? Infinity, (b.state.kmRemaining ?? Infinity) / Math.max(stats.averageDaily, 1));
@@ -76,6 +79,8 @@ export default async function DashboardPage() {
       </div>
       <div className="border-t border-[var(--line-soft)] p-6 lg:border-l lg:border-t-0 lg:p-8"><p className="text-sm text-[var(--muted)]">Prochaine échéance</p>{next ? <><Wrench className="mt-8 size-7 text-[var(--warning)]" strokeWidth={1.5} /><h3 className="mt-4 text-xl font-medium">{next.schedule.title}</h3><div className="mt-5 space-y-2 text-sm"><p className={next.state.status === "OVERDUE" ? "text-[var(--danger)]" : "text-[var(--text)]"}>{next.state.kmRemaining !== null ? `${formatNumber(next.state.kmRemaining, " km")} restants` : "Sans seuil kilométrique"}</p><p className="text-[var(--muted)]">{next.state.daysRemaining !== null ? `${formatNumber(next.state.daysRemaining, " jours")} restants` : next.state.estimatedDate ? `Estimation : ${formatDate(next.state.estimatedDate)}` : "Sans date définie"}</p></div><Link href="/entretiens" className="mt-8 inline-flex items-center gap-2 text-sm text-[var(--accent)]">Voir l’échéance <ArrowRight className="size-4" /></Link></> : <p className="mt-8 text-sm leading-6 text-[var(--muted)]">Aucune échéance active. Ajoutez-en une dans Entretiens.</p>}</div>
     </section>
+
+    <Panel title="Usure et entretiens" description="Marge avant entretien et usure estimée des pneus. Cliquez sur une jauge pour voir sa référence."><ConsumableGauges items={gauges} /><Link href={`/suivi?vehicle=${vehicle.id}#consommables`} className="flex items-center justify-between border-t border-[var(--line-soft)] px-5 py-4 text-sm text-[var(--accent)]">Gérer les jauges dans Suivi véhicule <ArrowRight className="size-4" /></Link></Panel>
 
     <section className="grid grid-cols-2 divide-y divide-[var(--line-soft)] rounded-2xl bg-[var(--surface)] sm:grid-cols-2 sm:divide-x sm:divide-y-0 xl:grid-cols-4">
       <Metric label="Ce mois" value={formatNumber(stats.month, " km")} kind="calculated" detail={change === null ? "Comparaison indisponible" : `${change >= 0 ? "+" : ""}${formatNumber(change, " %")} vs mois précédent`} />

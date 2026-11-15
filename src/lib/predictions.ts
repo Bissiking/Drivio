@@ -1,6 +1,7 @@
 // src/lib/predictions.ts
 import { calculateScheduleState, type ReadingPoint } from "./calculations";
 import { fuelStats, monthKey, operatingCosts, type Money, type CostPoint, type FuelPoint, type PolicyPoint } from "./analytics";
+import { estimateTireLife } from "./tire-estimation";
 
 const DAY = 86_400_000;
 export type Confidence = "LOW" | "MEDIUM" | "HIGH";
@@ -27,15 +28,14 @@ export function drivingRate(readings: ReadingPoint[], now = new Date()) {
 export type Prediction = {
   id: string; title: string; type: string; origin: "USER" | "MANUFACTURER" | "OBSERVED" | "ESTIMATED";
   reference?: string | null; dueDate: Date | null; dueMileage: number | null; confidence: Confidence;
-  status: "OK" | "SOON" | "OVERDUE"; amount: number | null; measuredDepth?: number | null;
-  measuredAt?: Date | null; explanation: string;
+  status: "OK" | "SOON" | "OVERDUE"; amount: number | null; explanation: string;
 };
 type Maintenance = { id: string; vehicleId: string; type: string; title: string; date: Date; mileage: number | null; cost: Money | null };
 type Schedule = { id: string; type: string; title: string; dueDate: Date | null; dueMileage: number | null; warningDays: number; warningKm: number; completedAt: Date | null; provenance?: string; reference?: string | null; estimatedCost?: Money | null };
-type Tire = { id: string; brand: string; position: string; mountedMileage: number; removedAt: Date | null; targetDepthMm?: Money | null; replacementCost?: Money | null; measurements: { date: Date; mileage: number; treadDepthMm: Money }[] };
-export type PredictionVehicle = { id: string; status: string; purchaseDate: Date; mileageReadings: ReadingPoint[]; maintenance: Maintenance[]; schedules: Schedule[]; tireSets: Tire[]; fuelEntries: FuelPoint[]; expenses: CostPoint[]; insurancePolicies: PolicyPoint[]; inspections?: { id: string; date: Date; nextDate: Date; requiresFollowUp: boolean; followUpDeadline: Date | null }[] };
+type Tire = { id: string; brand: string; position: string; mountedAt: Date; mountedMileage: number; removedAt: Date | null; estimatedLifeKm?: number | null; replacementCost?: Money | null };
+export type PredictionVehicle = { id: string; status: string; purchaseDate: Date; purchaseMileage?: number; mileageReadings: ReadingPoint[]; maintenance: Maintenance[]; schedules: Schedule[]; tireSets: Tire[]; fuelEntries: FuelPoint[]; expenses: CostPoint[]; insurancePolicies: PolicyPoint[]; inspections?: { id: string; date: Date; nextDate: Date; requiresFollowUp: boolean; followUpDeadline: Date | null }[] };
 export function vehicleDrivingRate(vehicle: PredictionVehicle, now = new Date()) {
-  return drivingRate([...vehicle.mileageReadings, ...vehicle.tireSets.flatMap(t => t.measurements.map(m => ({ date: m.date, mileage: m.mileage })))], now);
+  return drivingRate(vehicle.mileageReadings, now);
 }
 
 export function wearPredictions(vehicle: PredictionVehicle, now = new Date()): Prediction[] {
@@ -70,15 +70,10 @@ export function wearPredictions(vehicle: PredictionVehicle, now = new Date()): P
     result.push({ id: `inspection-${inspection.id}`, title: inspection.requiresFollowUp ? "Contre-visite technique" : "Contrôle technique", type: "CONTROLE_TECHNIQUE", origin: "USER", dueDate, dueMileage: null, confidence: "HIGH", status: dueDate <= now ? "OVERDUE" : dueDate.getTime() - now.getTime() <= 30 * DAY ? "SOON" : "OK", amount: costFor("CONTROLE_TECHNIQUE"), explanation: "Échéance issue du dernier contrôle enregistré. Le coût est estimé d'après l'historique disponible." });
   }
   for (const tire of vehicle.tireSets.filter(t => !t.removedAt)) {
-    const measures = tire.measurements.filter(m => m.date <= now).toSorted((a, b) => a.date.getTime() - b.date.getTime());
-    const first = measures[0], last = measures.at(-1);
-    const target = tire.targetDepthMm == null ? null : Number(tire.targetDepthMm);
-    const valid = first && last && last.mileage - first.mileage >= 1000 && last.date.getTime() - first.date.getTime() >= 14 * DAY && measures.every((m, i) => i === 0 || (m.mileage > measures[i - 1].mileage && Number(m.treadDepthMm) <= Number(measures[i - 1].treadDepthMm)));
-    const slope = valid ? (Number(first.treadDepthMm) - Number(last.treadDepthMm)) / (last.mileage - first.mileage) : 0;
-    const remaining = last && target !== null ? Number(last.treadDepthMm) - target : null;
-    const dueMileage = remaining !== null && last && remaining <= 0 ? last.mileage : remaining !== null && last && slope > 0 ? Math.round(last.mileage + remaining / slope) : null;
+    const estimate = estimateTireLife(tire, rate.current ?? vehicle.purchaseMileage ?? tire.mountedMileage, now);
+    const dueMileage = estimate.dueMileage;
     const dueDate = fromMileage(dueMileage);
-    result.push({ id: `tire-${tire.id}`, title: `Pneus ${tire.brand} · ${tire.position}`, type: "PNEUS", origin: "OBSERVED", dueDate, dueMileage, confidence: valid && measures.length >= 3 && rate.confidence !== "LOW" ? "MEDIUM" : "LOW", status: remaining !== null && remaining <= 0 ? "OVERDUE" : dueDate && dueDate.getTime() - now.getTime() <= 30 * DAY ? "SOON" : "OK", amount: tire.replacementCost == null ? costFor("PNEUS") : Number(tire.replacementCost), measuredDepth: last ? Number(last.treadDepthMm) : null, measuredAt: last?.date ?? null, explanation: target === null ? "Renseignez un seuil de remplacement choisi pour établir une projection." : !valid || slope <= 0 ? "Deux mesures cohérentes espacées d'au moins 1 000 km et 14 jours sont nécessaires pour estimer l'usure." : `Projection linéaire vers le seuil choisi de ${target} mm. Contrôle physique nécessaire ; le kilométrage ne mesure pas la gomme.` });
+    result.push({ id: `tire-${tire.id}`, title: `Pneus ${tire.brand} · ${tire.position}`, type: "PNEUS", origin: "ESTIMATED", dueDate, dueMileage, confidence: "LOW", status: estimate.remainingKm !== null && estimate.remainingKm <= 0 ? "OVERDUE" : dueDate && dueDate.getTime() - now.getTime() <= 30 * DAY ? "SOON" : "OK", amount: tire.replacementCost == null ? costFor("PNEUS") : Number(tire.replacementCost), explanation: `Usure estimée — contrôle manuel nécessaire. Hypothèse de ${estimate.lifeKm.toLocaleString("fr-FR")} km depuis le montage, réglable dans Suivi véhicule. Ce calcul ne mesure pas l'état réel des pneus.` });
   }
   return result.sort((a, b) => (a.dueDate?.getTime() ?? Infinity) - (b.dueDate?.getTime() ?? Infinity));
 }

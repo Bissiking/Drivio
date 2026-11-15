@@ -12,6 +12,9 @@ import { GET as stationHistory } from "@/app/api/fuel-stations/[id]/route";
 import { POST as measureTire } from "@/app/api/tire-measurements/route";
 import { PATCH as savePreferences } from "@/app/api/preferences/route";
 import { POST as claimPrompt } from "@/app/api/preferences/fuel-prompt/route";
+import { PATCH as saveCycle } from "@/app/api/maintenance/[id]/baseline/route";
+import { POST as addMaintenance } from "@/app/api/maintenance/route";
+import { PATCH as completeMaintenance } from "@/app/api/maintenance/[id]/route";
 import { GET as manifest } from "@/app/api/aion/manifest/route";
 import { POST as startJob } from "@/app/api/aion/jobs/[slug]/start/route";
 import { reportContent, reportSchema, generateReport } from "./reports";
@@ -31,6 +34,24 @@ beforeAll(async () => {
 });
 afterAll(async () => { await fixture.close(); vi.unstubAllEnvs(); });
 describe.sequential("sécurité et exports des évolutions", () => {
+  it("valide et protège les références de jauge sans modifier la clôture des échéances", async () => {
+    const data = { kind: "schedule", vehicleId: "car", type: "VIDANGE", title: "Vidange", dueDate: "2027-01-01", dueMileage: 20000, warningDays: 30, warningKm: 1500, cycleStartDate: "2026-01-01", cycleStartMileage: 10000 };
+    expect((await addMaintenance(request({ ...data, cycleStartMileage: 20000 }))).status).toBe(400);
+    const response = await addMaintenance(request(data)); expect(response.status).toBe(201);
+    const { schedule } = await response.json(), context = { params: Promise.resolve({ id: schedule.id }) };
+    expect(schedule.cycleStartMileage).toBe(10000);
+    state.userId = "outsider"; expect((await saveCycle(request({}, "PATCH"), context)).status).toBe(404);
+    state.userId = null; expect((await saveCycle(request({}, "PATCH"), context)).status).toBe(401);
+    state.userId = "owner";
+    expect((await saveCycle(request({ cycleStartDate: "2099-01-01" }, "PATCH"), context)).status).toBe(400);
+    expect((await saveCycle(request({ cycleStartMileage: 25000 }, "PATCH"), context)).status).toBe(400);
+    expect((await saveCycle(request({ cycleStartDate: "2026-02-01", cycleStartMileage: 12000 }, "PATCH"), context)).status).toBe(200);
+    expect(await state.db.maintenanceSchedule.findUnique({ where: { id: schedule.id } })).toMatchObject({ completedAt: null, cycleStartMileage: 12000 });
+    expect((await saveCycle(request({ cycleStartDate: "", cycleStartMileage: "" }, "PATCH"), context)).status).toBe(200);
+    expect(await state.db.maintenanceSchedule.findUnique({ where: { id: schedule.id } })).toMatchObject({ cycleStartDate: null, cycleStartMileage: null });
+    expect((await completeMaintenance(request({}, "PATCH"), context)).status).toBe(200);
+    expect((await saveCycle(request({}, "PATCH"), context)).status).toBe(409);
+  });
   it("refuse toutes les API personnelles sans session", async () => {
     state.userId = null;
     expect((await exportReport(request(options))).status).toBe(401);

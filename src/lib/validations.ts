@@ -6,6 +6,9 @@ import { EXPENSE_CATEGORIES, MAINTENANCE_TYPES, VEHICLE_STATUSES } from "./const
 const optionalText = z.preprocess((value) => (value === "" ? undefined : value), z.string().trim().max(500).optional());
 const optionalNumber = z.preprocess((value) => (value === "" || value === null ? undefined : value), z.coerce.number().nonnegative().optional());
 const date = z.coerce.date();
+const cycleStartDate = z.preprocess(value => value === "" || value == null ? undefined : value, z.coerce.date().refine(value => value <= new Date(), "La référence ne peut pas être future.").optional());
+const cycleStartMileage = z.preprocess(value => value === "" || value == null ? undefined : value, z.coerce.number().int().nonnegative().optional());
+export const maintenanceCycleSchema = z.object({ cycleStartDate, cycleStartMileage });
 
 export const vehicleSchema = z.object({
   brand: z.string().trim().min(1).max(60),
@@ -55,6 +58,8 @@ export const maintenanceScheduleSchema = z
     provenance: z.enum(["USER", "MANUFACTURER"]).default("USER"),
     reference: optionalText,
     estimatedCost: optionalNumber,
+    cycleStartDate,
+    cycleStartMileage,
     warningDays: z.coerce.number().int().positive().default(30),
     warningKm: z.coerce.number().int().positive().default(1500),
     notes: optionalText,
@@ -66,6 +71,12 @@ export const maintenanceScheduleSchema = z
   .refine(data => data.provenance !== "MANUFACTURER" || Boolean(data.reference), {
     message: "Indiquez la référence du carnet ou du document constructeur.",
     path: ["reference"],
+  })
+  .refine(data => !data.cycleStartDate || !data.dueDate || data.cycleStartDate < data.dueDate, {
+    message: "Le début de l'intervalle doit précéder la date d'échéance.", path: ["cycleStartDate"],
+  })
+  .refine(data => data.cycleStartMileage === undefined || data.dueMileage === undefined || data.cycleStartMileage < data.dueMileage, {
+    message: "Le compteur de référence doit être inférieur au compteur d'échéance.", path: ["cycleStartMileage"],
   });
 
 export const expenseSchema = z.object({
