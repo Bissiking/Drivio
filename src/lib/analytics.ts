@@ -1,3 +1,4 @@
+// src/lib/analytics.ts
 import type { ReadingPoint } from "./calculations";
 const DAY = 86_400_000;
 export type Money = number | string | { toString(): string };
@@ -16,7 +17,7 @@ export function observedDistance(readings: ReadingPoint[], accepts: (date: Date)
 export function fuelIntervals(input: FuelPoint[]) {
   const vehicles = new Map<string, FuelPoint[]>();
   for (const entry of input) { const group = vehicles.get(entry.vehicleId) ?? []; group.push(entry); vehicles.set(entry.vehicleId, group); }
-  const result: { vehicleId: string; date: Date; distance: number | null; reliableDistance: number | null; liters: number; cost: number; consumption: number | null; costPer100: number | null }[] = [];
+  const result: { entryId: string | null; vehicleId: string; date: Date; periodStart: Date | null; distance: number | null; reliableDistance: number | null; liters: number; cost: number; consumption: number | null; costPer100: number | null }[] = [];
   for (const entries of vehicles.values()) {
     entries.sort((a, b) => a.date.getTime() - b.date.getTime());
     let anchor: FuelPoint | undefined, liters = 0, cost = 0, valid = true;
@@ -27,7 +28,9 @@ export function fuelIntervals(input: FuelPoint[]) {
       liters += Number(entry.liters); cost += Number(entry.totalPrice);
       const span = anchor ? entry.mileage - anchor.mileage : 0;
       const reliable = entry.isFull && valid && anchor != null && span > 0;
-      result.push({ vehicleId: entry.vehicleId, date: entry.date, distance: delta !== null && delta > 0 ? delta : null, reliableDistance: reliable ? span : null, liters: reliable ? liters : 0, cost: reliable ? cost : 0, consumption: reliable ? liters / span * 100 : null, costPer100: reliable ? cost / span * 100 : null });
+      // A full refill closes the trip FROM the preceding full refill TO this entry.
+      // It says nothing about fuel consumed after this entry.
+      result.push({ entryId: entry.id ?? null, vehicleId: entry.vehicleId, date: entry.date, periodStart: reliable ? anchor!.date : null, distance: delta !== null && delta > 0 ? delta : null, reliableDistance: reliable ? span : null, liters: reliable ? liters : 0, cost: reliable ? cost : 0, consumption: reliable ? liters / span * 100 : null, costPer100: reliable ? cost / span * 100 : null });
       if (entry.isFull) { anchor = entry; liters = 0; cost = 0; valid = true; }
     });
   }

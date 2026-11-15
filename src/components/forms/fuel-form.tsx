@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Field } from "./field";
 import { Select } from "@/components/ui/select";
 import { toDateInput } from "@/lib/format";
+import { FUELS } from "@/lib/fuel-types";
 
 type VehicleOption = { id: string; brand: string; model: string };
 
@@ -16,6 +17,8 @@ export function FuelForm({ vehicles }: { vehicles: VehicleOption[] }) {
       <Field label="Litres"><Input name="liters" type="number" min="0.01" step="0.01" required /></Field>
       <Field label="Prix total (€)"><Input name="totalPrice" type="number" min="0.01" step="0.01" required /></Field>
       <Field label="Prix au litre facultatif"><Input name="unitPrice" type="number" min="0" step="0.001" /></Field>
+      <Field label="Carburant, pour comparer les prix"><Select name="fuelType" defaultValue=""><option value="">Non renseigné</option>{Object.entries(FUELS).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</Select></Field>
+      <Field label="Identifiant officiel de la station, facultatif"><Input name="stationId" inputMode="numeric" pattern="[0-9]+" maxLength={20} /></Field>
     </div>
     <label className="flex items-center gap-3 text-sm text-[var(--muted)]"><input name="isFull" type="checkbox" value="true" defaultChecked className="size-4 accent-[var(--accent)]" /> Plein complet — nécessaire pour une consommation fiable</label>
   </ApiForm>;

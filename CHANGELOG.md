@@ -1,5 +1,19 @@
 # Changelog
 
+## À publier — 15 novembre 2026
+
+- Prévisions d'entretien et d'usure basées sur le rythme observé ; mesures physiques des pneus et origine documentée des échéances.
+- Budgets à 3, 6 et 12 mois, scénarios habituel/prudent et postes certains, estimés ou potentiels, avec déduplication des coûts existants.
+- Rapports PDF Synthèse, Entretien et Cession, sections et période sélectionnables, données sensibles masquées par défaut et annexes explicites.
+- Référentiel officiel français des stations, prix et ruptures, recherche géographique, comparaison des pleins et historique local des déclarations.
+- Import transactionnel différentiel `fuel-prices-sync`, verrou partagé et contrat Node Aion V1 sécurisé.
+- Saisie de plein en tête de page, modale native accessible et préférences distinctes mobile/ordinateur après connexion.
+- Registre carburant : dates du trajet clôturé explicites, consommation du trajet en cours laissée en attente, coût de ravitaillement rapporté à la distance clairement identifié.
+- Skeletons Next.js, indicateurs de navigation, limite de durée des soumissions et récupération des erreurs.
+- Migrations additives SQLite/PostgreSQL et tests de conservation des données.
+
+Voir [le guide de déploiement](docs/EVOLUTIONS.md).
+
 ## 1.2.0 — 5 octobre 2026
 
 - Thème sombre Graphite & cuivre partagé par tous les écrans, formulaires et graphiques.

@@ -1,6 +1,7 @@
 // src/app/(app)/dashboard/page.tsx
 import { fuelStats, operatingCosts, monthKey, yearOf, percentChange, warrantyState, observedDistance } from "@/lib/analytics";
 import { vehicleAlerts } from "@/lib/alerts";
+import { confidenceLabels, wearPredictions } from "@/lib/predictions";
 import { vehicleImage } from "@/lib/vehicle-images";
 import Image from "next/image";
 import Link from "next/link";
@@ -37,6 +38,7 @@ export default async function DashboardPage() {
       inspections: { orderBy: { date: "desc" } },
       insurancePolicies: { orderBy: { renewalDate: "desc" } },
       schedules: { where: { completedAt: null } },
+      tireSets: { include: { measurements: true } },
     },
   });
   if (!vehicle) return <div className="mx-auto flex min-h-[70vh] max-w-xl flex-col justify-center"><h1 className="text-4xl font-medium tracking-[-0.04em]">Votre registre est prêt.</h1><p className="mt-4 text-[var(--muted)]">Ajoutez votre premier véhicule pour commencer le suivi.</p><Link href="/garage" className="mt-7 inline-flex items-center gap-2 text-sm font-medium text-[var(--accent)]">Ouvrir le garage <ArrowRight className="size-4" /></Link></div>;
@@ -48,7 +50,8 @@ export default async function DashboardPage() {
   const yearExpenses = costs.filter(e => yearOf(e.date) === yearOf(now)).reduce((sum, e) => sum + Number(e.amount), 0);
   const fuel = fuelStats(vehicle.fuelEntries, now);
   const change = percentChange(stats.month, stats.previousMonth);
-  const alerts = vehicleAlerts(vehicle, now);
+  const predictiveAlerts = wearPredictions(vehicle, now).filter(p => p.status !== "OK" && (p.id.startsWith("tire-") || p.id.startsWith("repeat-"))).map(p => ({ key: `prediction-${p.id}`, title: `${vehicle.brand} ${vehicle.model} · ${p.title}`, detail: `${p.origin === "OBSERVED" && p.status === "OVERDUE" ? "Seuil choisi atteint sur la dernière mesure physique" : "Intervention estimée à confirmer"} · confiance ${confidenceLabels[p.confidence]}`, urgent: p.origin === "OBSERVED" && p.status === "OVERDUE", href: `/previsions?vehicle=${vehicle.id}` }));
+  const alerts = [...vehicleAlerts(vehicle, now), ...predictiveAlerts].sort((a, b) => Number(b.urgent) - Number(a.urgent));
   const warranty = vehicle.warranties.find(w => ["ACTIVE", "SOON"].includes(warrantyState(w, stats.current, now).status)) ?? vehicle.warranties[0];
   const warrantyStatus = warranty ? warrantyState(warranty, stats.current, now) : null;
   const inspection = vehicle.inspections.find(i => i.date <= now);

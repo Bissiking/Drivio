@@ -25,6 +25,7 @@ export function MaintenanceRecordForm({ vehicles }: { vehicles: VehicleOption[] 
 export function MaintenanceScheduleForm({ vehicles }: { vehicles: VehicleOption[] }) {
   return <ApiForm endpoint="/api/maintenance" submitLabel="Créer l’échéance" transform={(data) => ({ ...data, kind: "schedule" })}>
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"><Shared vehicles={vehicles} /><Field label="Date d’échéance"><Input name="dueDate" type="date" /></Field><Field label="Kilométrage d’échéance"><Input name="dueMileage" type="number" min="0" /></Field><Field label="Alerte avant (jours)"><Input name="warningDays" type="number" min="1" defaultValue="30" /></Field><Field label="Alerte avant (km)"><Input name="warningKm" type="number" min="1" defaultValue="1500" /></Field></div>
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"><Field label="Provenance de l’échéance"><Select name="provenance" defaultValue="USER"><option value="USER">Choix personnel</option><option value="MANUFACTURER">Préconisation constructeur documentée</option></Select></Field><Field label="Référence constructeur, si applicable"><Input name="reference" maxLength={500} /></Field><Field label="Coût prévisionnel facultatif (€)"><Input name="estimatedCost" type="number" min="0" step="0.01" /></Field></div>
     <Field label="Notes"><Textarea name="notes" /></Field>
   </ApiForm>;
 }

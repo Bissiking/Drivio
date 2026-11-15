@@ -52,6 +52,9 @@ export const maintenanceScheduleSchema = z
     title: z.string().trim().min(2).max(100),
     dueDate: z.preprocess((value) => (value === "" ? undefined : value), z.coerce.date().optional()),
     dueMileage: optionalNumber,
+    provenance: z.enum(["USER", "MANUFACTURER"]).default("USER"),
+    reference: optionalText,
+    estimatedCost: optionalNumber,
     warningDays: z.coerce.number().int().positive().default(30),
     warningKm: z.coerce.number().int().positive().default(1500),
     notes: optionalText,
@@ -59,6 +62,10 @@ export const maintenanceScheduleSchema = z
   .refine((data) => data.dueDate || data.dueMileage !== undefined, {
     message: "Indiquez une date, un kilométrage ou les deux.",
     path: ["dueDate"],
+  })
+  .refine(data => data.provenance !== "MANUFACTURER" || Boolean(data.reference), {
+    message: "Indiquez la référence du carnet ou du document constructeur.",
+    path: ["reference"],
   });
 
 export const expenseSchema = z.object({
@@ -77,6 +84,8 @@ export const fuelSchema = z.object({
   liters: z.coerce.number().positive(),
   totalPrice: z.coerce.number().positive(),
   unitPrice: optionalNumber,
+  stationId: z.preprocess(v => v === "" || v == null ? undefined : v, z.string().regex(/^\d{1,20}$/).optional()),
+  fuelType: z.preprocess(v => v === "" || v == null ? undefined : v, z.enum(["1", "2", "3", "4", "5", "6"]).optional()),
   isFull: z.preprocess((value) => value === true || value === "true" || value === "on", z.boolean()).default(false),
 });
 

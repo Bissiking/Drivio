@@ -17,16 +17,16 @@ export function ApiForm({ endpoint, children, submitLabel, className, transform,
     setPending(true);
     setMessage(null);
     const raw = Object.fromEntries(new FormData(event.currentTarget));
-    const body = transform ? transform(raw) : raw;
     try {
-      const response = await fetch(endpoint, { method, headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+      const body = transform ? transform(raw) : raw;
+      const response = await fetch(endpoint, { method, headers: { "content-type": "application/json" }, body: JSON.stringify(body), signal: AbortSignal.timeout(30_000) });
       const payload = (await response.json()) as { error?: string };
       if (!response.ok) throw new Error(payload.error ?? "L'enregistrement a échoué.");
       if (resetOnSuccess) formRef.current?.reset();
       setMessage({ type: "success", text: method === "PATCH" ? "Modifications enregistrées." : "Enregistrement ajouté." });
       router.refresh();
     } catch (error) {
-      setMessage({ type: "error", text: error instanceof Error ? error.message : "Une erreur est survenue." });
+      setMessage({ type: "error", text: error instanceof Error && error.name === "TimeoutError" ? "La requête a expiré. Vérifiez le registre avant de réessayer." : error instanceof Error ? error.message : "Une erreur est survenue." });
     } finally {
       setPending(false);
     }

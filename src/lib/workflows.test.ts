@@ -1,3 +1,4 @@
+// src/lib/workflows.test.ts
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import os from "node:os";
@@ -30,6 +31,7 @@ beforeAll(async () => {
   INSERT INTO "MileageReading" (id, vehicleId, mileage, date, updatedAt) VALUES ('legacy-reading', 'legacy-car', 11000, '2026-02-01T00:00:00.000Z', CURRENT_TIMESTAMP);
   INSERT INTO "Expense" (id, vehicleId, category, amount, date, updatedAt) VALUES ('legacy-expense', 'legacy-car', 'AUTRE', 25.50, '2026-02-01T00:00:00.000Z', CURRENT_TIMESTAMP);`);
   sqlite.exec(await readFile("prisma/migrations/20261005120000_drivio_120/migration.sql", "utf8"));
+  sqlite.exec(await readFile("prisma/migrations/20261115193000_predictions_fuel_reports/migration.sql", "utf8"));
   expect(sqlite.pragma("foreign_key_check")).toEqual([]); sqlite.close();
   state.db = new PrismaClient({ adapter: new PrismaBetterSqlite3({ url: `file:${file}` }) });
   await state.db.user.createMany({ data: [{ id: "owner", kyrosSubject: "owner" }, { id: "outsider", kyrosSubject: "outsider" }] });
