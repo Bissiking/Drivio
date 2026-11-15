@@ -2,7 +2,8 @@
 
 ## À publier — 15 novembre 2026
 
-- Prévisions d'entretien et d'usure basées sur le rythme observé ; mesures physiques des pneus et origine documentée des échéances.
+- Prévisions d'entretien et d'usure basées sur le rythme observé ; estimation kilométrique des pneus et origine documentée des échéances.
+- Jauges segmentées avec icônes sur le Dashboard, références dans Suivi véhicule et estimation des pneus sans mesure de gomme, avec hypothèse de longévité réglable.
 - Budgets à 3, 6 et 12 mois, scénarios habituel/prudent et postes certains, estimés ou potentiels, avec déduplication des coûts existants.
 - Rapports PDF Synthèse, Entretien et Cession, sections et période sélectionnables, données sensibles masquées par défaut et annexes explicites.
 - Référentiel officiel français des stations, prix et ruptures, recherche géographique, comparaison des pleins et historique local des déclarations.

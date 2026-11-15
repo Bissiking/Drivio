@@ -104,11 +104,13 @@ Lire [le guide de mise à niveau](docs/UPGRADE_1.2.0.md) pour les migrations, le
 
 ## Prévisions, rapports et prix officiels
 
-Les pages **Prévisions** et **Rapports PDF** complètent le registre existant : mesures réelles des pneus, projections d'entretien, budgets à 3/6/12 mois, rapports privés et recherche des stations officielles françaises.
+Les pages **Prévisions** et **Rapports PDF** complètent le registre existant : usure estimée des pneus, projections d'entretien, budgets à 3/6/12 mois, rapports privés et recherche des stations officielles françaises.
 
 Le job Drivio **fuel-prices-sync** expose le contrat Node Aion V1 ; Aion conserve la planification et la supervision. Configuration serveur : `AION_API_KEY`, `AION_API_VERSION=1.0`, `AION_MODULE_ID=drivio`. Lancer le premier import depuis Aion, puis configurer une fréquence de 15 minutes.
 
 Lire [le guide des évolutions et du déploiement](docs/EVOLUTIONS.md), [l'audit initial](docs/EVOLUTIONS-AUDIT.md) et [les résultats de validation](docs/EVOLUTIONS-VALIDATION.md).
+
+Voir aussi [les jauges d’entretien et l’estimation des pneus](docs/JAUGES-ENTRETIEN.md).
 
 ## Calculs
 
