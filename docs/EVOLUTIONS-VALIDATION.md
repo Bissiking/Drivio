@@ -7,7 +7,7 @@ Les validations ont utilisé des bases et comptes de test jetables. Aucune base 
 
 - `npm run lint` : réussi, sans avertissement ESLint.
 - `npm run typecheck` : réussi.
-- `npm test` : 77 tests, 11 fichiers, tous réussis.
+- `npm test` : 87 tests, 12 fichiers, tous réussis.
 - `npm run build` : compilation Next.js et génération des routes réussies.
 - Validation Prisma des deux schémas : réussie.
 - SQLite : toutes les migrations appliquées avec `prisma migrate deploy` sur une base temporaire ; comparaison entre base migrée et schéma par `prisma migrate diff --exit-code` sans différence.
@@ -65,6 +65,14 @@ Trois PDF représentatifs ont été générés, rendus en PNG et inspectés visu
 Le détecteur Impeccable a été exécuté une fois sur les surfaces modifiées. Son unique remarque concernait la couleur du fond de modale ; ce fond utilise maintenant le jeton d'encre existant. Il n'a pas signalé d'autre problème sur ces cibles. Les métadonnées Impeccable du dépôt sont anciennes et ne sont pas régénérées dans ce chantier ; DESIGN.md reste la référence. Une version plus récente du skill est disponible.
 
 ## Limites et vérifications au déploiement
+
+### Jauges et simplification des pneus
+
+À la demande du propriétaire, les jauges segmentées avec icônes sont ajoutées au Dashboard et détaillées dans Suivi véhicule. La saisie et l'affichage des mesures de gomme sont retirés de l'interface. Les pneus sont estimés selon le kilométrage depuis le montage et une longévité supposée de 40 000 km, modifiable ; aucune profondeur n'est inventée. La mention « Usure estimée — contrôle manuel nécessaire » est visible.
+
+Les essais navigateur sur bureau et mobile ont vérifié les icônes et jauges, le lien vers le détail, l'enregistrement d'une référence d'entretien, la modification de la longévité supposée et la cohérence des prévisions. Aucune erreur JavaScript ni aucun débordement horizontal de page n'a été observé. Les tests couvrent les pourcentages 100/50/0, les seuils calendaires et kilométriques, les références manuelles/automatiques, les données insuffisantes, les filtres et tâches personnalisées distincts, les montages incohérents et la sécurité de l'API des références.
+
+La migration additive `20261115210000_maintenance_gauges` est validée sur SQLite et PostgreSQL embarqué. La base SQLite locale possède les trois nouvelles colonnes et son schéma est comparé à Prisma sans dérive. Le détail des choix et du déploiement est dans [JAUGES-ENTRETIEN.md](JAUGES-ENTRETIEN.md).
 
 - Le job Aion expose le contrat vérifié dans son dépôt ; sa configuration distante et une exécution de bout en bout depuis l'instance réelle restent à effectuer après renseignement de la clé et déploiement.
 - Valider les migrations sur une copie de la base PostgreSQL cible, puis sauvegarder avant application.
