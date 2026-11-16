@@ -1,4 +1,5 @@
 import path from "node:path";
+export const photoDirectory = () => path.join(process.cwd(), "public", "uploads");
 export const documentDirectory = () => path.resolve(/* turbopackIgnore: true */ process.env.DRIVIO_DOCUMENT_DIR ?? path.join(process.cwd(), "storage", "documents"));
 export function detectFileType(buffer: Buffer) {
   if (buffer.subarray(0, 5).toString() === "%PDF-") return { mime: "application/pdf", extension: "pdf" };

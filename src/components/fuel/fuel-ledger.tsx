@@ -8,7 +8,7 @@ type Interval = ReturnType<typeof fuelIntervals>[number];
 export function FuelLedger({ entries, intervals }: { entries: Entry[]; intervals: Interval[] }) {
   const byEntry = new Map(intervals.filter(i => i.entryId).map(i => [i.entryId, i]));
   const rows = entries.toReversed().slice(0, 100);
-  const headings = ["Date du plein", "Compteur", "Volume ajouté", "Montant payé", "Prix/L", "Distance depuis le passage précédent", "Trajet calculé entre pleins complets", "Consommation du trajet", "Coût rapporté / 100 km"];
+  const headings = ["Date du plein", "Compteur", "Volume ajouté", "Montant payé", "Prix/L", "Distance depuis le passage précédent", "Trajet calculé entre pleins complets", "Consommation du trajet", "Coût estimé / 100 km"];
   return <div className="overflow-x-auto"><table className="w-full min-w-[1080px] text-left text-sm">
     <caption className="sr-only">Les consommations concernent les trajets terminés à la date du plein de la ligne. Le trajet après le dernier plein complet reste en cours.</caption>
     <thead><tr className="border-b border-[var(--line-soft)] text-xs text-[var(--quiet)]">{headings.map((title, index) => <th key={title} scope="col" className={`px-5 py-3 font-medium ${index && index !== 6 ? "text-right" : ""}`}>{title}</th>)}</tr></thead>

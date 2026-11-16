@@ -94,7 +94,7 @@ La génération PostgreSQL doit précéder le build de production afin que le cl
 
 ## Photos
 
-Les téléversements JPG, PNG et WebP sont limités à 5 Mo et écrits sous `public/uploads`. Le contenu de ce dossier est ignoré par Git. En production, monter ce dossier sur un volume persistant. Une URL externe peut être fournie à la place.
+Les téléversements JPG, PNG et WebP sont limités à 5 Mo et écrits sous `public/uploads`. Les URL `/uploads/...` sont servies par une route qui lit le stockage à la demande, afin que les nouvelles photos restent accessibles en production sans redémarrage, y compris via l’optimiseur Next.js. Le contenu de ce dossier est ignoré par Git. En production, monter ce dossier sur un volume persistant. Une URL externe peut être fournie à la place.
 
 Les photos se changent dans le Garage, par upload ou URL. En l’absence de photo personnelle, des illustrations générées de CUPRA Formentor, Renault Clio et Peugeot 308 sont sélectionnées par modèle ; les autres véhicules reçoivent une illustration générique. Ces images sont explicitement étiquetées et ne constituent pas des photographies officielles. Les assets et prompts se trouvent dans `public/vehicles`.
 

@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { NextRequest, NextResponse } from "next/server";
-import { detectFileType } from "@/lib/uploads";
+import { detectFileType, photoDirectory } from "@/lib/uploads";
 import { apiError, apiUser } from "@/lib/api";
 
 const allowed = new Map([["image/jpeg", "jpg"], ["image/png", "png"], ["image/webp", "webp"]]);
@@ -20,9 +20,9 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(await file.arrayBuffer());
     if (detectFileType(buffer)?.mime !== file.type) return NextResponse.json({ error: "Le contenu du fichier ne correspond pas à une image valide." }, { status: 415 });
     const name = `${randomUUID()}.${extension}`;
-    const directory = path.join(process.cwd(), "public", "uploads");
+    const directory = photoDirectory();
     await mkdir(directory, { recursive: true });
-    await writeFile(path.join(directory, name), buffer);
+    await writeFile(path.join(/* turbopackIgnore: true */ directory, name), buffer);
     return NextResponse.json({ path: `/uploads/${name}` }, { status: 201 });
   } catch (error) {
     return apiError(error);
