@@ -1,14 +1,9 @@
 // src/components/maintenance/consumable-gauges.tsx
 import Link from "next/link";
-import { Battery, CalendarCheck, CarFront, CircleDot, Cog, Disc, Disc3, Droplet, Droplets, Filter, Link2, Wind, Wrench, Zap, type LucideIcon } from "lucide-react";
+import { MaintenanceIcon } from "./maintenance-icon";
 import type { MaintenanceGauge } from "@/lib/maintenance-gauges";
 import { formatDate, formatNumber } from "@/lib/format";
 
-const icons: Record<string, LucideIcon> = { PNEUS: CircleDot, PLAQUETTES: Disc3, DISQUES: Disc, FREINS: Disc3, BOUGIES: Zap, VIDANGE: Droplet, FILTRES: Filter, DISTRIBUTION: Link2, CONTROLE_TECHNIQUE: CarFront, ENTRETIEN_CONSTRUCTEUR: CalendarCheck, BATTERIE: Battery, LIQUIDE_FREIN: Droplets, ESSUIE_GLACES: Wind, PERSONNALISE: Wrench };
-export function MaintenanceIcon({ type, title, className }: { type: string; title: string; className?: string }) {
-  const Icon = type === "PERSONNALISE" && /dsg|dq200|bo[iî]te/i.test(title) ? Cog : type === "FILTRES" && /habitacle/i.test(title) ? Wind : icons[type] ?? Wrench;
-  return <Icon aria-hidden="true" className={className} strokeWidth={1.7} />;
-}
 export const gaugeStatus = { OK: "OK", SOON: "À prévoir", OVERDUE: "À contrôler", UNKNOWN: "À renseigner" };
 export function gaugeColor(item: MaintenanceGauge) {
   return item.status === "OVERDUE" ? "var(--danger)" : item.status === "SOON" ? "var(--warning)" : item.percent === null ? "var(--quiet)" : "var(--accent)";

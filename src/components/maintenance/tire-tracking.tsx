@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { TireRecordLink } from "./tire-record-link";
+import { MaintenanceIcon } from "./maintenance-icon";
 import type { TireSet } from "@/generated/prisma/client";
 import { Panel } from "@/components/layout/panel";
 import { RecordForm, type RecordValues } from "@/components/forms/record-form";
@@ -19,7 +20,7 @@ export function TireTracking({ vehicleId, drivetrain, tires, currentMileage, now
         const tire = active.find(t => t.position === position);
         const estimate = tire ? estimateTireLife(tire, currentMileage, now, drivetrain) : null;
         return <article key={position} className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3 py-5">
-          <div className="min-w-0"><h3 className="font-medium">{tirePositionLabels[position]}</h3>{tire ? <><p className="mt-2 break-words text-sm">{tire.brand}{tire.model ? ` ${tire.model}` : ""}</p><p className="mt-1 text-xs leading-5 text-[var(--muted)]">{tireSeasonLabels[tire.type]} · {tireQualityLabels[tire.quality]} · {tire.dimensions}</p><p className="mt-2 text-sm text-[var(--muted)]">Montés le {formatDate(tire.mountedAt)} à {formatNumber(tire.mountedMileage, " km")}</p></> : <p className="mt-2 text-sm text-[var(--muted)]">Aucun montage renseigné pour cet essieu.</p>}</div>
+          <div className="min-w-0"><h3 className="flex items-center gap-2 font-medium"><MaintenanceIcon type="PNEUS" title={tirePositionLabels[position]} className="size-5 text-[var(--muted)]" />{tirePositionLabels[position]}</h3>{tire ? <><p className="mt-2 break-words text-sm">{tire.brand}{tire.model ? ` ${tire.model}` : ""}</p><p className="mt-1 text-xs leading-5 text-[var(--muted)]">{tireSeasonLabels[tire.type]} · {tireQualityLabels[tire.quality]} · {tire.dimensions}</p><p className="mt-2 text-sm text-[var(--muted)]">Montés le {formatDate(tire.mountedAt)} à {formatNumber(tire.mountedMileage, " km")}</p></> : <p className="mt-2 text-sm text-[var(--muted)]">Aucun montage renseigné pour cet essieu.</p>}</div>
           {estimate ? <div className="text-sm"><p><SourceBadge kind="estimated" /> {estimate.percent === null ? "Estimation indisponible" : `${Math.round(estimate.percent)} % restants estimés`}</p><p className="mt-1 text-xs text-[var(--muted)]">Base {estimate.manual ? "manuelle" : "automatique"} : {formatNumber(estimate.lifeKm, " km")}</p><TireRecordLink recordId={tire!.sourceId} /></div> : null}
         </article>;
       })}</div>
