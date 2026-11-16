@@ -1,5 +1,13 @@
 # Changelog
 
+## Non publié — Pneus par essieu
+
+- Montage avant, arrière ou des quatre pneus avec clôture automatique limitée aux essieux remplacés et conservation de l'historique.
+- Saison et gamme distinctes, marque libre ; transmission renseignable et modifiable au Garage.
+- Deux estimations cohérentes entre Dashboard, Suivi et Prévisions, formule automatique explicite et référence manuelle prioritaire. Coefficients de planification non étalonnés.
+- Migration SQLite/PostgreSQL `20261116100000_tire_axles_quality` ; anciennes références conservées.
+
+
 ## À publier — 15 novembre 2026
 
 - Prévisions d'entretien et d'usure basées sur le rythme observé ; estimation kilométrique des pneus et origine documentée des échéances.

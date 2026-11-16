@@ -2,7 +2,6 @@
 import { z } from "zod";
 import { NOTIFICATION_TYPES } from "./notification-types";
 import { EXPENSE_CATEGORIES, MAINTENANCE_TYPES, VEHICLE_STATUSES } from "./constants";
-import { DEFAULT_TIRE_LIFE_KM } from "./tire-estimation";
 
 const optionalText = z.preprocess((value) => (value === "" ? undefined : value), z.string().trim().max(500).optional());
 const optionalNumber = z.preprocess((value) => (value === "" || value === null ? undefined : value), z.coerce.number().nonnegative().optional());
@@ -11,11 +10,15 @@ const cycleStartDate = z.preprocess(value => value === "" || value == null ? und
 const cycleStartMileage = z.preprocess(value => value === "" || value == null ? undefined : value, z.coerce.number().int().nonnegative().optional());
 export const maintenanceCycleSchema = z.object({ cycleStartDate, cycleStartMileage });
 
+export const drivetrainSchema = z.enum(["FRONT", "REAR", "AWD", "UNKNOWN"]);
+export const tireQualitySchema = z.enum(["PREMIUM", "STANDARD", "BUDGET", "UNKNOWN"]);
+
 export const vehicleSchema = z.object({
   brand: z.string().trim().min(1).max(60),
   model: z.string().trim().min(1).max(80),
   trim: z.string().trim().min(1).max(100),
   powertrain: optionalText,
+  drivetrain: drivetrainSchema.default("UNKNOWN"),
   year: z.coerce.number().int().min(1886).max(new Date().getFullYear() + 1),
   registration: optionalText,
   vin: z.preprocess((value) => (value === "" ? undefined : value), z.string().trim().min(11).max(17).optional()),
@@ -109,6 +112,6 @@ const title = z.string().trim().min(2).max(100);
 export const warrantySchema = z.object({ vehicleId: z.string().min(1), title, type: z.enum(["CONSTRUCTEUR", "EXTENSION", "OCCASION", "AUTRE"]), startDate: date, endDate: date, maxMileage: optionalMileage, notes: optionalText }).refine(d => d.endDate >= d.startDate, { message: "La fin doit suivre le début de garantie.", path: ["endDate"] });
 export const inspectionSchema = z.object({ vehicleId: z.string().min(1), date, nextDate: date, result: z.enum(["FAVORABLE", "DEFAVORABLE", "CRITIQUE"]), requiresFollowUp: boolean, followUpDeadline: optionalDate, notes: optionalText }).refine(d => d.nextDate > d.date, { message: "Le prochain contrôle doit suivre le dernier.", path: ["nextDate"] }).refine(d => !d.requiresFollowUp || (d.followUpDeadline && d.followUpDeadline >= d.date), { message: "Renseignez une date limite de contre-visite après le contrôle.", path: ["followUpDeadline"] });
 export const insuranceSchema = z.object({ vehicleId: z.string().min(1), company: title, contractReference: optionalText, startDate: date, renewalDate: date, cost: optionalNumber, frequency: z.enum(["MONTHLY", "ANNUAL"]), includeInCosts: boolean, notes: optionalText }).refine(d => d.renewalDate > d.startDate, { message: "Le renouvellement doit suivre le début du contrat.", path: ["renewalDate"] });
-export const tireSchema = z.object({ vehicleId: z.string().min(1), brand: title, model: optionalText, dimensions: z.string().trim().min(2).max(60), type: z.enum(["ETE", "HIVER", "QUATRE_SAISONS"]), position: z.enum(["AVANT", "ARRIERE", "COMPLET"]), mountedAt: date, mountedMileage: z.coerce.number().int().nonnegative(), estimatedLifeKm: z.preprocess(v => v === "" || v == null ? undefined : v, z.coerce.number().int().min(100).max(300000).default(DEFAULT_TIRE_LIFE_KM)), removedAt: optionalDate, removedMileage: optionalMileage, notes: optionalText }).refine(d => (d.removedAt == null) === (d.removedMileage == null), { message: "Le démontage exige sa date et son kilométrage.", path: ["removedAt"] }).refine(d => !d.removedAt || (d.removedAt >= d.mountedAt && d.removedMileage! >= d.mountedMileage), { message: "Le démontage ne peut précéder le montage.", path: ["removedAt"] });
+export const tireSchema = z.object({ vehicleId: z.string().min(1), brand: title, model: optionalText, dimensions: z.string().trim().min(2).max(60), type: z.enum(["ETE", "HIVER", "QUATRE_SAISONS"]), position: z.enum(["AVANT", "ARRIERE", "COMPLET"]), quality: tireQualitySchema.default("UNKNOWN"), mountedAt: date.refine(value => value <= new Date(), "Le montage ne peut pas être futur."), mountedMileage: z.coerce.number().int().nonnegative(), estimatedLifeKm: z.preprocess(v => v === "" || v == null ? null : v, z.coerce.number().int().min(100).max(300000).nullable()), removedAt: z.preprocess(value => value === "" || value == null ? undefined : value, date.refine(value => value <= new Date(), "Le démontage ne peut pas être futur.").optional()), removedMileage: optionalMileage, notes: optionalText }).refine(d => (d.removedAt == null) === (d.removedMileage == null), { message: "Le démontage exige sa date et son kilométrage.", path: ["removedAt"] }).refine(d => !d.removedAt || (d.removedAt >= d.mountedAt && d.removedMileage! >= d.mountedMileage), { message: "Le démontage ne peut précéder le montage.", path: ["removedAt"] });
 export const documentSchema = z.object({ vehicleId: z.string().min(1), title, category: z.enum(["ACHAT", "ENTRETIEN", "CONTROLE_TECHNIQUE", "ASSURANCE", "CONSTRUCTEUR", "AUTRE"]), date, description: optionalText });
 export const notificationSchema = z.object({ enabledTypes: z.array(z.enum(NOTIFICATION_TYPES)).default([...NOTIFICATION_TYPES]), enabled: boolean, maintenance: boolean, warranty: boolean, inspection: boolean, insurance: boolean, warningDays: z.coerce.number().int().min(1).max(365), warningKm: z.coerce.number().int().min(1).max(50000), token: z.string().max(500).optional(), clearToken: boolean });

@@ -1,0 +1,17 @@
+{
+  "desktop": 1440,
+  "mobile": [
+    390,
+    320
+  ],
+  "checks": [
+    "no horizontal overflow",
+    "formula preview",
+    "front-only replacement keeps rear history",
+    "garage drivetrain persisted",
+    "predictions show both axles",
+    "record link opens editor",
+    "form resets preview"
+  ],
+  "errors": []
+}

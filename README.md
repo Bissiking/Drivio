@@ -110,7 +110,7 @@ Le job Drivio **fuel-prices-sync** expose le contrat Node Aion V1 ; Aion conserv
 
 Lire [le guide des évolutions et du déploiement](docs/EVOLUTIONS.md), [l'audit initial](docs/EVOLUTIONS-AUDIT.md) et [les résultats de validation](docs/EVOLUTIONS-VALIDATION.md).
 
-Voir aussi [les jauges d’entretien et l’estimation des pneus](docs/JAUGES-ENTRETIEN.md).
+Voir aussi [les jauges d’entretien](docs/JAUGES-ENTRETIEN.md) et [le suivi des pneus par essieu, sa formule et ses limites](docs/PNEUMATIQUES.md).
 
 ## Calculs
 

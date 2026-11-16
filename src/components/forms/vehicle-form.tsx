@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Field } from "./field";
 import { Select } from "@/components/ui/select";
 import { toDateInput } from "@/lib/format";
+import { DRIVETRAINS, drivetrainLabels } from "@/lib/drivetrain";
 
 export function VehicleForm() {
   const router = useRouter();
@@ -50,6 +51,7 @@ export function VehicleForm() {
       <Field label="Modèle"><Input name="model" required placeholder="Formentor" /></Field>
       <Field label="Finition"><Input name="trim" required placeholder="V" /></Field>
       <Field label="Motorisation"><Input name="powertrain" placeholder="1.5 TSI 150 DSG7" /></Field>
+      <Field label="Roues motrices"><Select name="drivetrain" defaultValue="UNKNOWN">{DRIVETRAINS.map(value => <option key={value} value={value}>{value === "UNKNOWN" ? "Je ne sais pas" : drivetrainLabels[value]}</option>)}</Select></Field>
       <Field label="Année"><Input name="year" type="number" required min="1886" defaultValue={new Date().getFullYear()} /></Field>
       <Field label="Immatriculation"><Input name="registration" autoComplete="off" /></Field>
       <Field label="VIN"><Input name="vin" minLength={11} maxLength={17} autoComplete="off" /></Field>

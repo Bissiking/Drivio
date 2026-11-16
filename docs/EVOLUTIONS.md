@@ -9,7 +9,7 @@ Le rythme kilométrique provient des relevés réels récents sur 180 jours si p
 
 Les échéances existantes restent prioritaires. Une référence est obligatoire pour marquer une échéance « constructeur ». Aucun catalogue constructeur n'est inventé. Sans échéance, des interventions répétées peuvent produire une estimation historique explicitement potentielle. Le dernier contrôle technique et sa contre-visite éventuelle sont pris en compte.
 
-Les pneus disposent désormais d’une estimation kilométrique automatique depuis leur montage, avec une longévité supposée de 40 000 km modifiable. La saisie et l’affichage des mesures de gomme sont retirés. Les jauges portent la mention « Usure estimée — contrôle manuel nécessaire ». Le détail des calculs et réglages est décrit dans [le guide des jauges](JAUGES-ENTRETIEN.md).
+Les pneus sont suivis séparément à l’avant et à l’arrière, avec remplacement de 2 ou 4 pneus. Leur longévité supposée dépend de la saison, de la gamme et de la transmission du Garage ; une référence manuelle reste prioritaire. Les anciennes références de 40 000 km sont conservées. Voir [le calcul et ses limites](PNEUMATIQUES.md). La saisie et l’affichage des mesures de gomme sont retirés. Les jauges portent la mention « Usure estimée — contrôle manuel nécessaire ». Le détail des calculs et réglages est décrit dans [le guide des jauges](JAUGES-ENTRETIEN.md).
 
 Les statuts et alertes visuelles figurent dans Prévisions et le panneau d’alertes du Dashboard. Les alertes pneus indiquent une estimation à confirmer. Gotify conserve ses alertes d’échéances existantes.
 
@@ -96,7 +96,7 @@ Statistiques : stations créées/modifiées/inchangées/absentes, variations de 
 2. Installer avec `npm ci`.
 3. SQLite : `npm run db:generate`, puis `npm run db:deploy` avec l'URL DEV. PostgreSQL : `npm run db:generate:postgres`, puis `npm run db:migrate:postgres` avec l'URL PROD. Ne pas appliquer les migrations d'un provider sur l'autre.
 4. Appliquer également la migration additive `20261115210000_maintenance_gauges` pour les jauges et la longévité supposée des pneus. La migration principale s'appelle `20261115193000_predictions_fuel_reports` dans les deux répertoires. Elle est additive ; la variante SQLite utilise des `ALTER TABLE ADD COLUMN`, sans reconstruction des tables existantes.
-5. Exécuter `npm run lint`, `npm run typecheck`, `npm test`, puis `npm run build`. Le client généré pour la production doit correspondre à PostgreSQL.
+5. Appliquer aussi `20261116100000_tire_axles_quality` pour le suivi par essieu, la gamme et la transmission (SQLite et PostgreSQL ont chacun leur migration). Exécuter `npm run lint`, `npm run typecheck`, `npm test`, puis `npm run build`. Le client généré pour la production doit correspondre à PostgreSQL.
 6. Configurer les trois variables Aion, le timeout du proxy et le Node Aion. Déclencher le premier import, contrôler ses statistiques, puis activer la planification toutes les 15 minutes.
 7. Les nouvelles préférences sont désactivées par défaut. Les utilisateurs intéressés les activent dans Paramètres et se reconnectent.
 
