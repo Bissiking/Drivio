@@ -92,6 +92,10 @@ npm run build
 
 La génération PostgreSQL doit précéder le build de production afin que le client Prisma corresponde à l’adaptateur PostgreSQL.
 
+## Icônes
+
+Les jauges du Dashboard et du Suivi véhicule, les entretiens et les pneumatiques utilisent des pictogrammes mécaniques MDI et Icon Pantry. Les commandes conservent Lucide. Les sources et licences sont détaillées dans [docs/ICON_SOURCES.md](docs/ICON_SOURCES.md).
+
 ## Photos
 
 Les téléversements JPG, PNG et WebP sont limités à 5 Mo et écrits sous `public/uploads`. Les URL `/uploads/...` sont servies par une route qui lit le stockage à la demande, afin que les nouvelles photos restent accessibles en production sans redémarrage, y compris via l’optimiseur Next.js. Le contenu de ce dossier est ignoré par Git. En production, monter ce dossier sur un volume persistant. Une URL externe peut être fournie à la place.
