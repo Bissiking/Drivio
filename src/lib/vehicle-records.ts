@@ -35,7 +35,47 @@ export async function persistRecord(kind: RecordKind, body: unknown, id?: string
     }
     case "tires": {
       const parsed = tireSchema.parse(body), data = { ...parsed, model: parsed.model ?? null, removedAt: parsed.removedAt ?? null, removedMileage: parsed.removedMileage ?? null, notes: parsed.notes ?? null };
-      return id ? db.tireSet.update({ where: { id }, data }) : db.tireSet.create({ data });
+      return db.$transaction(async tx => {
+        // Lock the owning vehicle before reading its mountings, including on PostgreSQL.
+        await tx.vehicle.update({ where: { id: data.vehicleId }, data: { updatedAt: new Date() } });
+        const sets = await tx.tireSet.findMany({ where: { vehicleId: data.vehicleId, ...(id ? { id: { not: id } } : {}) }, include: { measurements: true } });
+        const replaces: typeof sets = [];
+        for (const previous of sets) {
+          if (previous.position !== "COMPLET" && data.position !== "COMPLET" && previous.position !== data.position) continue;
+          const before = previous.removedAt !== null && previous.removedAt <= data.mountedAt;
+          const after = data.removedAt !== null && data.removedAt <= previous.mountedAt;
+          if (before) {
+            if (previous.removedMileage !== null && data.mountedMileage < previous.removedMileage) throw new Error("Le compteur de montage doit suivre le démontage précédent de cet essieu.");
+          } else if (after) {
+            if (data.removedMileage! > previous.mountedMileage) throw new Error("Le compteur de démontage dépasse le montage suivant de cet essieu.");
+          } else if (!id && !data.removedAt && !previous.removedAt && previous.mountedAt <= data.mountedAt && previous.mountedMileage <= data.mountedMileage) {
+            if (previous.measurements.some(m => m.date > data.mountedAt || m.mileage > data.mountedMileage)) throw new Error("Le nouveau montage précède une mesure déjà enregistrée sur les pneus remplacés.");
+            replaces.push(previous);
+          } else {
+            throw new Error("Un montage couvre déjà cet essieu sur cette période. Ajustez les dates ou enregistrez un nouveau remplacement.");
+          }
+        }
+        // Editing a record must also preserve its own observations.
+        if (id) {
+          const measurements = await tx.tireMeasurement.findMany({ where: { tireSetId: id } });
+          if (measurements.some(m => m.date < data.mountedAt || m.mileage < data.mountedMileage || (data.removedAt && (m.date > data.removedAt || m.mileage > data.removedMileage!)))) throw new Error("Les dates et compteurs doivent inclure les mesures déjà enregistrées.");
+        }
+        for (const previous of replaces) {
+          if (previous.position === "COMPLET" && data.position !== "COMPLET") {
+            const { id: oldId, measurements, ...original } = previous;
+            const replacementCost = previous.replacementCost === null ? null : Number(previous.replacementCost) / 2;
+            // Represent the original four tyres as two axle histories; retain the original ID.
+            await tx.tireSet.create({ data: {
+              ...original, position: data.position === "AVANT" ? "ARRIERE" : "AVANT", replacementCost,
+              measurements: { create: measurements.map(({ date, mileage, treadDepthMm, createdAt }) => ({ date, mileage, treadDepthMm, createdAt })) },
+            } });
+            await tx.tireSet.update({ where: { id: oldId }, data: { position: data.position, replacementCost, removedAt: data.mountedAt, removedMileage: data.mountedMileage } });
+          } else {
+            await tx.tireSet.update({ where: { id: previous.id }, data: { removedAt: data.mountedAt, removedMileage: data.mountedMileage } });
+          }
+        }
+        return id ? tx.tireSet.update({ where: { id }, data }) : tx.tireSet.create({ data });
+      });
     }
   }
 }

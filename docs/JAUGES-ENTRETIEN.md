@@ -14,7 +14,7 @@ distance parcourue = compteur connu − compteur au montage
 pourcentage estimé restant = 100 × (longévité supposée − distance parcourue) / longévité supposée
 ```
 
-Le résultat est borné entre 0 et 100 %. La longévité supposée est proposée à **40 000 km** pour tous les montages, anciens et nouveaux, et se règle dans **Suivi véhicule → Pneumatiques → Modifier ou supprimer**. Il s'agit d'une hypothèse du produit, sans affirmation sur la durée réelle ni recommandation constructeur. Un montage futur ou un compteur inférieur à celui du montage produit une valeur indisponible.
+Le résultat est borné entre 0 et 100 %. Chaque essieu dispose de sa propre estimation. Les nouveaux montages utilisent une hypothèse ajustée selon saison, gamme et transmission du Garage, dont la formule est consultable. Une longévité manuelle remplace ce calcul ; les anciennes références de **40 000 km** sont conservées. Voir [le modèle par essieu et ses limites](PNEUMATIQUES.md). Il s'agit d'une hypothèse du produit, sans affirmation sur la durée réelle ni recommandation constructeur. Un montage futur ou un compteur inférieur à celui du montage produit une valeur indisponible.
 
 La mention **« Usure estimée — contrôle manuel nécessaire »** accompagne les pneus dans le Dashboard, le détail et les prévisions. Le modèle n'estime aucune profondeur en millimètres. À 0 %, la durée supposée est atteinte : le pneu est à faire contrôler, sans déclaration automatique qu'il est réellement usé. La couleur d'avertissement sous 25 % aide à anticiper ; elle n'est pas un seuil technique ou réglementaire.
 
@@ -44,3 +44,5 @@ La migration additive `20261115210000_maintenance_gauges` existe pour SQLite et 
 Les références sont enregistrées via `PATCH /api/maintenance/[id]/baseline`, avec session et contrôle de propriété. Elles doivent précéder l'échéance, et une date de référence future est refusée. Une échéance déjà réalisée ne peut plus recevoir de référence active. La longévité supposée réutilise l'API de montage existante et sa validation.
 
 Développement : `npm run db:generate`, puis `npm run db:deploy`. Production PostgreSQL : `npm run db:generate:postgres`, puis `npm run db:migrate:postgres`, avant le build et redémarrage du serveur.
+
+La migration `20261116100000_tire_axles_quality` ajoute la transmission et la gamme, et rend la longévité facultative pour permettre le mode automatique. Voir [le guide pneumatiques](PNEUMATIQUES.md).

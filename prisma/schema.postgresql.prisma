@@ -31,6 +31,7 @@ model Vehicle {
   model             String
   trim              String
   powertrain        String?
+  drivetrain        String                @default("UNKNOWN")
   year              Int
   registration      String?
   vin               String?
@@ -243,6 +244,7 @@ model TireSet {
   dimensions      String
   type            String
   position        String
+  quality         String            @default("UNKNOWN")
   mountedAt       DateTime
   mountedMileage  Int
   removedAt       DateTime?
@@ -250,7 +252,7 @@ model TireSet {
   notes           String?
   targetDepthMm   Decimal?
   replacementCost Decimal?
-  estimatedLifeKm Int               @default(40000)
+  estimatedLifeKm Int?
   measurements    TireMeasurement[]
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt

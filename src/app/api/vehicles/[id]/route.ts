@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { apiError, apiUser, ownedVehicle } from "@/lib/api";
 import { db } from "@/lib/db";
 import { z } from "zod";
+import { DRIVETRAINS } from "@/lib/drivetrain";
 
 const archiveSchema = z.object({
   saleDate: z.preprocess((value) => (value === "" ? undefined : value), z.coerce.date().optional()),
@@ -39,6 +40,9 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       }
     } else if (body.action === "restore") {
       await db.vehicle.update({ where: { id }, data: { status: "ACTIVE" } });
+    } else if (body.action === "drivetrain") {
+      const data = z.object({ drivetrain: z.enum(DRIVETRAINS) }).parse(body);
+      await db.vehicle.update({ where: { id }, data });
     } else if (body.action === "photo") {
       const photo = photoSchema.parse(body);
       await db.vehicle.update({

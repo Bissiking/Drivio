@@ -80,3 +80,14 @@ La migration additive `20261115210000_maintenance_gauges` est validée sur SQLit
 - Les prévisions restent dépendantes des données saisies ; coûts et profondeurs inconnus restent explicitement indisponibles.
 - L'historique officiel commence au premier import. Les anciens pleins sans station/carburant ne sont pas rattachés automatiquement.
 - Les annexes PDF/JPG/PNG sélectionnées explicitement peuvent contenir des informations personnelles et exigent l'option sensible. Les notes et coordonnées du propriétaire restent exclues du rapport généré.
+
+### Pneus par essieu, gamme et transmission — 16 novembre 2026
+
+- `npm run db:generate`, `npm run typecheck`, `npm run lint`, `npm test` et `npm run build` réussis ; **108 tests dans 16 fichiers**, dont les nouveaux tests de migration, remplacement des pneus et API de transmission.
+- Schémas Prisma SQLite et PostgreSQL validés. Migration SQLite réellement exécutée sur des bases temporaires, avec conservation des identifiants, références manuelles, observations liées et contraintes. Migration PostgreSQL non exécutée faute de base de test configurée.
+- Recette Chromium headless sur le serveur Next local, avec **base et session synthétiques isolées**, en 1440, 390 et 320 px : absence de débordement horizontal, formule affichée, remplacement avant conservant le montage arrière, sélection de propulsion enregistrée dans le Garage puis reprise dans Suivi, deux essieux dans Prévisions, lien ouvrant le bon éditeur et remise à zéro du formulaire avec son aperçu. Aucune erreur JavaScript non interceptée relevée.
+- Le navigateur intégré n'étant pas disponible, cette recette utilise Chromium headless local. Elle ne valide ni appareil physique, ni connexion Kyros réelle, ni environnement déployé.
+- Preuves : [résultat de recette](../.impeccable/review/tire-axles-validation.json), [pneus sur bureau](../.impeccable/review/tire-axles-desktop.png), [formulaire à 320 px](../.impeccable/review/tire-axles-320.png). Détecteur Impeccable sur les surfaces modifiées : aucun signalement.
+- Les bases et coefficients sont explicitement des hypothèses Drivio non étalonnées. Aucun démontage n'est assimilé automatiquement à une usure complète. Voir [la formule et ses limites](PNEUMATIQUES.md).
+
+Aucune base utilisateur ni production n'a été migrée ; `20261116100000_tire_axles_quality` reste à appliquer au déploiement.
