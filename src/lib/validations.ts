@@ -2,8 +2,9 @@
 import { z } from "zod";
 import { NOTIFICATION_TYPES } from "./notification-types";
 import { EXPENSE_CATEGORIES, MAINTENANCE_TYPES, VEHICLE_STATUSES } from "./constants";
+import { EXPENSE_SUBTYPES, maintenanceClassification } from "./taxonomy";
 
-const optionalText = z.preprocess((value) => (value === "" ? undefined : value), z.string().trim().max(500).optional());
+const optionalText = z.preprocess((value) => (value === "" || value === null ? undefined : value), z.string().trim().max(500).optional());
 const optionalNumber = z.preprocess((value) => (value === "" || value === null ? undefined : value), z.coerce.number().nonnegative().optional());
 const date = z.coerce.date();
 const cycleStartDate = z.preprocess(value => value === "" || value == null ? undefined : value, z.coerce.date().refine(value => value <= new Date(), "La référence ne peut pas être future.").optional());
@@ -50,7 +51,7 @@ export const maintenanceRecordSchema = z.object({
   mileage: optionalNumber,
   cost: optionalNumber,
   notes: optionalText,
-});
+}).transform(data => ({ ...data, ...maintenanceClassification(data.type) }));
 
 export const maintenanceScheduleSchema = z
   .object({
@@ -81,15 +82,18 @@ export const maintenanceScheduleSchema = z
   })
   .refine(data => data.cycleStartMileage === undefined || data.dueMileage === undefined || data.cycleStartMileage < data.dueMileage, {
     message: "Le compteur de référence doit être inférieur au compteur d'échéance.", path: ["cycleStartMileage"],
-  });
+  }).transform(data => ({ ...data, ...maintenanceClassification(data.type) }));
 
 export const expenseSchema = z.object({
   vehicleId: z.string().min(1),
   category: z.enum(EXPENSE_CATEGORIES),
+  subcategory: z.preprocess(v => v === "" || v == null ? null : v, z.string().max(40).nullable()).optional(),
   amount: z.coerce.number().positive(),
   date,
   mileage: optionalNumber,
   comment: optionalText,
+}).refine(data => !data.subcategory || EXPENSE_SUBTYPES[data.category]?.some(([id]) => id === data.subcategory), {
+  message: "Ce sous-type ne correspond pas au type de dépense.", path: ["subcategory"],
 });
 
 export const fuelSchema = z.object({
@@ -98,10 +102,12 @@ export const fuelSchema = z.object({
   mileage: z.coerce.number().int().nonnegative(),
   liters: z.coerce.number().positive(),
   totalPrice: z.coerce.number().positive(),
-  unitPrice: optionalNumber,
+  unitPrice: z.preprocess(v => v === "" || v == null ? undefined : v, z.coerce.number().positive().optional()),
   stationId: z.preprocess(v => v === "" || v == null ? undefined : v, z.string().regex(/^\d{1,20}$/).optional()),
   fuelType: z.preprocess(v => v === "" || v == null ? undefined : v, z.enum(["1", "2", "3", "4", "5", "6"]).optional()),
   isFull: z.preprocess((value) => value === true || value === "true" || value === "on", z.boolean()).default(false),
+}).refine(data => data.unitPrice === undefined || Math.abs(data.unitPrice * data.liters - data.totalPrice) <= Math.max(0.05, data.liters * 0.00051), {
+  message: "Le prix au litre ne correspond pas au montant et au volume. Corrigez-le ou laissez-le vide pour le calculer.", path: ["unitPrice"],
 });
 
 

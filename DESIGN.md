@@ -1,6 +1,6 @@
 ---
 name: Drivio
-description: Un registre automobile personnel, graphite et cuivre.
+description: Un registre automobile personnel, graphite et cuivre, aux variantes claire et ardoise.
 colors:
   ink: "#111214"
   navigation: "#141518"
@@ -16,6 +16,23 @@ colors:
   accent-ink: "#2b1b11"
   warning: "#edc379"
   danger: "#f19a96"
+  light-navigation: "#eeece9"
+  light-ink: "#f6f4f1"
+  light-surface: "#ffffff"
+  light-surface-raised: "#ffffff"
+  light-surface-soft: "#e7e4df"
+  light-line: "#aaa49d"
+  light-line-soft: "#d8d3cd"
+  light-text: "#262320"
+  light-muted: "#5e5851"
+  light-quiet: "#6d665f"
+  light-accent: "#875029"
+  light-accent-ink: "#ffffff"
+  light-warning: "#835c13"
+  light-danger: "#ab302a"
+  slate-accent: "#9ac5f5"
+  slate-accent-ink: "#12283e"
+  light-slate-accent: "#285e93"
 typography:
   display:
     fontSize: "3.75rem"
@@ -145,14 +162,14 @@ components:
 
 **Creative North Star: "Registre technique nocturne"**
 
-Drivio est un registre automobile personnel sombre, mat et précis. Les surfaces graphite, les règles minérales et les chiffres tabulaires font passer les faits avant les ornements. Le cuivre apporte une chaleur mesurée aux commandes et aux informations utiles ; le logo associe un éclair angulaire cuivre au mot-symbole blanc.
+Drivio est un registre automobile personnel mat et précis, sombre par défaut. Les surfaces graphite, les règles minérales et les chiffres tabulaires font passer les faits avant les ornements. Le cuivre apporte une chaleur mesurée aux commandes et aux informations utiles ; le logo conserve son éclair angulaire cuivre. La variante claire minérale et l’accent ardoise prolongent ce même registre, avec les mêmes rôles et hiérarchies.
 
-La photographie donne au véhicule sa place dans le dossier, puis les données reprennent la lecture. Une photo personnelle est prioritaire ; les images de modèles générées servent de fallback et portent une mention explicite d'illustration. Les panneaux restent lisibles par leur hiérarchie, leurs alignements et leurs séparateurs.
+La photographie donne au véhicule sa place dans le dossier lorsqu’elle est affichée ; les données gardent la priorité de lecture. Une photo personnelle est prioritaire ; les images de modèles générées servent de fallback et portent une mention explicite d'illustration. Les panneaux restent lisibles par leur hiérarchie, leurs alignements et leurs séparateurs.
 
 **Key Characteristics:**
 
-- Graphite mat et profondeur par couches tonales.
-- Cuivre fonctionnel pour les actions, la sélection et les données visualisées.
+- Graphite mat par défaut, variante claire minérale et profondeur par couches tonales.
+- Cuivre fonctionnel ou accent ardoise pour les actions, la sélection et les données visualisées.
 - Geist Sans, chiffres tabulaires et titres directs.
 - Photographies personnelles prioritaires, illustrations générées identifiées.
 - Registres continus et séparateurs fins.
@@ -160,12 +177,14 @@ La photographie donne au véhicule sa place dans le dossier, puis les données r
 
 ## Colors
 
-Le graphite neutre accueille un accent cuivre chaud ; les alertes ont leurs propres couleurs sémantiques.
+Le graphite neutre accueille un accent cuivre chaud par défaut ; le mode clair inverse les rôles de luminosité et la palette ardoise substitue un accent bleu. Les alertes gardent leurs propres couleurs sémantiques. Le frontmatter enregistre les rôles sombres sans préfixe, leurs variantes `light-*` et les substitutions `slate-*` ; les composants consomment toujours les variables CSS sémantiques, jamais une valeur sombre figée.
 
 ### Primary
 
 - **Cuivre utile** (`accent`) : boutons principaux, actions textuelles, icônes actives, focus, mesures réelles et graphiques calculés.
-- **Encre cuivre** (`accent-ink`) : texte sombre des commandes pleines cuivre.
+- **Encre cuivre** (`accent-ink`) : texte sombre des commandes pleines cuivre ; blanc en mode clair (`light-accent-ink`).
+- **Cuivre minéral** (`light-accent`) : même rôle d’action et de focus en mode clair.
+- **Ardoise lumineuse / ardoise profonde** (`slate-accent`, `light-slate-accent`) : accent alternatif des commandes, sélections et graphiques ; `slate-accent-ink` fournit le texte sombre en mode sombre et `light-accent-ink` le texte blanc en mode clair. Le logo garde son cuivre d’identité.
 
 ### Secondary
 
@@ -185,9 +204,13 @@ Le graphite neutre accueille un accent cuivre chaud ; les alertes ont leurs prop
 - **Gris descriptif** (`muted`) : descriptions, unités et navigation inactive de bureau.
 - **Gris discret** (`quiet`) : dates, placeholders, graduations et navigation inactive mobile.
 
+Les rôles `light-navigation`, `light-ink`, `light-surface`, `light-surface-raised` et `light-surface-soft` composent le fond minéral, les panneaux blancs et les états actifs. `light-line` et `light-line-soft` maintiennent les séparations ; `light-text`, `light-muted` et `light-quiet` remplacent les textes clairs par des encres lisibles. `light-warning` et `light-danger` conservent les rôles d’échéance et d’erreur.
+
+La luminosité propose Sombre, Clair et Automatique ; la palette propose Cuivre et Ardoise. Les choix sont conservés sur le compte. Le layout serveur applique `data-theme` et `data-palette` sur `<html>` depuis ce compte, avec le cookie comme repli hors session. Automatique suit `prefers-color-scheme` en CSS, y compris lors d’un changement système, sans script de détection de luminosité.
+
 ### Named Rules
 
-**The Useful Copper Rule.** Le cuivre indique une action, une sélection, un focus ou une donnée visualisée ; il ne remplit pas les surfaces d'ambiance.
+**The Useful Copper Rule.** Le cuivre, ou l’accent ardoise choisi, indique une action, une sélection, un focus ou une donnée visualisée ; il ne remplit pas les surfaces d’ambiance.
 
 **The Source Honesty Rule.** Réel, Calculé et Estimé gardent leur libellé explicite ; l'estimation ajoute un contour discontinu. La couleur seule ne porte jamais la provenance.
 
@@ -202,7 +225,7 @@ Le graphite neutre accueille un accent cuivre chaud ; les alertes ont leurs prop
 ### Hierarchy
 
 - **Display** (`display`) : compteur principal ; variante mobile de 3 rem avant le passage à 3.75 rem à partir de 640 px.
-- **Headline** (`headline`) : titres de page ; variante mobile de 1.875 rem, puis 2.25 rem à partir de 640 px.
+- **Headline** (`headline`) : titres de page de grande taille ; variante mobile de 1.875 rem, puis 2.25 rem à partir de 640 px. Les pages denses peuvent commencer à 1.5 rem pour garder la place des commandes.
 - **Title** (`title`) : titre du registre et valeurs importantes ; les titres de panneaux restent plus compacts à 1 rem, medium.
 - **Body** (`body`) : contrôles, navigation, descriptions et lignes de registre. Les descriptions de page utilisent un interligne de 1.5 rem et une largeur maximale de 42 rem.
 - **Label** (`label`) : libellés de champs et métadonnées courtes.
@@ -218,15 +241,17 @@ Le graphite neutre accueille un accent cuivre chaud ; les alertes ont leurs prop
 
 La coque de bureau utilise un rail fixe de 240 px à partir de 1024 px. Le contenu est fluide, avec des marges latérales de 16 px sur mobile, 28 px à partir de 640 px, 36 px à partir de 1024 px et 48 px à partir de 1280 px. L'espacement courant entre groupes est de 28 px.
 
-Sous 1024 px, une barre inférieure fixe de 72 px remplace le rail. La réserve basse du contenu est de 112 px ; les champs et ancres gardent une marge de défilement adaptée à cette barre. Les formulaires sont monocolonne sur mobile et peuvent passer à deux colonnes à partir de 640 px. Les bandes de statistiques restent en deux colonnes sur mobile et passent à quatre sur grand écran lorsqu'elles comportent quatre valeurs.
+Sous 1024 px, une barre inférieure fixe de 72 px remplace le rail. La réserve basse du contenu est de 112 px ; les champs et ancres gardent une marge de défilement adaptée à cette barre. Les formulaires sont monocolonne sur mobile et peuvent passer à deux colonnes à partir de 640 px. Les bandes de statistiques restent en deux colonnes sur mobile et passent à quatre à partir de 1280 px lorsqu’elles comportent quatre valeurs. Les commandes courantes se replient en grille mobile avec une action principale sur toute la largeur, puis se disposent en ligne souple à partir de 640 px. Les liens d’action du dashboard gardent une hauteur minimale de 44 px.
 
 Le rythme repose sur des pas de 4 px : 12 à 16 px dans les contrôles, 20 à 24 px dans les panneaux, 28 à 32 px entre les groupes. Les tableaux larges défilent horizontalement dans leur panneau. Ce défilement local ne doit pas produire de défilement horizontal global.
+
+Dans le Garage, les détails de partage s’ouvrent sous la rangée photo et métadonnées, sur toute la largeur du véhicule. Sur bureau, cette extension occupe les deux colonnes ; sa hauteur ne doit pas agrandir la rangée photographique. Sur mobile, les champs s’empilent et les adresses longues peuvent se couper dans leur ligne.
 
 **The Continuous Register Rule.** Les mesures apparentées et les listes partagent une surface et se séparent par des règles ; leur lecture reste alignée et continue.
 
 ## Elevation & Depth
 
-Les panneaux courants et les bandeaux photographiques sont plats au repos. La profondeur vient des graphites, des séparateurs et du cadre photographique. Le menu mobile Plus utilise une ombre diffuse parce qu'il chevauche le contenu ; les tooltips combinent surface relevée et contour minéral.
+Les panneaux courants et les bandeaux photographiques sont plats au repos. La profondeur vient des couches tonales, des séparateurs et du cadre photographique, graphite en mode sombre et minérale en mode clair. Le menu mobile Plus utilise une ombre diffuse parce qu'il chevauche le contenu ; les tooltips combinent surface relevée et contour minéral.
 
 ### Shadow Vocabulary
 
@@ -234,7 +259,7 @@ Les panneaux courants et les bandeaux photographiques sont plats au repos. La pr
 
 ### Named Rules
 
-**The Tonal-First Rule.** Un niveau visuel utilise d'abord une nuance graphite et une règle ; l'ombre signale une surface superposée.
+**The Tonal-First Rule.** Un niveau visuel utilise d’abord une nuance de surface et une règle ; l’ombre signale une surface superposée.
 
 ## Shapes
 
@@ -249,8 +274,8 @@ Les sommets des barres de données utilisent le petit rayon `bar`, avec une base
 Commandes compactes, explicites et stables.
 
 - **Shape:** hauteur courante de 40 px, coins `control`, padding horizontal de 16 px ; petite taille de 32 px et grande taille de 48 px.
-- **Primary:** cuivre utile avec texte encre cuivre et graisse medium.
-- **Hover / Focus:** léger assombrissement du primaire ; contour cuivre de 2 px au clavier. Les transitions respectent `prefers-reduced-motion`.
+- **Primary:** accent choisi, texte contrasté `accent-ink` et graisse medium.
+- **Hover / Focus:** léger assombrissement du primaire ; contour dans l’accent choisi de 2 px au clavier. Les transitions respectent `prefers-reduced-motion`.
 - **Secondary / Outline / Ghost / Danger:** graphite actif vers graphite relevé ; contour minéral vers graphite actif ; texte descriptif vers blanc chaud ; rouge sur fond rouge translucide pour les actions dangereuses.
 - **Disabled:** interaction neutralisée et opacité réduite ; la forme du contrôle reste identifiable.
 
@@ -259,51 +284,73 @@ Commandes compactes, explicites et stables.
 La provenance est courte et explicite.
 
 - **Style:** `source`, capitales, padding de 2 px × 6 px, coins `badge`.
-- **State:** Réel en cuivre avec contour translucide ; Calculé en gris descriptif avec contour minéral ; Estimé en ambre avec contour discontinu.
+- **State:** Réel dans l’accent choisi avec contour translucide ; Calculé en texte descriptif avec contour minéral ; Estimé en ambre avec contour discontinu.
 
 ### Cards / Containers
 
 Des fragments de registre, divisés intérieurement.
 
 - **Corner Style:** `panel`, avec découpe des images lorsque nécessaire.
-- **Background:** graphite mat ; graphite relevé pour les superpositions.
+- **Background:** surface mate du thème ; surface relevée pour les superpositions.
 - **Shadow Strategy:** plat au repos ; voir Elevation & Depth.
 - **Border:** séparateurs internes doux ; les champs et tableaux peuvent utiliser une règle plus forte.
 - **Internal Padding:** généralement 20 px sur mobile et 24 px sur écran large ; jusqu'à 32 px dans les compositions véhicule.
 
 ### Inputs / Fields
 
-Champs sombres, lisibles et sobres.
+Champs accordés au thème, lisibles et sobres.
 
-- **Style:** hauteur de 44 px, fond graphite mat, contour minéral, coins `control`, texte `body` et padding horizontal de 12 px. Les zones de texte démarrent à 96 px et se redimensionnent verticalement.
-- **Focus:** contour cuivre, sans halo décoratif ; caret cuivre.
+- **Style:** hauteur de 44 px, fond de surface du thème, contour minéral, coins `control`, texte `body` et padding horizontal de 12 px. Les zones de texte démarrent à 96 px et se redimensionnent verticalement.
+- **Focus:** contour et caret dans l’accent choisi, sans halo décoratif.
 - **Error / Disabled:** messages explicites et rouge sémantique ; les champs désactivés utilisent une opacité réduite.
+
+Les sélecteurs de périmètre et de droits restent natifs. Les options courtes « Simple » et « Complet » évitent de tronquer le choix ; un texte voisin explique les fonctions couvertes. « Lecture » et « Lecture/Modification » désignent les droits séparément du périmètre.
 
 ### Navigation
 
-Le rail de bureau affiche onze destinations avec icône linéaire et libellé. Les lignes mesurent 44 px, avec texte de 14 px et icône de 18 px. L'état actif combine graphite actif, texte blanc chaud, icône cuivre et `aria-current`.
+Le rail de bureau affiche normalement treize destinations avec icône linéaire et libellé. Pour un compte ne contenant que des véhicules reçus en partage Simple, il en affiche sept : Dashboard, Garage, Kilométrage, Carburant, Dépenses, Historique et Paramètres. Les lignes mesurent 44 px, avec texte de 14 px et icône de 18 px. L’état actif combine surface active, texte principal, icône dans l’accent choisi et `aria-current`.
 
-La barre mobile affiche Dashboard, Garage, Kilométrage, Entretiens et Plus. Plus ouvre les sept destinations restantes dans un menu de 224 px, limité à 65dvh avec défilement local. Les liens mesurent 48 px. Le bouton expose `aria-expanded` et `aria-controls` ; le menu se ferme après navigation et via Échap. Le cuivre distingue la destination active.
+La barre mobile affiche Dashboard, Garage, Kilométrage, Entretiens et Plus. Pour les comptes limités aux partages Simple, Carburant remplace Entretiens. Plus ouvre les neuf destinations restantes, ou les trois restantes en navigation Simple, dans un menu de 224 px, limité à 65dvh avec défilement local. Les liens mesurent 48 px. Le bouton expose `aria-expanded` et `aria-controls` ; le menu se ferme après navigation et via Échap. L’accent choisi distingue la destination active.
+
+### Vehicle Sharing
+
+Le partage prolonge les panneaux mats du Garage, avec des séparateurs fins et les mêmes contrôles. Le bouton du propriétaire « Partager le véhicule », voisin du compteur, ouvre le panneau natif dépliable « Partager ce véhicule », le fait défiler dans la vue et donne le focus à son résumé. Les invitations reçues précèdent la liste ; lorsqu’une invitation attend une réponse, le formulaire d’ajout de véhicule reste replié.
+
+Le périmètre et les droits sont lisibles avant acceptation, puis dans une notice « Véhicule partagé » sur le dossier reçu. Simple présente une synthèse et des liens limités au carburant, aux dépenses et aux kilomètres ; Complet ouvre les sections du dossier automobile. Le propriétaire garde les commandes d’invitation, de gestion des accès et de choix du véhicule principal. Le destinataire dispose d’une commande explicite pour quitter le partage.
+
+La lecture seule retire les formulaires et commandes de modification des données ; les aides et liens de consultation emploient une formulation neutre, par exemple « Voir au garage » et « Voir ce montage ». Les commandes de consultation, de téléchargement ou d’export autorisées et la sortie du partage restent disponibles. Une action de modification ne doit pas être suggérée par le texte lorsqu’elle est absente de l’interface.
 
 ### Vehicle Image
 
-La photo personnelle locale précède l'URL personnelle, puis l'illustration du modèle ou l'illustration générique. Les images générées portent « Illustration · image générée » et un texte alternatif explicite. L'image occupe son cadre sombre ; elle est recadrée sur mobile et contenue sur bureau. La photo se change dans le Garage.
+La photo personnelle locale précède l'URL personnelle, puis l'illustration du modèle ou l'illustration générique. Les images générées portent « Illustration · image générée » et un texte alternatif explicite. L’image occupe son cadre lorsqu’elle est affichée. Dans le dashboard, la photographie est masquée sous 1280 px pour privilégier identité, compteur et prochaine échéance ; elle reste contenue dans la première colonne du bandeau sur bureau. Le Garage conserve ses photos sur mobile. La photo se change dans le Garage.
 
 ### Data Chart
 
-Les séries calculées utilisent le cuivre ; les projections utilisent un contour gris discontinu et transparent. La grille horizontale est fine et pointillée, les graduations en gris discret. Les tooltips reprennent le graphite relevé et le contour minéral. Les légendes indiquent Calculé et Estimé lorsque les deux provenances coexistent ; les séries manquantes ne sont pas reliées artificiellement.
+Les séries calculées utilisent l’accent choisi ; les projections utilisent un contour gris discontinu et transparent. La grille horizontale est fine et pointillée, les graduations en gris discret. Les tooltips reprennent la surface relevée du thème et le contour minéral. Les légendes indiquent Calculé et Estimé lorsque les deux provenances coexistent ; les séries manquantes ne sont pas reliées artificiellement.
+
+### Maintenance Classification
+
+L’intitulé reste un champ libre distinct des deux sélecteurs Catégorie et Sous-catégorie. Les familles regroupent Freinage, Moteur, Transmission, Échappement, Carrosserie, Pneumatiques, Filtres, Suspension et direction, Électricité et visibilité, Révisions et contrôles, et À classer / personnalisé. « Non précisée » conserve une famille sans imposer une précision artificielle.
+
+Une suggestion locale apparaît sous les champs avec une commande explicite « Utiliser cette suggestion ». Elle ne remplace ni l’intitulé ni le choix manuel sans action. Le retour mentionne les ambiguïtés et l’absence de correspondance certaine ; les messages se lisent en texte dans une région `aria-live`.
+
+### Edit and Preference Forms
+
+Les formulaires d’édition reprennent les valeurs enregistrées et gardent une action d’enregistrement explicite ainsi qu’un retour. Les préférences d’apparence utilisent deux sélecteurs et une commande « Appliquer l’apparence », avec état d’attente désactivé et message `role="status"`. Les accès Hub présentent création, remplacement et révocation comme des actions distinctes ; le jeton révélé une fois reste un champ de copie sélectionnable, accompagné de son expiration et de son périmètre en lecture seule.
 
 ## Do's and Don'ts
 
 ### Do:
 
-- **Do** utiliser les surfaces graphite, les règles fines et les alignements pour construire la profondeur.
-- **Do** réserver le cuivre aux actions, sélections, focus et données visualisées.
+- **Do** utiliser les surfaces sémantiques du thème, les règles fines et les alignements pour construire la profondeur.
+- **Do** réserver l’accent choisi aux actions, sélections, focus et données visualisées.
 - **Do** garder Réel, Calculé et Estimé textuellement explicites.
 - **Do** conserver Geist Sans et les chiffres tabulaires pour les faits comparables.
 - **Do** privilégier la photo personnelle et identifier les images générées comme illustrations.
 - **Do** garder un focus clavier visible, des libellés explicites et le menu mobile Plus fonctionnel.
 - **Do** contenir le défilement des tableaux dans leur panneau.
+- **Do** préserver les valeurs saisies et laisser les suggestions de classification facultatives et modifiables.
+- **Do** présenter ensemble le périmètre et les droits du véhicule partagé, avec des commandes et des aides cohérentes avec cet accès.
 
 ### Don't:
 
@@ -314,3 +361,4 @@ Les séries calculées utilisent le cuivre ; les projections utilisent un contou
 - **Don't** confondre fait mesuré, calcul et estimation.
 - **Don't** ajouter une ombre aux panneaux au repos ou multiplier les couleurs d'ambiance.
 - **Don't** masquer une action derrière la navigation mobile ou créer un défilement horizontal global.
+- **Don't** inviter à modifier une donnée depuis une aide ou un lien affiché en lecture seule.

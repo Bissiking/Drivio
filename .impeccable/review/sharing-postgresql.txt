@@ -1,0 +1,7 @@
+Isolated local PostgreSQL 14. All migration SQL applied. Synthetic data only.
+owner: owner
+expense: 12
+accepted-read: 1
+accepted-write: 0
+revoked: 0
+expense-after-revoke: 12

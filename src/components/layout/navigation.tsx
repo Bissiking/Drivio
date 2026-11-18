@@ -10,7 +10,7 @@ import { Brand } from "@/components/layout/brand";
 import { APP_VERSION } from "@/lib/version";
 import { cn } from "@/lib/utils";
 
-const items = [
+const allItems = [
   { href: "/dashboard", label: "Dashboard", icon: BarChart3 },
   { href: "/garage", label: "Garage", icon: Car },
   { href: "/kilometrage", label: "Kilométrage", icon: Gauge },
@@ -26,7 +26,8 @@ const items = [
   { href: "/parametres", label: "Paramètres", icon: Settings },
 ];
 
-export function Navigation() {
+export function Navigation({ simpleOnly = false }: { simpleOnly?: boolean }) {
+  const items = simpleOnly ? allItems.filter(item => ["/dashboard", "/garage", "/kilometrage", "/carburant", "/depenses", "/historique", "/parametres"].includes(item.href)) : allItems;
   const pathname = usePathname();
   const [moreOpen, setMoreOpen] = useState(false);
   useEffect(() => {

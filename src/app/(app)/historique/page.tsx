@@ -1,3 +1,4 @@
+import { vehicleWhere } from "@/lib/vehicle-access";
 // src/app/(app)/historique/page.tsx
 import type { Metadata } from "next";
 import { Fuel, Gauge, History, ReceiptText, Wrench } from "lucide-react";
@@ -13,11 +14,11 @@ export const metadata: Metadata = { title: "Historique" };
 export default async function HistoryPage() {
   const user = await requirePageUser();
   const [mileage, fuel, maintenance, expenses, vehicles] = await Promise.all([
-    db.mileageReading.findMany({ where: { vehicle: { userId: user.id } } }),
-    db.fuelEntry.findMany({ where: { vehicle: { userId: user.id } } }),
-    db.maintenanceRecord.findMany({ where: { vehicle: { userId: user.id } } }),
-    db.expense.findMany({ where: { vehicle: { userId: user.id } } }),
-    db.vehicle.findMany({ where: { userId: user.id }, select: { id: true, brand: true, model: true } }),
+    db.mileageReading.findMany({ where: { vehicle: vehicleWhere(user.id) } }),
+    db.fuelEntry.findMany({ where: { vehicle: vehicleWhere(user.id) } }),
+    db.maintenanceRecord.findMany({ where: { vehicle: vehicleWhere(user.id, "COMPLETE") } }),
+    db.expense.findMany({ where: { vehicle: vehicleWhere(user.id) } }),
+    db.vehicle.findMany({ where: vehicleWhere(user.id), select: { id: true, brand: true, model: true } }),
   ]);
   const vehicleNames = new Map(vehicles.map(vehicle => [vehicle.id, `${vehicle.brand} ${vehicle.model}`]));
   const events = mergeHistory({ mileage, fuel, maintenance, expenses });

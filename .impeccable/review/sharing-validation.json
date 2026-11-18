@@ -1,0 +1,33 @@
+{
+  "feature": "vehicle-sharing",
+  "version": "2.1.0",
+  "date": "2026-11-18",
+  "environment": "local macOS / Node24",
+  "tests": {
+    "files": 25,
+    "passed": 181,
+    "sharingPassed": 21
+  },
+  "checks": {
+    "typecheck": "passed",
+    "lint": "passed",
+    "build": "passed",
+    "sqlite": "isolated temporary fixture",
+    "postgresql14": "isolated migration SQL, ownership and expense preservation; no HTTP/provider deployment",
+    "chrome": "two independent browser contexts with synthetic encrypted sessions, widths1440/390/320",
+    "uiReview": "ship on scored read-only copy fix"
+  },
+  "proofs": [
+    "sharing-browser-report.json",
+    "sharing-postgresql.txt",
+    "sharing-finish-review.md",
+    "sharing-finish-verdict.md"
+  ],
+  "notPerformed": [
+    "real Kyros authentication",
+    "production deployment or migration",
+    "physical mobile device",
+    "assistive technology audit"
+  ],
+  "emailDelivery": "not implemented; invitation appears in recipient Garage"
+}

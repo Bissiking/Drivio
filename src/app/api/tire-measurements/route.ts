@@ -1,3 +1,4 @@
+import { requireVehicleAccess, vehicleWhere } from "@/lib/vehicle-access";
 // src/app/api/tire-measurements/route.ts
 import { NextResponse } from "next/server";
 import { z } from "zod";
@@ -9,11 +10,13 @@ export async function POST(request: Request) {
   const user = await apiUser(); if (!user) return NextResponse.json({ error: "Session expirée." }, { status: 401 });
   try {
     const data = z.object({ tireSetId: z.string().min(1), date: z.coerce.date().max(new Date()), mileage: z.coerce.number().int().nonnegative(), treadDepthMm: z.preprocess(v => v === "" || v == null ? undefined : v, z.coerce.number().nonnegative().max(30)), targetDepthMm: optional, replacementCost: optional }).parse(await request.json());
-    const tire = await db.tireSet.findFirst({ where: { id: data.tireSetId, vehicle: { userId: user.id } } });
+    const tire = await db.tireSet.findFirst({ where: { id: data.tireSetId, vehicle: vehicleWhere(user.id) } });
     if (!tire) return NextResponse.json({ error: "Pneumatiques introuvables." }, { status: 404 });
+    await requireVehicleAccess(user.id, tire.vehicleId, "COMPLETE", true);
     if (data.mileage < tire.mountedMileage || data.date < tire.mountedAt || (tire.removedAt && data.date > tire.removedAt) || (tire.removedMileage != null && data.mileage > tire.removedMileage) || (data.targetDepthMm !== undefined && (data.targetDepthMm <= 0 || data.targetDepthMm > 30))) return NextResponse.json({ error: "Mesure incompatible avec le montage ou le démontage." }, { status: 400 });
     await db.$transaction(async tx => {
       await tx.vehicle.update({ where: { id: tire.vehicleId }, data: { updatedAt: new Date() } });
+      await requireVehicleAccess(user.id, tire.vehicleId, "COMPLETE", true, tx);
       await tx.tireSet.update({ where: { id: tire.id }, data: { updatedAt: new Date() } });
       await validateMileage(tx, tire.vehicleId, data.mileage, data.date);
       const neighbors = await tx.tireMeasurement.findMany({ where: { tireSetId: tire.id }, orderBy: { date: "asc" } });

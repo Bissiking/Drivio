@@ -19,6 +19,29 @@
   --danger: #f19a96;
 }
 
+/* Every palette defines roles, so charts and controls inherit the same theme. */
+:root[data-palette="slate"] { --accent: #9ac5f5; --accent-ink: #12283e; }
+:root[data-theme="light"] {
+  color-scheme: light;
+  --navigation: #eeece9; --ink: #f6f4f1; --surface: #ffffff;
+  --surface-raised: #ffffff; --surface-soft: #e7e4df;
+  --line: #aaa49d; --line-soft: #d8d3cd;
+  --text: #262320; --muted: #5e5851; --quiet: #6d665f;
+  --accent: #875029; --accent-ink: #ffffff; --warning: #835c13; --danger: #ab302a;
+}
+:root[data-theme="light"][data-palette="slate"] { --accent: #285e93; --accent-ink: #ffffff; }
+@media (prefers-color-scheme: light) {
+  :root[data-theme="auto"] {
+    color-scheme: light;
+    --navigation: #eeece9; --ink: #f6f4f1; --surface: #ffffff;
+    --surface-raised: #ffffff; --surface-soft: #e7e4df;
+    --line: #aaa49d; --line-soft: #d8d3cd;
+    --text: #262320; --muted: #5e5851; --quiet: #6d665f;
+    --accent: #875029; --accent-ink: #ffffff; --warning: #835c13; --danger: #ab302a;
+  }
+  :root[data-theme="auto"][data-palette="slate"] { --accent: #285e93; --accent-ink: #ffffff; }
+}
+
 * { box-sizing: border-box; }
 html { background: var(--ink); }
 body {

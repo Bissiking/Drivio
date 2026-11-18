@@ -16,12 +16,19 @@ model User {
   avatarUrl              String?
   createdAt              DateTime               @default(now())
   updatedAt              DateTime               @updatedAt
+  vehicleShares          VehicleShare[]         @relation("VehicleShareRecipient")
   vehicles               Vehicle[]
   notificationSettings   NotificationSettings?
   notificationDeliveries NotificationDelivery[]
   autoFuelMobile         Boolean                @default(false)
   autoFuelDesktop        Boolean                @default(false)
   fuelPromptClaims       FuelPromptClaim[]
+  themeMode              String                 @default("dark")
+  themePalette           String                 @default("copper")
+  hubTokenHash           String?                @unique
+  hubTokenExpiresAt      DateTime?
+  hubAuthorizations HubAuthorization[]
+  hubApplications   HubApplication[]
 }
 
 model Vehicle {
@@ -48,6 +55,7 @@ model Vehicle {
   createdAt         DateTime              @default(now())
   updatedAt         DateTime              @updatedAt
   user              User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shares            VehicleShare[]
   mileageReadings   MileageReading[]
   maintenance       MaintenanceRecord[]
   schedules         MaintenanceSchedule[]
@@ -86,6 +94,8 @@ model MaintenanceRecord {
   id        String   @id @default(cuid())
   vehicleId String
   type      String
+  category  String?
+  subcategory String?
   title     String
   date      DateTime
   mileage   Int?
@@ -103,6 +113,8 @@ model MaintenanceSchedule {
   id                String    @id @default(cuid())
   vehicleId         String
   type              String
+  category          String?
+  subcategory       String?
   title             String
   dueDate           DateTime?
   dueMileage        Int?
@@ -131,6 +143,7 @@ model Expense {
   id                  String             @id @default(cuid())
   vehicleId           String
   category            String
+  subcategory         String?
   amount              Decimal
   date                DateTime
   mileage             Int?
@@ -382,4 +395,52 @@ model NotificationDelivery {
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, key])
+}
+
+model HubAuthorization {
+  codeHash String @id
+  nonce String @unique
+  userId String
+  clientId String
+  redirectUri String
+  codeChallenge String
+  vehicleIds String
+  expiresAt DateTime
+  consumedAt DateTime?
+  createdAt DateTime @default(now())
+  user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+  @@index([expiresAt])
+}
+
+model HubApplication {
+  id String @id @default(cuid())
+  userId String
+  clientId String
+  tokenHash String @unique
+  vehicleIds String
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime @default(now())
+  user User @relation(fields:[userId], references:[id], onDelete:Cascade)
+  @@unique([userId,clientId])
+}
+
+model VehicleShare {
+  id          String    @id @default(cuid())
+  vehicleId   String
+  email       String
+  recipientId String?
+  scope       String    @default("SIMPLE")
+  permission  String    @default("READ")
+  expiresAt   DateTime
+  acceptedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  vehicle     Vehicle   @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  recipient   User?     @relation("VehicleShareRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@unique([vehicleId, email])
+  @@unique([vehicleId, recipientId])
+  @@index([recipientId, scope, permission])
+  @@index([email, acceptedAt, expiresAt])
 }

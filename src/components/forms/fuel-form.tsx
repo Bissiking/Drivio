@@ -8,18 +8,19 @@ import { FUELS } from "@/lib/fuel-types";
 
 type VehicleOption = { id: string; brand: string; model: string };
 
-export function FuelForm({ vehicles }: { vehicles: VehicleOption[] }) {
-  return <ApiForm endpoint="/api/fuel" submitLabel="Enregistrer le plein">
+export type FuelValues = { id: string; vehicleId: string; date: string; mileage: number; liters: number; totalPrice: number; unitPrice: number; isFull: boolean; stationId: string | null; fuelType: string | null };
+export function FuelForm({ vehicles, entry }: { vehicles: VehicleOption[]; entry?: FuelValues }) {
+  return <ApiForm endpoint={entry ? `/api/fuel/${entry.id}` : "/api/fuel"} method={entry ? "PATCH" : "POST"} resetOnSuccess={!entry} submitLabel={entry ? "Enregistrer les modifications" : "Enregistrer le plein"}>
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      <Field label="Véhicule"><Select name="vehicleId">{vehicles.map((v) => <option key={v.id} value={v.id}>{v.brand} {v.model}</option>)}</Select></Field>
-      <Field label="Date"><Input name="date" type="date" defaultValue={toDateInput()} required /></Field>
-      <Field label="Kilométrage"><Input name="mileage" type="number" min="0" required /></Field>
-      <Field label="Litres"><Input name="liters" type="number" min="0.01" step="0.01" required /></Field>
-      <Field label="Prix total (€)"><Input name="totalPrice" type="number" min="0.01" step="0.01" required /></Field>
-      <Field label="Prix au litre facultatif"><Input name="unitPrice" type="number" min="0" step="0.001" /></Field>
-      <Field label="Carburant, pour comparer les prix"><Select name="fuelType" defaultValue=""><option value="">Non renseigné</option>{Object.entries(FUELS).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</Select></Field>
-      <Field label="Identifiant officiel de la station, facultatif"><Input name="stationId" inputMode="numeric" pattern="[0-9]+" maxLength={20} /></Field>
+      <Field label="Véhicule"><Select name="vehicleId" defaultValue={entry?.vehicleId}>{vehicles.map((v) => <option key={v.id} value={v.id}>{v.brand} {v.model}</option>)}</Select></Field>
+      <Field label="Date"><Input name="date" type="date" defaultValue={entry?.date ?? toDateInput()} required /></Field>
+      <Field label="Kilométrage"><Input name="mileage" defaultValue={entry?.mileage} type="number" min="0" required /></Field>
+      <Field label="Litres"><Input name="liters" defaultValue={entry?.liters} type="number" min="0.01" step="0.01" required /></Field>
+      <Field label="Prix total (€)"><Input name="totalPrice" defaultValue={entry?.totalPrice} type="number" min="0.01" step="0.01" required /></Field>
+      <Field label="Prix au litre facultatif"><Input name="unitPrice" defaultValue={entry?.unitPrice} type="number" min="0.001" step="0.001" /></Field>
+      <Field label="Carburant, pour comparer les prix"><Select name="fuelType" defaultValue={entry?.fuelType ?? ""}><option value="">Non renseigné</option>{Object.entries(FUELS).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</Select></Field>
+      <Field label="Identifiant officiel de la station, facultatif"><Input name="stationId" defaultValue={entry?.stationId ?? ""} inputMode="numeric" pattern="[0-9]+" maxLength={20} /></Field>
     </div>
-    <label className="flex items-center gap-3 text-sm text-[var(--muted)]"><input name="isFull" type="checkbox" value="true" defaultChecked className="size-4 accent-[var(--accent)]" /> Plein complet — nécessaire pour une consommation fiable</label>
+    <label className="flex items-center gap-3 text-sm text-[var(--muted)]"><input name="isFull" type="checkbox" value="true" defaultChecked={entry?.isFull ?? true} className="size-4 accent-[var(--accent)]" /> Plein complet — nécessaire pour une consommation fiable</label>
   </ApiForm>;
 }

@@ -6,5 +6,5 @@ import nextTypeScript from "eslint-config-next/typescript";
 export default defineConfig([
   ...nextVitals,
   ...nextTypeScript,
-  globalIgnores([".next/**", "public/uploads/**", "prisma/migrations/**"]),
+  globalIgnores([".next/**", "tmp/sharing-next/**", "public/uploads/**", "prisma/migrations/**"]),
 ]);

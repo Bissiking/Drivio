@@ -11,6 +11,10 @@ export const MAINTENANCE_TYPES = [
   "ENTRETIEN_CONSTRUCTEUR",
   "PERSONNALISE",
   "PLAQUETTES", "DISQUES", "BATTERIE", "ESSUIE_GLACES", "LIQUIDE_FREIN", "BOUGIES",
+  "FILTRE_HUILE", "FILTRE_AIR", "FILTRE_HABITACLE", "FILTRE_CARBURANT",
+  "TRANSMISSION", "REFROIDISSEMENT", "GEOMETRIE", "SUSPENSION", "ECLAIRAGE",
+  "ETRIERS", "MOTEUR", "BOITE_VITESSES", "EMBRAYAGE", "HUILE_BOITE", "ECHAPPEMENT", "CATALYSEUR", "SILENCIEUX", "LIGNE_ECHAPPEMENT",
+  "CARROSSERIE", "PEINTURE", "PARE_CHOCS", "REPARATION_CARROSSERIE", "REMPLACEMENT_PNEUS", "EQUILIBRAGE", "TRAINS_ROULANTS", "DIRECTION", "ELECTRICITE", "CONTROLES",
 ] as const;
 
 export const EXPENSE_CATEGORIES = [
@@ -27,6 +31,12 @@ export const EXPENSE_CATEGORIES = [
 ] as const;
 
 export const LABELS: Record<string, string> = {
+  ETRIERS: "Étriers", MOTEUR: "Moteur", BOITE_VITESSES: "Boîte de vitesses", EMBRAYAGE: "Embrayage", HUILE_BOITE: "Huile de boîte",
+  ECHAPPEMENT: "Échappement", CATALYSEUR: "Catalyseur", SILENCIEUX: "Silencieux", LIGNE_ECHAPPEMENT: "Ligne d’échappement",
+  CARROSSERIE: "Carrosserie", PEINTURE: "Peinture", PARE_CHOCS: "Pare-chocs", REPARATION_CARROSSERIE: "Réparation de carrosserie",
+  REMPLACEMENT_PNEUS: "Remplacement", EQUILIBRAGE: "Équilibrage", TRAINS_ROULANTS: "Suspension et direction", DIRECTION: "Direction", ELECTRICITE: "Électricité et visibilité", CONTROLES: "Révisions et contrôles",
+  FILTRE_HUILE: "Filtre à huile", FILTRE_AIR: "Filtre à air", FILTRE_HABITACLE: "Filtre d’habitacle", FILTRE_CARBURANT: "Filtre à carburant",
+  TRANSMISSION: "Transmission", REFROIDISSEMENT: "Refroidissement", GEOMETRIE: "Géométrie", SUSPENSION: "Suspension", ECLAIRAGE: "Éclairage",
   PLAQUETTES: "Plaquettes", DISQUES: "Disques", BATTERIE: "Batterie", ESSUIE_GLACES: "Essuie-glaces", LIQUIDE_FREIN: "Liquide de frein", BOUGIES: "Bougies",
   ACTIVE: "Actif",
   ARCHIVED: "Archivé",

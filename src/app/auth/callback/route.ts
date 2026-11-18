@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createSessionToken, sessionCookieOptions, SESSION_COOKIE } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { exchangeAuthorizationCode, getKyrosConfig, verifyKyrosToken } from "@/lib/kyros";
+import {safeConsentReturn} from '@/lib/return-to';
 
 export async function GET(request: NextRequest) {
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
@@ -47,10 +48,13 @@ export async function GET(request: NextRequest) {
       refreshExpiresAt,
       loginId: randomUUID(),
     });
-    const response = NextResponse.redirect(new URL("/dashboard", appUrl));
+    const encodedReturn=request.cookies.get('drivio_return_to')?.value;
+    const returnTo=encodedReturn ? safeConsentReturn(Buffer.from(encodedReturn,'base64url').toString('utf8')) : null;
+    const response = NextResponse.redirect(new URL(returnTo || "/dashboard", appUrl));
     response.cookies.set(SESSION_COOKIE, session, sessionCookieOptions(refreshExpiresAt));
     response.cookies.delete("drivio_oauth_state");
     response.cookies.delete("drivio_pkce");
+    response.cookies.delete('drivio_return_to');
     return response;
   } catch (error) {
     const message = error instanceof Error ? error.message : "Connexion impossible";
