@@ -1,0 +1,30 @@
+# DRIVIO 2.5.0 — AUTOMATISATIONS ET INTÉGRATIONS
+
+Dépôt : Bissiking/Drivio
+Branche : 2.x.x
+
+Objectif : étudier l'automatisation du suivi automobile.
+
+## Missions
+
+1. Auditer les notifications Gotify existantes.
+2. Identifier les améliorations pertinentes sans recréer le système.
+3. Étudier les possibilités de lecture OBD-II.
+4. Étudier les possibilités de synchronisation CUPRA Connect / Volkswagen Group.
+5. Vérifier les API disponibles, leurs restrictions, leur pérennité et leurs conditions d'utilisation.
+6. Proposer une architecture générique pour accueillir plusieurs fournisseurs de données.
+7. Étudier les mécanismes de synchronisation, les conflits et la protection des identifiants.
+
+## Contraintes
+- Aucune connexion à un véhicule sans autorisation.
+- Aucune dépendance à une API non vérifiée.
+- Ne pas contourner les protections des services automobiles.
+- Préserver la saisie manuelle.
+- Ne jamais écraser silencieusement des données existantes.
+- Évaluer la sécurité et les coûts de maintenance.
+
+Cette étape est exclusivement une étude R&D.
+
+Produis un rapport concis : faisabilité, risques, solutions possibles et recommandations.
+
+Aucun développement sans validation.

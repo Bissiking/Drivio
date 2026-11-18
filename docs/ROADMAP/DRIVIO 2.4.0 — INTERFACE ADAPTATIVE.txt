@@ -1,0 +1,34 @@
+# DRIVIO 2.4.0 — INTERFACE ADAPTATIVE
+
+Dépôt : Bissiking/Drivio
+Branche : 2.x.x
+
+Objectif : proposer plusieurs organisations d'interface sans reconstruire l'application.
+
+## Modes d'affichage
+
+- Compact : densité élevée, moins de défilement.
+- Confort : grandes zones tactiles, lecture facilitée.
+- Avancé : informations détaillées, filtres et statistiques supplémentaires.
+
+## Fonctionnalités
+
+1. Ajouter un mode automatique.
+2. Permettre une sélection manuelle.
+3. Mémoriser des préférences distinctes pour mobile et desktop.
+4. Adapter la navigation et le header au mode sélectionné.
+5. Réorganiser les cartes et les informations des pages.
+6. Préserver l'accès à toutes les fonctionnalités dans chaque mode.
+7. Conserver les thèmes existants indépendamment du mode d'affichage.
+8. Prévoir une transition cohérente entre les formats d'écran.
+
+## Contraintes
+- Éviter trois implémentations indépendantes de chaque page.
+- Privilégier des composants réutilisables.
+- Ne pas modifier les règles métier.
+- Respecter l'accessibilité.
+- Ne pas confondre thème visuel et organisation de l'interface.
+
+Commence par auditer les composants UI existants et proposer une architecture de présentation réutilisable.
+
+Présente les changements nécessaires avant toute implémentation.

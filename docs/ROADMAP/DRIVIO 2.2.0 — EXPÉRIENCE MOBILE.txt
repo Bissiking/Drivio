@@ -1,0 +1,53 @@
+# DRIVIO 2.2.0 — EXPÉRIENCE MOBILE
+
+Dépôt : Bissiking/Drivio
+Branche : 2.x.x
+
+Objectif : améliorer l'ergonomie mobile sans modifier inutilement l'identité visuelle de Drivio.
+
+## Fonctionnalités
+
+1. Réorganiser la navigation mobile avec un bouton + central.
+2. Ce bouton propose trois actions :
+   - Ajouter un kilométrage.
+   - Ajouter un plein de carburant.
+   - Ajouter une dépense.
+3. Ouvrir directement le formulaire correspondant dans une modale adaptée au mobile.
+4. Réutiliser la modale carburant et les formulaires existants.
+5. Prévoir une page « Ajouter » indépendante, accessible depuis la navigation.
+6. Permettre de choisir la page d'accueil : Dashboard ou Ajouter.
+7. Proposer automatiquement Ajouter comme accueil en mode PWA installée, tout en respectant le choix explicite de l'utilisateur.
+8. Conserver l'accès aux autres pages via un menu distinct.
+
+## Contraintes
+- Préserver les fonctionnalités existantes.
+- Ne pas dupliquer les formulaires ni les validations.
+- Maintenir une expérience desktop cohérente.
+- Respecter les permissions des véhicules partagés.
+- Préserver les données saisies lors de l'ouverture et de la fermeture des modales lorsque c'est pertinent.
+
+Commence par auditer la navigation, les formulaires et les préférences existantes.
+
+Propose un plan de modifications ciblées, puis attends mon accord avant de coder.
+
+## Compatibilité et architecture
+
+- Conserver intégralement l'interface Classic actuelle.
+- Ne pas anticiper les thèmes Horizon et Nova prévus pour la 2.4.0.
+- Réutiliser les composants et formulaires existants sans réécriture inutile.
+- Conserver les préférences actuelles d'ouverture automatique du formulaire carburant.
+- Définir un comportement cohérent si plusieurs préférences d'ouverture sont activées.
+- Ne jamais contourner les permissions des véhicules partagés.
+- Privilégier une architecture réutilisable pour les futures interfaces.
+- Ne pas introduire de migration de base de données sans nécessité.
+- Vérifier la navigation sur mobile, desktop et PWA installée.
+- Ne pas modifier le numéro de version avant validation de l'implémentation.
+
+## Livraison
+
+Après validation du plan et implémentation, fournir :
+- Les fichiers modifiés.
+- Les fonctionnalités ajoutées.
+- Les tests réellement exécutés et leurs résultats.
+- Les éventuelles limitations.
+- Les points nécessitant une vérification manuelle.
