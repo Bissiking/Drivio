@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-05T15:07:51.032028+00:00",
+  "generatedAt": "2026-11-18T09:28:18.212295+00:00",
   "title": "Design System: Drivio",
   "extensions": {
     "colorMeta": {
@@ -199,6 +199,244 @@
           "oklch(84% 0.1 25)",
           "oklch(95% 0.1 25)"
         ]
+      },
+      "light-navigation": {
+        "role": "neutral",
+        "displayName": "Navigation minérale",
+        "tonalRamp": [
+          "oklch(15% 0.00456 78.30)",
+          "oklch(24% 0.00456 78.30)",
+          "oklch(34% 0.00456 78.30)",
+          "oklch(46% 0.00456 78.30)",
+          "oklch(59% 0.00456 78.30)",
+          "oklch(71% 0.00456 78.30)",
+          "oklch(84% 0.00456 78.30)",
+          "oklch(95% 0.00456 78.30)"
+        ]
+      },
+      "light-ink": {
+        "role": "neutral",
+        "displayName": "Fond minéral",
+        "tonalRamp": [
+          "oklch(15% 0.00453 78.30)",
+          "oklch(24% 0.00453 78.30)",
+          "oklch(34% 0.00453 78.30)",
+          "oklch(46% 0.00453 78.30)",
+          "oklch(59% 0.00453 78.30)",
+          "oklch(71% 0.00453 78.30)",
+          "oklch(84% 0.00453 78.30)",
+          "oklch(95% 0.00453 78.30)"
+        ]
+      },
+      "light-surface": {
+        "role": "neutral",
+        "displayName": "Surface claire",
+        "tonalRamp": [
+          "oklch(15% 0.00000 89.88)",
+          "oklch(24% 0.00000 89.88)",
+          "oklch(34% 0.00000 89.88)",
+          "oklch(46% 0.00000 89.88)",
+          "oklch(59% 0.00000 89.88)",
+          "oklch(71% 0.00000 89.88)",
+          "oklch(84% 0.00000 89.88)",
+          "oklch(95% 0.00000 89.88)"
+        ]
+      },
+      "light-surface-raised": {
+        "role": "neutral",
+        "displayName": "Surface claire relevée",
+        "tonalRamp": [
+          "oklch(15% 0.00000 89.88)",
+          "oklch(24% 0.00000 89.88)",
+          "oklch(34% 0.00000 89.88)",
+          "oklch(46% 0.00000 89.88)",
+          "oklch(59% 0.00000 89.88)",
+          "oklch(71% 0.00000 89.88)",
+          "oklch(84% 0.00000 89.88)",
+          "oklch(95% 0.00000 89.88)"
+        ]
+      },
+      "light-surface-soft": {
+        "role": "neutral",
+        "displayName": "Surface claire active",
+        "tonalRamp": [
+          "oklch(15% 0.00748 80.72)",
+          "oklch(24% 0.00748 80.72)",
+          "oklch(34% 0.00748 80.72)",
+          "oklch(46% 0.00748 80.72)",
+          "oklch(59% 0.00748 80.72)",
+          "oklch(71% 0.00748 80.72)",
+          "oklch(84% 0.00748 80.72)",
+          "oklch(95% 0.00748 80.72)"
+        ]
+      },
+      "light-line": {
+        "role": "neutral",
+        "displayName": "Règle minérale claire",
+        "tonalRamp": [
+          "oklch(15% 0.01218 71.85)",
+          "oklch(24% 0.01218 71.85)",
+          "oklch(34% 0.01218 71.85)",
+          "oklch(46% 0.01218 71.85)",
+          "oklch(59% 0.01218 71.85)",
+          "oklch(71% 0.01218 71.85)",
+          "oklch(84% 0.01218 71.85)",
+          "oklch(95% 0.01218 71.85)"
+        ]
+      },
+      "light-line-soft": {
+        "role": "neutral",
+        "displayName": "Règle claire douce",
+        "tonalRamp": [
+          "oklch(15% 0.00988 72.65)",
+          "oklch(24% 0.00988 72.65)",
+          "oklch(34% 0.00988 72.65)",
+          "oklch(46% 0.00988 72.65)",
+          "oklch(59% 0.00988 72.65)",
+          "oklch(71% 0.00988 72.65)",
+          "oklch(84% 0.00988 72.65)",
+          "oklch(95% 0.00988 72.65)"
+        ]
+      },
+      "light-text": {
+        "role": "neutral",
+        "displayName": "Encre chaude",
+        "tonalRamp": [
+          "oklch(15% 0.00714 67.50)",
+          "oklch(24% 0.00714 67.50)",
+          "oklch(34% 0.00714 67.50)",
+          "oklch(46% 0.00714 67.50)",
+          "oklch(59% 0.00714 67.50)",
+          "oklch(71% 0.00714 67.50)",
+          "oklch(84% 0.00714 67.50)",
+          "oklch(95% 0.00714 67.50)"
+        ]
+      },
+      "light-muted": {
+        "role": "neutral",
+        "displayName": "Encre descriptive",
+        "tonalRamp": [
+          "oklch(15% 0.01357 71.73)",
+          "oklch(24% 0.01357 71.73)",
+          "oklch(34% 0.01357 71.73)",
+          "oklch(46% 0.01357 71.73)",
+          "oklch(59% 0.01357 71.73)",
+          "oklch(71% 0.01357 71.73)",
+          "oklch(84% 0.01357 71.73)",
+          "oklch(95% 0.01357 71.73)"
+        ]
+      },
+      "light-quiet": {
+        "role": "neutral",
+        "displayName": "Encre discrète",
+        "tonalRamp": [
+          "oklch(15% 0.01402 67.51)",
+          "oklch(24% 0.01402 67.51)",
+          "oklch(34% 0.01402 67.51)",
+          "oklch(46% 0.01402 67.51)",
+          "oklch(59% 0.01402 67.51)",
+          "oklch(71% 0.01402 67.51)",
+          "oklch(84% 0.01402 67.51)",
+          "oklch(95% 0.01402 67.51)"
+        ]
+      },
+      "light-accent": {
+        "role": "primary",
+        "displayName": "Cuivre minéral",
+        "tonalRamp": [
+          "oklch(15% 0.09114 54.03)",
+          "oklch(24% 0.09114 54.03)",
+          "oklch(34% 0.09114 54.03)",
+          "oklch(46% 0.09114 54.03)",
+          "oklch(59% 0.09114 54.03)",
+          "oklch(71% 0.09114 54.03)",
+          "oklch(84% 0.09114 54.03)",
+          "oklch(95% 0.09114 54.03)"
+        ]
+      },
+      "light-accent-ink": {
+        "role": "primary",
+        "displayName": "Blanc de commande",
+        "tonalRamp": [
+          "oklch(15% 0.00000 89.88)",
+          "oklch(24% 0.00000 89.88)",
+          "oklch(34% 0.00000 89.88)",
+          "oklch(46% 0.00000 89.88)",
+          "oklch(59% 0.00000 89.88)",
+          "oklch(71% 0.00000 89.88)",
+          "oklch(84% 0.00000 89.88)",
+          "oklch(95% 0.00000 89.88)"
+        ]
+      },
+      "light-warning": {
+        "role": "secondary",
+        "displayName": "Ambre profond",
+        "tonalRamp": [
+          "oklch(15% 0.09778 77.43)",
+          "oklch(24% 0.09778 77.43)",
+          "oklch(34% 0.09778 77.43)",
+          "oklch(46% 0.09778 77.43)",
+          "oklch(59% 0.09778 77.43)",
+          "oklch(71% 0.09778 77.43)",
+          "oklch(84% 0.09778 77.43)",
+          "oklch(95% 0.09778 77.43)"
+        ]
+      },
+      "light-danger": {
+        "role": "secondary",
+        "displayName": "Rouge profond",
+        "tonalRamp": [
+          "oklch(15% 0.16050 27.45)",
+          "oklch(24% 0.16050 27.45)",
+          "oklch(34% 0.16050 27.45)",
+          "oklch(46% 0.16050 27.45)",
+          "oklch(59% 0.16050 27.45)",
+          "oklch(71% 0.16050 27.45)",
+          "oklch(84% 0.16050 27.45)",
+          "oklch(95% 0.16050 27.45)"
+        ]
+      },
+      "slate-accent": {
+        "role": "primary",
+        "displayName": "Ardoise lumineuse",
+        "tonalRamp": [
+          "oklch(15% 0.08224 251.60)",
+          "oklch(24% 0.08224 251.60)",
+          "oklch(34% 0.08224 251.60)",
+          "oklch(46% 0.08224 251.60)",
+          "oklch(59% 0.08224 251.60)",
+          "oklch(71% 0.08224 251.60)",
+          "oklch(84% 0.08224 251.60)",
+          "oklch(95% 0.08224 251.60)"
+        ]
+      },
+      "slate-accent-ink": {
+        "role": "primary",
+        "displayName": "Encre ardoise",
+        "tonalRamp": [
+          "oklch(15% 0.04990 250.15)",
+          "oklch(24% 0.04990 250.15)",
+          "oklch(34% 0.04990 250.15)",
+          "oklch(46% 0.04990 250.15)",
+          "oklch(59% 0.04990 250.15)",
+          "oklch(71% 0.04990 250.15)",
+          "oklch(84% 0.04990 250.15)",
+          "oklch(95% 0.04990 250.15)"
+        ]
+      },
+      "light-slate-accent": {
+        "role": "primary",
+        "displayName": "Ardoise profonde",
+        "tonalRamp": [
+          "oklch(15% 0.10330 250.59)",
+          "oklch(24% 0.10330 250.59)",
+          "oklch(34% 0.10330 250.59)",
+          "oklch(46% 0.10330 250.59)",
+          "oklch(59% 0.10330 250.59)",
+          "oklch(71% 0.10330 250.59)",
+          "oklch(84% 0.10330 250.59)",
+          "oklch(95% 0.10330 250.59)"
+        ]
       }
     },
     "typographyMeta": {
@@ -294,7 +532,7 @@
       "name": "Text Field",
       "kind": "input",
       "refersTo": "input",
-      "description": "Champ de saisie avec libellé visible et focus cuivre.",
+      "description": "Champ de saisie avec libellé visible et focus dans l’accent choisi.",
       "html": "<label class=\"ds-field-label\" for=\"ds-mileage\">Kilométrage</label><input class=\"ds-field\" id=\"ds-mileage\" placeholder=\"35 000\" inputmode=\"numeric\" />",
       "css": ".ds-field-label{display:block;margin-bottom:8px;color:var(--muted);font-size:12px;font-weight:500;font-family:var(--font-geist-sans, 'Geist Sans'),ui-sans-serif,system-ui,sans-serif;}.ds-field{height:44px;width:100%;padding:0 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--text);font-size:14px;outline:none;caret-color:var(--accent);font-family:var(--font-geist-sans, 'Geist Sans'),ui-sans-serif,system-ui,sans-serif;}.ds-field::placeholder{color:var(--quiet);}.ds-field:hover{border-color:var(--line);}.ds-field:focus-visible{border-color:var(--accent);}.ds-field:disabled{opacity:.5;}"
     },
@@ -310,14 +548,14 @@
       "name": "Register Panel",
       "kind": "card",
       "refersTo": "panel",
-      "description": "Panneau plat, séparateur interne et action textuelle cuivre.",
+      "description": "Panneau plat, séparateur interne et action textuelle dans l’accent choisi.",
       "html": "<section class=\"ds-panel\"><header><h2>Dépenses</h2></header><div class=\"ds-panel-row\"><span>Ce mois</span><strong>214,00 €</strong></div><a href=\"#depenses\">Voir les dépenses</a></section>",
       "css": ".ds-panel{border-radius:16px;background:var(--surface);color:var(--text);font-family:var(--font-geist-sans, 'Geist Sans'),ui-sans-serif,system-ui,sans-serif;}.ds-panel header{padding:16px 20px;border-bottom:1px solid var(--line-soft);}.ds-panel h2{margin:0;font-size:16px;font-weight:500;}.ds-panel-row{display:flex;justify-content:space-between;gap:16px;padding:20px;font-size:14px;}.ds-panel-row span{color:var(--muted);}.ds-panel-row strong{font-size:20px;font-weight:500;font-variant-numeric:tabular-nums;}.ds-panel a{display:block;padding:16px 20px;border-top:1px solid var(--line-soft);color:var(--accent);font-size:14px;text-decoration:none;}.ds-panel a:focus-visible{outline:2px solid var(--accent);outline-offset:4px;}"
     },
     {
       "name": "Desktop Navigation",
       "kind": "nav",
-      "description": "Destination active avec icône cuivre et état courant explicite.",
+      "description": "Destination active avec icône dans l’accent choisi et état courant explicite. Treize destinations normalement, sept pour un compte ne contenant que des partages Simple.",
       "html": "<nav class=\"ds-nav\" aria-label=\"Navigation principale\"><a class=\"ds-nav-active\" href=\"#dashboard\" aria-current=\"page\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" aria-hidden=\"true\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M9 3v18M9 9h12\"/></svg>Dashboard</a><a href=\"#garage\">Garage</a><a href=\"#suivi\">Suivi véhicule</a></nav>",
       "css": ".ds-nav{width:240px;padding:16px;background:var(--navigation);font-family:var(--font-geist-sans, 'Geist Sans'),ui-sans-serif,system-ui,sans-serif;}.ds-nav a{display:flex;align-items:center;gap:12px;height:44px;margin-bottom:4px;padding:0 12px;border-radius:12px;color:var(--muted);font-size:14px;text-decoration:none;transition:background-color .15s,color .15s;}.ds-nav a:hover{background:var(--surface);color:var(--text);}.ds-nav .ds-nav-active{background:var(--surface-soft);color:var(--text);}.ds-nav-active svg{color:var(--accent);}.ds-nav a:focus-visible{outline:2px solid var(--accent);outline-offset:4px;}"
     },
@@ -331,10 +569,10 @@
   ],
   "narrative": {
     "northStar": "Registre technique nocturne",
-    "overview": "Drivio est un registre automobile personnel sombre, mat et précis. Les surfaces graphite, les règles minérales et les chiffres tabulaires font passer les faits avant les ornements. Le cuivre apporte une chaleur mesurée aux commandes et aux informations utiles ; le logo associe un éclair angulaire cuivre au mot-symbole blanc.\n\nLa photographie donne au véhicule sa place dans le dossier, puis les données reprennent la lecture. Une photo personnelle est prioritaire ; les images de modèles générées servent de fallback et portent une mention explicite d'illustration. Les panneaux restent lisibles par leur hiérarchie, leurs alignements et leurs séparateurs.",
+    "overview": "Drivio est un registre automobile personnel mat et précis, sombre par défaut. Les surfaces graphite, les règles minérales et les chiffres tabulaires font passer les faits avant les ornements. Le cuivre apporte une chaleur mesurée aux commandes et aux informations utiles ; le logo conserve son éclair angulaire cuivre. La variante claire minérale et l’accent ardoise prolongent ce même registre, avec les mêmes rôles et hiérarchies.\n\nLa photographie donne au véhicule sa place dans le dossier lorsqu’elle est affichée ; les données gardent la priorité de lecture. Une photo personnelle est prioritaire ; les images de modèles générées servent de fallback et portent une mention explicite d'illustration. Les panneaux restent lisibles par leur hiérarchie, leurs alignements et leurs séparateurs.",
     "keyCharacteristics": [
-      "Graphite mat et profondeur par couches tonales.",
-      "Cuivre fonctionnel pour les actions, la sélection et les données visualisées.",
+      "Graphite mat par défaut, variante claire minérale et profondeur par couches tonales.",
+      "Cuivre fonctionnel ou accent ardoise pour les actions, la sélection et les données visualisées.",
       "Geist Sans, chiffres tabulaires et titres directs.",
       "Photographies personnelles prioritaires, illustrations générées identifiées.",
       "Registres continus et séparateurs fins.",
@@ -343,7 +581,7 @@
     "rules": [
       {
         "name": "The Useful Copper Rule",
-        "body": "Le cuivre indique une action, une sélection, un focus ou une donnée visualisée ; il ne remplit pas les surfaces d'ambiance.",
+        "body": "Le cuivre, ou l’accent ardoise choisi, indique une action, une sélection, un focus ou une donnée visualisée ; il ne remplit pas les surfaces d’ambiance.",
         "section": "colors"
       },
       {
@@ -368,18 +606,20 @@
       },
       {
         "name": "The Tonal-First Rule",
-        "body": "Un niveau visuel utilise d'abord une nuance graphite et une règle ; l'ombre signale une surface superposée.",
+        "body": "Un niveau visuel utilise d’abord une nuance de surface et une règle ; l’ombre signale une surface superposée.",
         "section": "elevation"
       }
     ],
     "dos": [
-      "Do utiliser les surfaces graphite, les règles fines et les alignements pour construire la profondeur.",
-      "Do réserver le cuivre aux actions, sélections, focus et données visualisées.",
+      "Do utiliser les surfaces sémantiques du thème, les règles fines et les alignements pour construire la profondeur.",
+      "Do réserver l’accent choisi aux actions, sélections, focus et données visualisées.",
       "Do garder Réel, Calculé et Estimé textuellement explicites.",
       "Do conserver Geist Sans et les chiffres tabulaires pour les faits comparables.",
       "Do privilégier la photo personnelle et identifier les images générées comme illustrations.",
       "Do garder un focus clavier visible, des libellés explicites et le menu mobile Plus fonctionnel.",
-      "Do contenir le défilement des tableaux dans leur panneau."
+      "Do contenir le défilement des tableaux dans leur panneau.",
+      "Do préserver les valeurs saisies et laisser les suggestions de classification facultatives et modifiables.",
+      "Do présenter ensemble le périmètre et les droits du véhicule partagé, avec des commandes et des aides cohérentes avec cet accès."
     ],
     "donts": [
       "Don't ajouter un surtitre décoratif au-dessus des titres de page.",
@@ -388,7 +628,8 @@
       "Don't utiliser une illustration générée comme preuve photographique du véhicule personnel.",
       "Don't confondre fait mesuré, calcul et estimation.",
       "Don't ajouter une ombre aux panneaux au repos ou multiplier les couleurs d'ambiance.",
-      "Don't masquer une action derrière la navigation mobile ou créer un défilement horizontal global."
+      "Don't masquer une action derrière la navigation mobile ou créer un défilement horizontal global.",
+      "Don't inviter à modifier une donnée depuis une aide ou un lien affiché en lecture seule."
     ]
   }
 }

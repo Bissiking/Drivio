@@ -1,24 +1,35 @@
+import { AccessNotice } from "@/components/sharing/access-notice";
+import { vehicleWhere, shareFor, vehicleRights } from "@/lib/vehicle-access";
 // src/app/(app)/depenses/page.tsx
 import Link from "next/link";
 import { operatingCosts, monthKey, yearOf } from "@/lib/analytics";
 import type { Metadata } from "next";
 import { Plus, ReceiptText } from "lucide-react";
 import { ExpenseForm } from "@/components/forms/expense-form";
+import { VehiclePicker } from "@/components/layout/vehicle-picker";
 import { PageHeader } from "@/components/layout/page-header";
 import { Panel } from "@/components/layout/panel";
 import { SourceBadge } from "@/components/ui/source-badge";
 import { requirePageUser } from "@/lib/auth";
 import { calculateCostStats } from "@/lib/calculations";
-import { LABELS } from "@/lib/constants";
+import { expenseLabel } from "@/lib/taxonomy";
 import { db } from "@/lib/db";
-import { formatCurrency, formatDate, formatNumber } from "@/lib/format";
+import { formatCurrency, formatDate, formatNumber, toDateInput } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Dépenses" };
 
-export default async function ExpensesPage() {
+export default async function ExpensesPage({ searchParams }: { searchParams: Promise<{ edit?: string; vehicle?: string }> }) {
+  const query = await searchParams;
   const user = await requirePageUser();
-  const allVehicles = await db.vehicle.findMany({ where: { userId: user.id }, include: { mileageReadings: { orderBy: { date: "desc" }, take: 1 }, expenses: true, fuelEntries: true, maintenance: true, insurancePolicies: true } });
-  const vehicles = allVehicles.filter(v => v.status === "ACTIVE");
+  const availableVehicles = await db.vehicle.findMany({ where: vehicleWhere(user.id), include: { shares: shareFor(user.id), mileageReadings: { orderBy: { date: "desc" }, take: 1 }, expenses: true, fuelEntries: true, maintenance: true, insurancePolicies: true } });
+  const allVehicles = availableVehicles.filter(v => !query.vehicle || v.id === query.vehicle);
+  const editing = allVehicles.flatMap(v => v.expenses).find(e => e.id === query.edit);
+  const editingVehicle = allVehicles.find(v => v.id === editing?.vehicleId);
+  const vehicles = allVehicles.filter(v => v.status === "ACTIVE" && vehicleRights(v, user.id).canWrite);
+  const canEdit = (expense: { maintenanceRecordId: string | null }, vehicle: (typeof availableVehicles)[number]) => {
+    const rights = vehicleRights(vehicle, user.id);
+    return rights.canWrite && (!expense.maintenanceRecordId || rights.scope === "COMPLETE");
+  };
   const now = new Date();
   const expenses = allVehicles.flatMap(vehicle => operatingCosts(vehicle.expenses, vehicle.fuelEntries, vehicle.maintenance, vehicle.insurancePolicies, now, vehicle.saleDate).map(cost => ({ ...cost, vehicle, comment: vehicle.expenses.find(e => e.id === cost.id)?.comment ?? (cost.origin === "calculated" ? "Échéance d’assurance calculée" : "") }))).sort((a, b) => b.date.getTime() - a.date.getTime());
   const total = expenses.reduce((sum, entry) => sum + Number(entry.amount), 0);
@@ -30,9 +41,12 @@ export default async function ExpensesPage() {
   const costs = calculateCostStats(total, driven, activeMonths);
   return <div className="space-y-8">
     <PageHeader title="Dépenses" description="Les paiements enregistrés et les échéances d’assurance calculées, sans double comptage." />
+    <div className="space-y-3"><Link href="/depenses" className="inline-flex min-h-11 items-center text-sm text-[var(--accent)]">Tous les véhicules</Link><VehiclePicker vehicles={availableVehicles} selected={query.vehicle} href="/depenses" /></div>
+    {query.vehicle && allVehicles[0] ? <AccessNotice {...vehicleRights(allVehicles[0], user.id)} /> : null}
     <section className="grid divide-y divide-[var(--line-soft)] rounded-2xl bg-[var(--surface)] sm:grid-cols-2 sm:divide-x sm:divide-y-0 xl:grid-cols-5">{[["Ce mois", formatCurrency(month), "calculated"], ["Cette année", formatCurrency(year), "calculated"], ["Total d’utilisation", formatCurrency(total), "calculated"], ["Moyenne mensuelle", formatCurrency(costs.averageMonthly), "calculated"], ["Coût / km", driven > 0 ? formatCurrency(costs.costPerKm) : "—", "calculated"]].map(([label, value, kind]) => <div key={label} className="p-5"><p className="text-sm text-[var(--muted)]">{label}</p><p className="mt-3 text-xl font-medium">{value}</p><SourceBadge kind={kind as "real" | "calculated"} className="mt-3" /></div>)}</section>
     <p className="text-sm text-[var(--muted)]">Achat et revente sont intégrés dans <Link href="/statistiques" className="text-[var(--accent)]">le coût total de possession</Link>. Une assurance saisie remplace le coût automatique de son mois.</p>
     {vehicles.length ? <details className="rounded-2xl bg-[var(--surface)]"><summary className="flex cursor-pointer list-none items-center gap-3 px-5 py-4 text-sm font-medium sm:px-6"><Plus className="size-4 text-[var(--accent)]" />Ajouter une dépense</summary><div className="border-t border-[var(--line-soft)] p-5 sm:p-6"><ExpenseForm vehicles={vehicles} /></div></details> : null}
-    <Panel title="Registre des dépenses"><div className="divide-y divide-[var(--line-soft)]">{expenses.slice(0, 200).map((expense) => <article key={expense.id} className="grid gap-3 px-5 py-4 sm:grid-cols-[120px_1fr_180px_auto] sm:items-center sm:px-6"><time className="text-sm text-[var(--quiet)]">{formatDate(expense.date)}</time><div><p className="text-sm font-medium">{LABELS[expense.category] ?? expense.category}</p><p className="mt-1 text-xs text-[var(--muted)]">{expense.vehicle.brand} {expense.vehicle.model}{expense.comment ? ` · ${expense.comment}` : ""}</p></div><span className="text-sm text-[var(--muted)]">{expense.mileage ? formatNumber(expense.mileage, " km") : "—"}</span><span className="flex items-center gap-2"><strong className="font-medium">{formatCurrency(Number(expense.amount))}</strong><SourceBadge kind={expense.origin === "calculated" ? "calculated" : "real"} /></span></article>)}{expenses.length === 0 ? <div className="flex flex-col items-center py-14 text-[var(--muted)]"><ReceiptText className="mb-3 size-7" strokeWidth={1.4} /><p className="text-sm">Aucune dépense enregistrée.</p></div> : null}</div></Panel>
+    {query.edit ? <section id="modifier-depense"><Panel title="Modifier la dépense"><div className="space-y-4 p-5">{editing && editingVehicle && canEdit(editing, editingVehicle) ? editing.fuelEntryId ? <Link className="text-sm text-[var(--accent)]" href={`/carburant?vehicle=${editing.vehicleId}&edit=${editing.fuelEntryId}#modifier-plein`}>Modifier le plein associé</Link> : <ExpenseForm key={editing.id} vehicles={[editingVehicle]} expense={{ ...editing, date: toDateInput(editing.date), amount: Number(editing.amount) }} /> : <p className="text-sm text-[var(--muted)]">Dépense introuvable ou accessible en lecture seule. Les échéances d’assurance calculées se modifient dans le contrat.</p>}<Link href="/depenses" className="inline-flex min-h-11 items-center text-sm text-[var(--accent)]">Revenir au registre</Link></div></Panel></section> : null}
+    <Panel title="Registre des dépenses"><div className="divide-y divide-[var(--line-soft)]">{expenses.slice(0, 200).map((expense) => <article key={expense.id} className="grid gap-3 px-5 py-4 sm:grid-cols-[120px_1fr_180px_auto] sm:items-center sm:px-6"><time className="text-sm text-[var(--quiet)]">{formatDate(expense.date)}</time><div><p className="text-sm font-medium">{expenseLabel(expense.category, expense.vehicle.expenses.find(e => e.id === expense.id)?.subcategory)}</p><p className="mt-1 text-xs text-[var(--muted)]">{expense.vehicle.brand} {expense.vehicle.model}{expense.comment ? ` · ${expense.comment}` : ""}</p></div><span className="text-sm text-[var(--muted)]">{expense.mileage ? formatNumber(expense.mileage, " km") : "—"}</span><span className="flex items-center gap-2"><strong className="font-medium">{formatCurrency(Number(expense.amount))}</strong><SourceBadge kind={expense.origin === "calculated" ? "calculated" : "real"} /></span>{expense.vehicle.expenses.some(e => e.id === expense.id && canEdit(e, expense.vehicle)) ? <Link href={`/depenses?edit=${expense.id}#modifier-depense`} aria-label={`Modifier la dépense du ${formatDate(expense.date)}`} className="inline-flex min-h-11 items-center text-sm text-[var(--accent)] sm:col-start-2">Modifier</Link> : null}</article>)}{expenses.length === 0 ? <div className="flex flex-col items-center py-14 text-[var(--muted)]"><ReceiptText className="mb-3 size-7" strokeWidth={1.4} /><p className="text-sm">Aucune dépense enregistrée.</p></div> : null}</div></Panel>
   </div>;
 }

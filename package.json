@@ -1,6 +1,6 @@
 {
   "name": "drivio",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -19,7 +19,9 @@
     "db:migrate:postgres:safe": "node scripts/migrate-postgres-prod.mjs",
     "db:validate:postgres": "prisma validate --config prisma.postgresql.config.ts",
     "notifications:send": "tsx scripts/send-notifications.ts",
-    "db:deploy": "cross-env RUST_LOG=info prisma migrate deploy"
+    "db:deploy": "cross-env RUST_LOG=info prisma migrate deploy",
+    "test:browser:210": "tsx scripts/setup-210-browser.ts && node scripts/validate-210-browser.mjs",
+    "test:browser:sharing": "tsx scripts/setup-210-browser.ts --sharing && node scripts/validate-sharing-browser.mjs"
   },
   "dependencies": {
     "@mdi/js": "7.4.47",
@@ -36,14 +38,14 @@
     "geist": "1.5.1",
     "jose": "6.1.0",
     "lucide-react": "0.542.0",
-    "next": "16.3.3",
+    "next": "16.4.6",
     "pdf-lib": "^1.17.1",
     "pg": "^8.16.3",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "recharts": "3.2.1",
     "tailwind-merge": "3.3.1",
-    "zod": "4.1.5"
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.3.3",
@@ -54,7 +56,7 @@
     "@types/react-dom": "19.1.9",
     "cross-env": "10.0.0",
     "eslint": "9.34.0",
-    "eslint-config-next": "16.3.3",
+    "eslint-config-next": "16.4.6",
     "prisma": "^7.10.0",
     "tailwindcss": "4.3.3",
     "tsx": "4.20.5",
@@ -62,6 +64,7 @@
     "vitest": "4.1.11"
   },
   "overrides": {
-    "deepmerge-ts": "8.0.0"
+    "deepmerge-ts": "8.0.0",
+    "mysql2": "3.24.6"
   }
 }

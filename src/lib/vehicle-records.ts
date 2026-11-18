@@ -1,10 +1,11 @@
+import { vehicleWhere } from "./vehicle-access";
 import { z } from "zod";
 import { db } from "./db";
 import { warrantySchema, inspectionSchema, insuranceSchema, tireSchema } from "./validations";
 export const recordKind = z.enum(["warranty", "inspection", "insurance", "tires"]);
 export type RecordKind = z.infer<typeof recordKind>;
 export async function findRecord(kind: RecordKind, id: string, userId: string) {
-  const where = { id, vehicle: { userId } };
+  const where = { id, vehicle: vehicleWhere(userId, "COMPLETE", true) };
   switch (kind) {
     case "warranty": return db.warranty.findFirst({ where });
     case "inspection": return db.technicalInspection.findFirst({ where });

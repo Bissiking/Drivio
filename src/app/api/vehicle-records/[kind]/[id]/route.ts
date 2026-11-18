@@ -1,3 +1,4 @@
+import { requireVehicleAccess } from "@/lib/vehicle-access";
 import { NextRequest, NextResponse } from "next/server";
 import { apiError, apiUser } from "@/lib/api";
 import { deleteRecord, findRecord, persistRecord, recordKind } from "@/lib/vehicle-records";
@@ -11,6 +12,7 @@ async function mutate(request: NextRequest, context: Context, remove: boolean) {
     const params = await context.params, kind = recordKind.parse(params.kind);
     const record = await findRecord(kind, params.id, user.id);
     if (!record) return NextResponse.json({ error: "Élément introuvable." }, { status: 404 });
+    await requireVehicleAccess(user.id, record.vehicleId, "COMPLETE", true);
     if (remove) await deleteRecord(kind, record.id);
     else await persistRecord(kind, { ...await request.json(), vehicleId: record.vehicleId }, record.id);
     return NextResponse.json({ ok: true });

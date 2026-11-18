@@ -1,6 +1,7 @@
 // src/lib/maintenance-gauges.ts
 import { drivingRate } from "./predictions";
 import { activeTireAxles, estimateTireLife } from "./tire-estimation";
+import { projectMileageDate } from "./maintenance-date";
 
 const DAY = 86_400_000;
 type Schedule = { id: string; type: string; title: string; dueDate: Date | null; dueMileage: number | null; warningDays: number; warningKm: number; completedAt: Date | null; cycleStartDate?: Date | null; cycleStartMileage?: number | null };
@@ -50,7 +51,7 @@ export function maintenanceGauges(vehicle: GaugeVehicle, now = new Date()): Main
     const limiting = ratios.toSorted((a, b) => a.value - b.value)[0];
     // Reaching a known deadline establishes zero even without a start reference.
     const percent = overdue ? 0 : limiting ? clamp(limiting.value) : null;
-    const projected = schedule.dueMileage !== null && rate.daily && rate.lastDate ? new Date(rate.lastDate.getTime() + (schedule.dueMileage - current) / rate.daily * DAY) : null;
+    const projected = projectMileageDate(schedule.dueMileage, current, rate);
     const dateEstimated = Boolean(projected && (!schedule.dueDate || projected < schedule.dueDate));
     const dueDate = dateEstimated ? projected : schedule.dueDate;
     const missingDimension = (schedule.dueDate !== null && !ratios.some(r => r.factor === "DATE")) || (schedule.dueMileage !== null && !ratios.some(r => r.factor === "KM"));

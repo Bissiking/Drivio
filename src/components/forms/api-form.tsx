@@ -1,5 +1,6 @@
 // src/components/forms/api-form.tsx
 "use client";
+import { useVehicleWrite } from "@/components/sharing/vehicle-permissions";
 
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
@@ -7,9 +8,10 @@ import { LoaderCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export function ApiForm({ endpoint, children, submitLabel, className, transform, method = "POST", resetOnSuccess = true }: { endpoint: string; method?: "POST" | "PATCH"; resetOnSuccess?: boolean; children: React.ReactNode; submitLabel: string; className?: string; transform?: (data: Record<string, FormDataEntryValue>) => Record<string, unknown> }) {
+export function ApiForm({ endpoint, children, submitLabel, className, transform, method = "POST", resetOnSuccess = true, successMessage }: { endpoint: string; method?: "POST" | "PATCH"; resetOnSuccess?: boolean; children: React.ReactNode; submitLabel: string; className?: string; successMessage?: string; transform?: (data: Record<string, FormDataEntryValue>) => Record<string, unknown> }) {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
+  const [resetKey, setResetKey] = useState(0);
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState<{ type: "error" | "success"; text: string } | null>(null);
   async function submit(event: React.FormEvent<HTMLFormElement>) {
@@ -22,8 +24,8 @@ export function ApiForm({ endpoint, children, submitLabel, className, transform,
       const response = await fetch(endpoint, { method, headers: { "content-type": "application/json" }, body: JSON.stringify(body), signal: AbortSignal.timeout(30_000) });
       const payload = (await response.json()) as { error?: string };
       if (!response.ok) throw new Error(payload.error ?? "L'enregistrement a échoué.");
-      if (resetOnSuccess) formRef.current?.reset();
-      setMessage({ type: "success", text: method === "PATCH" ? "Modifications enregistrées." : "Enregistrement ajouté." });
+      if (resetOnSuccess) { formRef.current?.reset(); setResetKey(key => key + 1); }
+      setMessage({ type: "success", text: successMessage ?? (method === "PATCH" ? "Modifications enregistrées." : "Enregistrement ajouté.") });
       router.refresh();
     } catch (error) {
       setMessage({ type: "error", text: error instanceof Error && error.name === "TimeoutError" ? "La requête a expiré. Vérifiez le registre avant de réessayer." : error instanceof Error ? error.message : "Une erreur est survenue." });
@@ -31,5 +33,7 @@ export function ApiForm({ endpoint, children, submitLabel, className, transform,
       setPending(false);
     }
   }
-  return <form ref={formRef} onSubmit={submit} className={cn("space-y-5", className)}>{children}{message ? <p role="status" className={cn("text-sm", message.type === "error" ? "text-[var(--danger)]" : "text-[var(--accent)]")}>{message.text}</p> : null}<Button type="submit" disabled={pending}>{pending ? <LoaderCircle className="size-4 animate-spin" /> : null}{pending ? "Enregistrement…" : submitLabel}</Button></form>;
+  const canWrite = useVehicleWrite();
+  if (!canWrite) return null;
+  return <form ref={formRef} onSubmit={submit} className={cn("space-y-5", className)}><div key={resetKey} className="space-y-5">{children}</div>{message ? <p role="status" className={cn("text-sm", message.type === "error" ? "text-[var(--danger)]" : "text-[var(--accent)]")}>{message.text}</p> : null}<Button type="submit" disabled={pending}>{pending ? <LoaderCircle className="size-4 animate-spin" /> : null}{pending ? "Enregistrement…" : submitLabel}</Button></form>;
 }

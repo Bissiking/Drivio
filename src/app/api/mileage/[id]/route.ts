@@ -1,3 +1,4 @@
+import { requireVehicleAccess, vehicleWhere } from "@/lib/vehicle-access";
 import { NextRequest, NextResponse } from "next/server";
 import { apiError, apiUser } from "@/lib/api";
 import { db } from "@/lib/db";
@@ -10,11 +11,13 @@ async function mutate(request: NextRequest, context: Context, remove: boolean) {
   const user = await apiUser();
   if (!user) return NextResponse.json({ error: "Session expirée." }, { status: 401 });
   const { id } = await context.params;
-  const reading = await db.mileageReading.findFirst({ where: { id, vehicle: { userId: user.id } } });
+  const reading = await db.mileageReading.findFirst({ where: { id, vehicle: vehicleWhere(user.id) } });
   if (!reading) return NextResponse.json({ error: "Relevé introuvable." }, { status: 404 });
   try {
+    await requireVehicleAccess(user.id, reading.vehicleId, "SIMPLE", true);
     await db.$transaction(async tx => {
       await tx.vehicle.update({ where: { id: reading.vehicleId }, data: { updatedAt: new Date() } });
+      await requireVehicleAccess(user.id, reading.vehicleId, "SIMPLE", true, tx);
       if (remove) await tx.mileageReading.delete({ where: { id } });
       else {
         const data = mileageSchema.parse({ ...await request.json(), vehicleId: reading.vehicleId });

@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Field } from "./field";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { LABELS, MAINTENANCE_TYPES } from "@/lib/constants";
+import { MaintenanceTypeFields } from "./maintenance-type-fields";
 import { toDateInput } from "@/lib/format";
 
 type VehicleOption = { id: string; brand: string; model: string };
@@ -19,7 +19,7 @@ type ScheduleValues = SharedValues & {
 };
 
 function Shared({ vehicles, values }: { vehicles: VehicleOption[]; values?: SharedValues }) {
-  return <><Field label="Véhicule"><Select name="vehicleId" defaultValue={values?.vehicleId}>{vehicles.map((v) => <option key={v.id} value={v.id}>{v.brand} {v.model}</option>)}</Select></Field><Field label="Type"><Select name="type" defaultValue={values?.type}>{MAINTENANCE_TYPES.map((type) => <option key={type} value={type}>{LABELS[type]}</option>)}</Select></Field><Field label="Intitulé"><Input name="title" required minLength={2} maxLength={100} defaultValue={values?.title} placeholder="Vidange moteur" /></Field></>;
+  return <><Field label="Véhicule"><Select name="vehicleId" defaultValue={values?.vehicleId}>{vehicles.map((v) => <option key={v.id} value={v.id}>{v.brand} {v.model}</option>)}</Select></Field><MaintenanceTypeFields type={values?.type} title={values?.title} /></>;
 }
 
 export function MaintenanceRecordForm({ vehicles, record }: { vehicles: VehicleOption[]; record?: RecordValues }) {

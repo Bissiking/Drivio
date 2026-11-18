@@ -1,0 +1,61 @@
+{
+  "version": "2.1.0",
+  "date": "2026-11-18",
+  "environment": "local macOS, Node 24",
+  "checks": {
+    "vitest": {
+      "passed": 153,
+      "files": 23
+    },
+    "typecheck": "passed",
+    "lint": "passed",
+    "buildSQLite": "passed",
+    "buildPostgreSQL": "passed",
+    "prismaSchemas": [
+      "sqlite validated",
+      "postgresql validated"
+    ],
+    "postgresql": {
+      "version": 14,
+      "isolated": true,
+      "sqlMigrations": "all applied with ON_ERROR_STOP",
+      "runtime": [
+        "fuel edit",
+        "linked expense and reading",
+        "recalculation",
+        "no duplicate",
+        "classification",
+        "Hub JSON",
+        "mileage",
+        "token revocation"
+      ],
+      "output": "PostgreSQL 14: fuel edit/recalculation/mirrors, maintenance classification, Hub JSON/mileage and revocation passed with Prisma PostgreSQL client."
+    },
+    "browser": {
+      "report": ".impeccable/review/210-browser-report.json",
+      "widths": [
+        1440,
+        390,
+        320
+      ],
+      "provider": "Chrome headless via Puppeteer",
+      "syntheticSession": true
+    },
+    "npmAuditProduction": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    }
+  },
+  "notPerformed": [
+    "production deployment",
+    "production migration",
+    "real Kyros flow",
+    "real LUMA consumer",
+    "physical mobile device",
+    "assistive technology audit"
+  ]
+}

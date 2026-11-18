@@ -1,7 +1,19 @@
 <!-- README.md -->
 # Drivio
 
-Drivio 1.2.0 est une application web personnelle de suivi automobile. Elle réunit le garage, les relevés kilométriques, les entretiens, les pleins, les dépenses et leur historique dans une interface responsive sombre.
+Drivio 2.1.0 est une application web personnelle de suivi automobile. Elle réunit le garage, les relevés kilométriques, les entretiens, les pleins, les dépenses et leur historique dans une interface responsive avec thèmes clair, sombre et automatique.
+
+## Version 2.1.0
+
+- [Partage de véhicule](docs/PARTAGE-VEHICULE.md) entre comptes, périmètres Simple/Complet et droits Lecture ou Lecture/Modification.
+
+- [API Hub LUMA v1](docs/API-HUB-LUMA.md), accès personnel révocable en lecture seule.
+- Modification des pleins et dépenses, synchronisation des écritures liées.
+- Entretiens organisés par catégories et sous-catégories, suggestions locales facultatives.
+- Dashboard multivéhicule, coûts et échéances structurées.
+- Apparence conservée sur le compte : clair, sombre ou automatique, cuivre ou ardoise.
+
+Lire [le guide 2.1.0 et les résultats de validation](docs/2.1.0.md) avant la mise à niveau.
 
 ## Fonctionnalités
 

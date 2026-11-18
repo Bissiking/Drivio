@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.1.0 — 2026-11-18
+
+- Partage d'un véhicule entre comptes : invitation et acceptation au Garage, périmètres Simple/Complet, lecture ou modification, révocation et contrôles d'accès sur les pages et API, sans duplication de données.
+
+- API Hub LUMA v1 : véhicules et synthèse bornée, jeton personnel SHA-256, expiration, rotation et révocation depuis Paramètres.
+- Édition des pleins avec recalcul des trajets et synchronisation transactionnelle du relevé et de la dépense associés ; les relevés manuels sont préservés.
+- Édition des dépenses et synchronisation des entretiens liés, sans nouvelle écriture.
+- Catégories et sous-catégories d'entretien extensibles, reconnaissance locale conservatrice des intitulés, proposition facultative et correction manuelle.
+- Migration additive SQLite/PostgreSQL : classification des anciens codes certains, conservation des intitulés, faits, relations et codes utilisés par les jauges.
+- Dashboard : choix du véhicule, actions courantes, alertes prioritaires, prochaines interventions et coûts par famille, graphiques d'usage et de carburant.
+- Thèmes sombre, clair et automatique avec palettes cuivre et ardoise ; préférences du compte rendues côté serveur.
+- Mise à jour de Next, de sa configuration ESLint, de Zod et de dépendances transitives dans leurs versions majeures actuelles après audit npm ; override mysql2 3.24.6 pour la dépendance épinglée par Prisma. Pas de mise à niveau majeure automatique.
+- Documentation : `docs/2.1.0.md` et `docs/API-HUB-LUMA.md`.
+
+
 ## Non publié — Pneus par essieu
 
 - Montage avant, arrière ou des quatre pneus avec clôture automatique limitée aux essieux remplacés et conservation de l'historique.

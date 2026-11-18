@@ -1,4 +1,5 @@
 "use client";
+import { useVehicleWrite } from "@/components/sharing/vehicle-permissions";
 import { useRouter } from "next/navigation";
 import { useId, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
@@ -18,5 +19,7 @@ export function PhotoForm({ vehicleId }: { vehicleId: string }) {
     } catch (error) { setMessage(error instanceof Error ? error.message : "Photo indisponible."); }
     finally { setPending(false); }
   }
+  const canWrite = useVehicleWrite();
+  if (!canWrite) return null;
   return <details className="mt-5"><summary className="cursor-pointer py-2 text-sm text-[var(--accent)]">Changer la photo</summary><form ref={ref} onSubmit={submit} className="space-y-4 pt-3"><div><Label htmlFor={`${id}-file`}>Photo personnelle (5 Mo maximum)</Label><Input id={`${id}-file`} type="file" name="file" accept="image/jpeg,image/png,image/webp" /></div><div><Label htmlFor={`${id}-url`}>Ou URL de photo</Label><Input id={`${id}-url`} name="photoUrl" type="url" placeholder="https://…" /></div><div className="flex flex-wrap gap-3"><Button disabled={pending}>{pending ? "Téléversement…" : "Appliquer la photo"}</Button><ApiActionButton endpoint={`/api/vehicles/${vehicleId}`} body={{ action: "photo", reset: true }} confirmation="Retirer la photo active et utiliser l’illustration de catalogue ?">Utiliser l’illustration</ApiActionButton></div>{message ? <p role="status" className="text-sm">{message}</p> : null}</form></details>;
 }

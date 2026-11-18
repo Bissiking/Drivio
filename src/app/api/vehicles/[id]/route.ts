@@ -1,6 +1,7 @@
 // src/app/api/vehicles/[id]/route.ts
+import { requireVehicleAccess } from "@/lib/vehicle-access";
 import { NextRequest, NextResponse } from "next/server";
-import { apiError, apiUser, ownedVehicle } from "@/lib/api";
+import { apiError, apiUser } from "@/lib/api";
 import { db } from "@/lib/db";
 import { z } from "zod";
 import { DRIVETRAINS } from "@/lib/drivetrain";
@@ -23,9 +24,10 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
   if (!user) return NextResponse.json({ error: "Session expirée." }, { status: 401 });
   try {
     const { id } = await params;
-    if (!(await ownedVehicle(user.id, id))) return NextResponse.json({ error: "Véhicule introuvable." }, { status: 404 });
+    const access = await requireVehicleAccess(user.id, id, "COMPLETE", true);
     const body = (await request.json()) as { action?: string };
     if (body.action === "primary") {
+      if (!access.owner) return NextResponse.json({ error: "Seul le propriétaire peut choisir son véhicule principal." }, { status: 403 });
       await db.$transaction([
         db.vehicle.updateMany({ where: { userId: user.id }, data: { isPrimary: false } }),
         db.vehicle.update({ where: { id }, data: { isPrimary: true, status: "ACTIVE" } }),
@@ -35,7 +37,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       const vehicle = await db.vehicle.findUniqueOrThrow({ where: { id } });
       await db.vehicle.update({ where: { id }, data: { status: "ARCHIVED", isPrimary: false, ...archive } });
       if (vehicle.isPrimary) {
-        const replacement = await db.vehicle.findFirst({ where: { userId: user.id, status: "ACTIVE" }, orderBy: { createdAt: "asc" } });
+        const replacement = await db.vehicle.findFirst({ where: { userId: access.vehicle.userId, status: "ACTIVE" }, orderBy: { createdAt: "asc" } });
         if (replacement) await db.vehicle.update({ where: { id: replacement.id }, data: { isPrimary: true } });
       }
     } else if (body.action === "restore") {

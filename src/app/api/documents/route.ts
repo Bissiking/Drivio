@@ -1,8 +1,9 @@
+import { requireVehicleAccess } from "@/lib/vehicle-access";
 import { randomUUID } from "node:crypto";
 import { mkdir, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { NextRequest, NextResponse } from "next/server";
-import { apiError, apiUser, ownedVehicle } from "@/lib/api";
+import { apiError, apiUser } from "@/lib/api";
 import { db } from "@/lib/db";
 import { documentSchema } from "@/lib/validations";
 import { detectFileType, documentDirectory } from "@/lib/uploads";
@@ -12,7 +13,7 @@ export async function POST(request: NextRequest) {
   if (!user) return NextResponse.json({ error: "Session expirée." }, { status: 401 });
   try {
     const form = await request.formData(), data = documentSchema.parse(Object.fromEntries(form));
-    if (!await ownedVehicle(user.id, data.vehicleId)) return NextResponse.json({ error: "Véhicule introuvable." }, { status: 404 });
+    await requireVehicleAccess(user.id, data.vehicleId, "COMPLETE", true);
     const file = form.get("file");
     if (!(file instanceof File) || file.size === 0) return NextResponse.json({ error: "Choisissez un document." }, { status: 400 });
     if (file.size > 10 * 1024 * 1024) return NextResponse.json({ error: "Le document ne doit pas dépasser 10 Mo." }, { status: 413 });

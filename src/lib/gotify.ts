@@ -1,4 +1,5 @@
 import { createCipheriv, createDecipheriv, createHash, randomBytes } from "node:crypto";
+import { vehicleWhere } from "./vehicle-access";
 import { db } from "./db";
 import { vehicleAlerts } from "./alerts";
 function key() {
@@ -27,7 +28,7 @@ export async function sendNotifications(userId?: string, dryRun = false) {
   const settings = await db.notificationSettings.findMany({ where: { enabled: true, tokenEncrypted: { not: null }, ...(userId ? { userId } : {}) } });
   let sent = 0, skipped = 0, failed = 0;
   for (const setting of settings) {
-    const vehicles = await db.vehicle.findMany({ where: { userId: setting.userId, status: "ACTIVE" }, include: { mileageReadings: true, schedules: true, warranties: true, inspections: true, insurancePolicies: true } });
+    const vehicles = await db.vehicle.findMany({ where: { ...vehicleWhere(setting.userId, "COMPLETE"), status: "ACTIVE" }, include: { mileageReadings: true, schedules: true, warranties: true, inspections: true, insurancePolicies: true } });
     const alerts = vehicles.flatMap(v => vehicleAlerts(v, new Date(), setting)).filter(a => setting[a.category] && a.types.some(type => setting.enabledTypes.split(",").includes(type)));
     for (const alert of alerts) {
       if (dryRun) { skipped++; continue; }

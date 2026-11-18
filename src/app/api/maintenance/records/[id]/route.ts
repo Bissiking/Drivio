@@ -1,3 +1,4 @@
+import { requireVehicleAccess, vehicleWhere } from "@/lib/vehicle-access";
 import { NextResponse } from "next/server";
 import { apiError, apiUser } from "@/lib/api";
 import { db } from "@/lib/db";
@@ -10,10 +11,13 @@ export async function PATCH(request: Request, { params }: Context) {
   if (!user) return NextResponse.json({ error: "Session expirée." }, { status: 401 });
   try {
     const { id } = await params;
-    const record = await db.maintenanceRecord.findFirst({ where: { id, vehicle: { userId: user.id } } });
+    const record = await db.maintenanceRecord.findFirst({ where: { id, vehicle: vehicleWhere(user.id) } });
     if (!record) return NextResponse.json({ error: "Entretien introuvable." }, { status: 404 });
+    await requireVehicleAccess(user.id, record.vehicleId, "COMPLETE", true);
     const data = maintenanceRecordSchema.parse({ ...await request.json(), vehicleId: record.vehicleId });
     await db.$transaction(async tx => {
+      await tx.vehicle.update({ where: { id: record.vehicleId }, data: { updatedAt: new Date() } });
+      await requireVehicleAccess(user.id, record.vehicleId, "COMPLETE", true, tx);
       await tx.maintenanceRecord.update({ where: { id }, data: {
         ...data, mileage: data.mileage ?? null, cost: data.cost ?? null, notes: data.notes ?? null,
       } });
@@ -33,9 +37,12 @@ export async function DELETE(_request: Request, { params }: Context) {
   if (!user) return NextResponse.json({ error: "Session expirée." }, { status: 401 });
   try {
     const { id } = await params;
-    const record = await db.maintenanceRecord.findFirst({ where: { id, vehicle: { userId: user.id } } });
+    const record = await db.maintenanceRecord.findFirst({ where: { id, vehicle: vehicleWhere(user.id) } });
     if (!record) return NextResponse.json({ error: "Entretien introuvable." }, { status: 404 });
+    await requireVehicleAccess(user.id, record.vehicleId, "COMPLETE", true);
     await db.$transaction(async tx => {
+      await tx.vehicle.update({ where: { id: record.vehicleId }, data: { updatedAt: new Date() } });
+      await requireVehicleAccess(user.id, record.vehicleId, "COMPLETE", true, tx);
       await tx.expense.deleteMany({ where: { maintenanceRecordId: id } });
       await tx.maintenanceRecord.delete({ where: { id } });
     });

@@ -1,4 +1,5 @@
 "use client";
+import { useVehicleWrite } from "@/components/sharing/vehicle-permissions";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button, type ButtonProps } from "@/components/ui/button";
@@ -15,5 +16,7 @@ export function ApiActionButton({ endpoint, body, children, variant = "outline",
     } catch (error) { setError(error instanceof Error ? error.message : "Action impossible."); }
     finally { setPending(false); }
   }
+  const canWrite = useVehicleWrite();
+  if (!canWrite) return null;
   return <span className="inline-flex flex-col gap-1"><Button type="button" size="sm" variant={variant} disabled={pending} onClick={run}>{pending ? "Patientez…" : children}</Button>{error ? <span role="alert" className="max-w-64 text-xs text-[var(--danger)]">{error}</span> : null}</span>;
 }
