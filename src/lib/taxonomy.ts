@@ -36,6 +36,15 @@ export function maintenanceClassification(type: string) {
   const group = maintenanceGroup(type);
   return { category: group && group.id !== "PERSONNALISE" ? group.id : null, subcategory: group && group.generic !== type ? type : null };
 }
+export function maintenanceExpenseSubtype(type: string) {
+  if (EXPENSE_SUBTYPES.ENTRETIEN.some(([id]) => id === type)) return type;
+  const category = maintenanceClassification(type).category;
+  if (category === "FREINAGE") return "FREINAGE";
+  if (category === "FILTRATION") return "FILTRES";
+  if (type === "CONTROLE_TECHNIQUE") return "CONTROLE";
+  if (type === "ENTRETIEN_CONSTRUCTEUR") return "REVISION";
+  return null;
+}
 export function maintenanceLabel(type: string) {
   const group = maintenanceGroup(type);
   return group ? group.generic === type ? group.label : `${group.label} · ${LABELS[type] ?? type}` : LABELS[type] ?? type;

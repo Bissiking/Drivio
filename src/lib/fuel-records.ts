@@ -2,6 +2,7 @@ import { requireVehicleAccess } from "./vehicle-access";
 import { z } from "zod";
 import { db } from "./db";
 import { fuelSchema } from "./validations";
+import { recordExpense } from "./record-expenses";
 import { MileageConflict, recalculateFuel, recalculateMileage, validateMileage } from "./mileage";
 
 export async function saveFuel(data: z.output<typeof fuelSchema>, id?: string, actorId?: string) {
@@ -10,6 +11,7 @@ export async function saveFuel(data: z.output<typeof fuelSchema>, id?: string, a
     if (actorId) await requireVehicleAccess(actorId, data.vehicleId, "SIMPLE", true, tx);
     const previousEntry = id ? await tx.fuelEntry.findUniqueOrThrow({ where: { id }, include: { mileageReading: { include: { fuelEntries: { select: { id: true } } } } } }) : null;
     const previousReading = previousEntry?.mileageReading;
+    const previousExpense = previousEntry ? await recordExpense(tx, "fuel", { ...previousEntry, amount: previousEntry.totalPrice }) : null;
     // A manually entered or shared reading is an independent historical fact.
     const managedReading = previousReading?.source === "FUEL" && previousReading.fuelEntries.length === 1 ? previousReading : null;
     await validateMileage(tx, data.vehicleId, data.mileage, data.date, false, managedReading?.id);
@@ -23,7 +25,8 @@ export async function saveFuel(data: z.output<typeof fuelSchema>, id?: string, a
     const record = { ...data, unitPrice: data.unitPrice ?? data.totalPrice / data.liters, stationId: data.stationId ?? null, fuelType: data.fuelType ?? null, mileageReadingId: reading.id };
     const fuel = id ? await tx.fuelEntry.update({ where: { id }, data: record }) : await tx.fuelEntry.create({ data: record });
     const expense = { vehicleId: data.vehicleId, category: "CARBURANT", amount: data.totalPrice, date: data.date, mileage: data.mileage, comment: `Plein · ${data.liters.toFixed(2)} L` };
-    await tx.expense.upsert({ where: { fuelEntryId: fuel.id }, create: { ...expense, fuelEntryId: fuel.id }, update: expense });
+    if (previousExpense) await tx.expense.update({ where: { id: previousExpense.id }, data: { ...expense, fuelEntryId: fuel.id } });
+    else await tx.expense.create({ data: { ...expense, fuelEntryId: fuel.id } });
     if (managedReading && managedReading.id !== reading.id) await tx.mileageReading.delete({ where: { id: managedReading.id } });
     await recalculateMileage(tx, data.vehicleId);
     await recalculateFuel(tx, data.vehicleId);

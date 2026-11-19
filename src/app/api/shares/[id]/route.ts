@@ -23,7 +23,13 @@ export async function DELETE(_request: Request, { params }: Context) {
   const user = await apiUser(); if (!user) return NextResponse.json({ error: "Session expirée." }, { status: 401 });
   try {
     const { id } = await params;
-    const removed = await db.vehicleShare.deleteMany({ where: { id, OR: [{ recipientId: user.id }, { email: user.email?.trim().toLowerCase() ?? "", acceptedAt: null }] } });
+    const where = { id, OR: [{ recipientId: user.id }, { email: user.email?.trim().toLowerCase() ?? "", acceptedAt: null }] };
+    const share = await db.vehicleShare.findFirst({ where });
+    if (!share) return NextResponse.json({ error: "Partage introuvable." }, { status: 404 });
+    const removed = await db.$transaction(async tx => {
+      await tx.vehicle.update({ where: { id: share.vehicleId }, data: { updatedAt: new Date() } });
+      return tx.vehicleShare.deleteMany({ where });
+    });
     return removed.count ? NextResponse.json({ ok: true }) : NextResponse.json({ error: "Partage introuvable." }, { status: 404 });
   } catch (error) { return apiError(error); }
 }

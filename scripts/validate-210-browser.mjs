@@ -108,7 +108,7 @@ try {
   const hubRevoked = page.waitForResponse(r => r.url().endsWith("/api/preferences/hub") && r.request().method() === "DELETE");
   await page.evaluate(() => [...document.querySelectorAll("button")].find(b => b.textContent === "Révoquer l’accès").click()); assert.equal((await hubRevoked).status(), 200);
   report.checks.push("Hub token management through actual settings controls");
-  const appearance = await page.$('form select');
+  const appearance = await page.$('form[aria-label="Apparence"] select');
   const appearanceForm = await appearance.evaluateHandle(e => e.closest("form"));
   const selects = await appearanceForm.$$("select"); await selects[0].select("light"); await selects[1].select("slate");
   const themeSaved = page.waitForResponse(r => r.url().endsWith("/api/preferences/theme")); await (await appearanceForm.$('button[type="submit"]')).click(); assert.equal((await themeSaved).status(), 200);

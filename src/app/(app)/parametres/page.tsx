@@ -1,3 +1,4 @@
+import { ExperiencePreferences } from "@/components/forms/experience-preferences";
 // src/app/(app)/parametres/page.tsx
 import { NOTIFICATION_TYPES } from "@/lib/notification-types";
 import { APP_VERSION } from "@/lib/version";
@@ -29,6 +30,7 @@ export default async function SettingsPage() {
   return <div className="space-y-8">
     <PageHeader title="Paramètres" description="Compte, sécurité et environnement de votre registre." />
     <Panel title="Drivio" description={`Version ${APP_VERSION} · Graphite & cuivre`}>{null}</Panel>
+    <Panel title="Accueil et interface" description="Choisissez votre point de départ et la présentation de Drivio."><div className="max-w-3xl p-5 sm:p-6"><ExperiencePreferences homePage={user.homePage === "dashboard" || user.homePage === "add" ? user.homePage : "auto"} interfaceStyle={user.interfaceStyle === "horizon" ? "horizon" : "classic"} /></div></Panel>
     <Panel title="Apparence" description="Une luminosité adaptée à votre usage, avec les mêmes repères partout."><div className="max-w-3xl p-5 sm:p-6"><ThemePreferences mode={user.themeMode} palette={user.themePalette} /></div></Panel>
     <Panel title="Hub LUMA" description="Accès personnel aux widgets, en lecture seule."><div className="p-5 sm:p-6"><HubApplications applications={applications}/><details className="mt-6 border-t border-[var(--line)] pt-5"><summary className="cursor-pointer text-sm text-[var(--muted)]">Accès manuel avancé</summary><div className="mt-5"><HubAccess expiresAt={user.hubTokenHash && user.hubTokenExpiresAt && user.hubTokenExpiresAt > new Date() ? user.hubTokenExpiresAt.toISOString() : null} /></div></details></div></Panel>
     <Panel title="Formulaire après connexion" description="Ouverture automatique facultative, désactivée par défaut."><div className="max-w-3xl p-5 sm:p-6"><FuelPreferences mobile={user.autoFuelMobile} desktop={user.autoFuelDesktop} /></div></Panel>

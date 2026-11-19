@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
     });
     const encodedReturn=request.cookies.get('drivio_return_to')?.value;
     const returnTo=encodedReturn ? safeConsentReturn(Buffer.from(encodedReturn,'base64url').toString('utf8')) : null;
-    const response = NextResponse.redirect(new URL(returnTo || "/dashboard", appUrl));
+    const response = NextResponse.redirect(new URL(returnTo || "/", appUrl));
     response.cookies.set(SESSION_COOKIE, session, sessionCookieOptions(refreshExpiresAt));
     response.cookies.delete("drivio_oauth_state");
     response.cookies.delete("drivio_pkce");

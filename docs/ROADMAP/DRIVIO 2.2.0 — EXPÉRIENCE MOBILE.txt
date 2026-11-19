@@ -51,3 +51,10 @@ Après validation du plan et implémentation, fournir :
 - Les tests réellement exécutés et leurs résultats.
 - Les éventuelles limitations.
 - Les points nécessitant une vérification manuelle.
+
+## Décision validée le 19 novembre 2026
+
+Le plan a été approuvé après audit. À la demande explicite de l’utilisateur,
+Classic et Horizon sont intégrés dès ce chantier, avec choix dans les paramètres.
+Cette décision remplace le report d’Horizon indiqué plus haut ; Nova reste hors périmètre.
+Le suivi de livraison et les limites de validation sont dans docs/2.2.0.md.

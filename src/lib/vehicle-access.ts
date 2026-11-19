@@ -20,3 +20,13 @@ export async function requireVehicleAccess(userId: string, id: string, scope: Ve
   if ((scope === "COMPLETE" && rights.scope !== "COMPLETE") || (write && !rights.canWrite)) throw new VehicleAccessError(403, write ? "Cet accès ne permet pas de modifier cette partie du véhicule." : "Cette partie du véhicule nécessite un partage complet.");
   return { vehicle, ...rights };
 }
+
+export async function withVehicleWrite<T>(userId: string, id: string, scope: VehicleScope, action: (tx: Prisma.TransactionClient, access: Awaited<ReturnType<typeof requireVehicleAccess>>) => Promise<T>) {
+  await requireVehicleAccess(userId, id, scope, true);
+  return db.$transaction(async tx => {
+    // Share changes lock this same row. Re-read rights only after obtaining it.
+    await tx.vehicle.update({ where: { id }, data: { updatedAt: new Date() } });
+    const access = await requireVehicleAccess(userId, id, scope, true, tx);
+    return action(tx, access);
+  });
+}

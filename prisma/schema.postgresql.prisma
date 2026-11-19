@@ -23,6 +23,8 @@ model User {
   autoFuelMobile         Boolean                @default(false)
   autoFuelDesktop        Boolean                @default(false)
   fuelPromptClaims       FuelPromptClaim[]
+  homePage              String                 @default("auto")
+  interfaceStyle        String                 @default("classic")
   themeMode              String                 @default("dark")
   themePalette           String                 @default("copper")
   hubTokenHash           String?                @unique

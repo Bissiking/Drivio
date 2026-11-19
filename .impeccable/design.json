@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-18T09:28:18.212295+00:00",
+  "generatedAt": "2026-11-19T08:45:58.224411+00:00",
   "title": "Design System: Drivio",
   "extensions": {
     "colorMeta": {
@@ -437,6 +437,146 @@
           "oklch(84% 0.10330 250.59)",
           "oklch(95% 0.10330 250.59)"
         ]
+      },
+      "horizon-ink": {
+        "role": "neutral",
+        "displayName": "Fond ardoise Horizon",
+        "tonalRamp": [
+          "oklch(15% 0.0210 254.9)",
+          "oklch(24% 0.0210 254.9)",
+          "oklch(34% 0.0210 254.9)",
+          "oklch(46% 0.0210 254.9)",
+          "oklch(59% 0.0210 254.9)",
+          "oklch(71% 0.0210 254.9)",
+          "oklch(84% 0.0210 254.9)",
+          "oklch(95% 0.0210 254.9)"
+        ]
+      },
+      "horizon-navigation": {
+        "role": "neutral",
+        "displayName": "Navigation ardoise Horizon",
+        "tonalRamp": [
+          "oklch(15% 0.0236 251.5)",
+          "oklch(24% 0.0236 251.5)",
+          "oklch(34% 0.0236 251.5)",
+          "oklch(46% 0.0236 251.5)",
+          "oklch(59% 0.0236 251.5)",
+          "oklch(71% 0.0236 251.5)",
+          "oklch(84% 0.0236 251.5)",
+          "oklch(95% 0.0236 251.5)"
+        ]
+      },
+      "horizon-surface": {
+        "role": "neutral",
+        "displayName": "Surface ardoise Horizon",
+        "tonalRamp": [
+          "oklch(15% 0.0274 251.1)",
+          "oklch(24% 0.0274 251.1)",
+          "oklch(34% 0.0274 251.1)",
+          "oklch(46% 0.0274 251.1)",
+          "oklch(59% 0.0274 251.1)",
+          "oklch(71% 0.0274 251.1)",
+          "oklch(84% 0.0274 251.1)",
+          "oklch(95% 0.0274 251.1)"
+        ]
+      },
+      "horizon-surface-raised": {
+        "role": "neutral",
+        "displayName": "Surface relevée Horizon",
+        "tonalRamp": [
+          "oklch(15% 0.0293 248.8)",
+          "oklch(24% 0.0293 248.8)",
+          "oklch(34% 0.0293 248.8)",
+          "oklch(46% 0.0293 248.8)",
+          "oklch(59% 0.0293 248.8)",
+          "oklch(71% 0.0293 248.8)",
+          "oklch(84% 0.0293 248.8)",
+          "oklch(95% 0.0293 248.8)"
+        ]
+      },
+      "horizon-surface-soft": {
+        "role": "neutral",
+        "displayName": "Surface active Horizon",
+        "tonalRamp": [
+          "oklch(15% 0.0324 250.5)",
+          "oklch(24% 0.0324 250.5)",
+          "oklch(34% 0.0324 250.5)",
+          "oklch(46% 0.0324 250.5)",
+          "oklch(59% 0.0324 250.5)",
+          "oklch(71% 0.0324 250.5)",
+          "oklch(84% 0.0324 250.5)",
+          "oklch(95% 0.0324 250.5)"
+        ]
+      },
+      "horizon-line": {
+        "role": "neutral",
+        "displayName": "Contour ardoise Horizon",
+        "tonalRamp": [
+          "oklch(15% 0.0298 252.2)",
+          "oklch(24% 0.0298 252.2)",
+          "oklch(34% 0.0298 252.2)",
+          "oklch(46% 0.0298 252.2)",
+          "oklch(59% 0.0298 252.2)",
+          "oklch(71% 0.0298 252.2)",
+          "oklch(84% 0.0298 252.2)",
+          "oklch(95% 0.0298 252.2)"
+        ]
+      },
+      "horizon-line-soft": {
+        "role": "neutral",
+        "displayName": "Séparateur ardoise Horizon",
+        "tonalRamp": [
+          "oklch(15% 0.0296 250.5)",
+          "oklch(24% 0.0296 250.5)",
+          "oklch(34% 0.0296 250.5)",
+          "oklch(46% 0.0296 250.5)",
+          "oklch(59% 0.0296 250.5)",
+          "oklch(71% 0.0296 250.5)",
+          "oklch(84% 0.0296 250.5)",
+          "oklch(95% 0.0296 250.5)"
+        ]
+      },
+      "horizon-text": {
+        "role": "neutral",
+        "displayName": "Texte froid Horizon",
+        "tonalRamp": [
+          "oklch(15% 0.0045 258.3)",
+          "oklch(24% 0.0045 258.3)",
+          "oklch(34% 0.0045 258.3)",
+          "oklch(46% 0.0045 258.3)",
+          "oklch(59% 0.0045 258.3)",
+          "oklch(71% 0.0045 258.3)",
+          "oklch(84% 0.0045 258.3)",
+          "oklch(95% 0.0045 258.3)"
+        ]
+      },
+      "horizon-muted": {
+        "role": "neutral",
+        "displayName": "Description Horizon",
+        "tonalRamp": [
+          "oklch(15% 0.0154 251.2)",
+          "oklch(24% 0.0154 251.2)",
+          "oklch(34% 0.0154 251.2)",
+          "oklch(46% 0.0154 251.2)",
+          "oklch(59% 0.0154 251.2)",
+          "oklch(71% 0.0154 251.2)",
+          "oklch(84% 0.0154 251.2)",
+          "oklch(95% 0.0154 251.2)"
+        ]
+      },
+      "horizon-quiet": {
+        "role": "neutral",
+        "displayName": "Métadonnée Horizon",
+        "tonalRamp": [
+          "oklch(15% 0.0224 252.5)",
+          "oklch(24% 0.0224 252.5)",
+          "oklch(34% 0.0224 252.5)",
+          "oklch(46% 0.0224 252.5)",
+          "oklch(59% 0.0224 252.5)",
+          "oklch(71% 0.0224 252.5)",
+          "oklch(84% 0.0224 252.5)",
+          "oklch(95% 0.0224 252.5)"
+        ]
       }
     },
     "typographyMeta": {
@@ -484,6 +624,17 @@
       {
         "name": "xl",
         "value": "1280px"
+      },
+      {
+        "name": "horizon-desktop-composition",
+        "value": "768px"
+      }
+    ],
+    "motion": [
+      {
+        "name": "entry-arrive",
+        "value": "180ms cubic-bezier(.16, 1, .3, 1)",
+        "purpose": "Entrée du dialogue natif de saisie ; réduction des animations respectée."
       }
     ]
   },
@@ -555,7 +706,7 @@
     {
       "name": "Desktop Navigation",
       "kind": "nav",
-      "description": "Destination active avec icône dans l’accent choisi et état courant explicite. Treize destinations normalement, sept pour un compte ne contenant que des partages Simple.",
+      "description": "Navigation Classic avec icône dans l’accent choisi et état courant explicite. Quatorze destinations normalement, huit pour un compte ne contenant que des partages Simple, avec Ajouter.",
       "html": "<nav class=\"ds-nav\" aria-label=\"Navigation principale\"><a class=\"ds-nav-active\" href=\"#dashboard\" aria-current=\"page\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" aria-hidden=\"true\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M9 3v18M9 9h12\"/></svg>Dashboard</a><a href=\"#garage\">Garage</a><a href=\"#suivi\">Suivi véhicule</a></nav>",
       "css": ".ds-nav{width:240px;padding:16px;background:var(--navigation);font-family:var(--font-geist-sans, 'Geist Sans'),ui-sans-serif,system-ui,sans-serif;}.ds-nav a{display:flex;align-items:center;gap:12px;height:44px;margin-bottom:4px;padding:0 12px;border-radius:12px;color:var(--muted);font-size:14px;text-decoration:none;transition:background-color .15s,color .15s;}.ds-nav a:hover{background:var(--surface);color:var(--text);}.ds-nav .ds-nav-active{background:var(--surface-soft);color:var(--text);}.ds-nav-active svg{color:var(--accent);}.ds-nav a:focus-visible{outline:2px solid var(--accent);outline-offset:4px;}"
     },
@@ -565,11 +716,18 @@
       "description": "Sélecteur explicite du véhicule actif, distinct de la navigation globale.",
       "html": "<nav class=\"ds-picker\" aria-label=\"Choisir le véhicule\"><a class=\"ds-picker-current\" href=\"#cupra\" aria-current=\"page\">CUPRA Formentor</a><a href=\"#clio\">Renault Clio</a></nav>",
       "css": ".ds-picker{display:flex;flex-wrap:wrap;gap:8px;font-family:var(--font-geist-sans, 'Geist Sans'),ui-sans-serif,system-ui,sans-serif;}.ds-picker a{padding:8px 12px;border:1px solid var(--line);border-radius:8px;color:var(--muted);font-size:14px;line-height:20px;text-decoration:none;transition:background-color .15s;}.ds-picker a:hover{background:var(--surface);}.ds-picker .ds-picker-current{background:var(--surface);border-color:var(--accent);color:var(--accent);}.ds-picker a:focus-visible{outline:2px solid var(--accent);outline-offset:4px;}"
+    },
+    {
+      "name": "Horizon Metric",
+      "kind": "card",
+      "description": "Mesure bordée Horizon ; sur mobile, icône et valeur compactes, détails et provenance accessibles mais masqués visuellement dans cette synthèse.",
+      "html": "<article class=\"ds-horizon-metric\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" aria-hidden=\"true\"><path d=\"m12 14 4-4M3.34 19a10 10 0 1 1 17.32 0\"/></svg><div><strong>36 000 km</strong><p>Compteur enregistré</p><span class=\"ds-horizon-detail\">2 000 km ce mois</span><small class=\"ds-horizon-source\">Réel</small></div></article>",
+      "css": ".ds-horizon-metric{display:flex;align-items:flex-start;gap:14px;min-height:128px;padding:16px 14px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(130deg,var(--surface-raised),var(--surface));color:var(--text);font-family:var(--font-geist-sans,Geist Sans),ui-sans-serif,system-ui,sans-serif;font-variant-numeric:tabular-nums}.ds-horizon-metric strong{font-size:1.45rem;font-weight:600;letter-spacing:-.02em}.ds-horizon-metric p{margin:5px 0 0;font-size:12px;line-height:1.5}.ds-horizon-metric span{display:block;margin-top:6px;color:var(--muted);font-size:11.2px;line-height:1.5}.ds-horizon-metric small{display:inline-flex;margin-top:7px;padding:2px 6px;border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);border-radius:6px;color:var(--accent);font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}.ds-horizon-metric>svg{flex-shrink:0;color:var(--accent);margin-top:3px}.ds-horizon-metric>div{min-width:0}@media(max-width:767px){.ds-horizon-metric{align-items:center;min-height:80px;gap:8px;padding:10px}.ds-horizon-metric strong{font-size:1rem;line-height:1.3}.ds-horizon-metric p{margin-top:3px;font-size:.7rem;line-height:1.4}.ds-horizon-metric .ds-horizon-detail,.ds-horizon-metric .ds-horizon-source{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}}"
     }
   ],
   "narrative": {
     "northStar": "Registre technique nocturne",
-    "overview": "Drivio est un registre automobile personnel mat et précis, sombre par défaut. Les surfaces graphite, les règles minérales et les chiffres tabulaires font passer les faits avant les ornements. Le cuivre apporte une chaleur mesurée aux commandes et aux informations utiles ; le logo conserve son éclair angulaire cuivre. La variante claire minérale et l’accent ardoise prolongent ce même registre, avec les mêmes rôles et hiérarchies.\n\nLa photographie donne au véhicule sa place dans le dossier lorsqu’elle est affichée ; les données gardent la priorité de lecture. Une photo personnelle est prioritaire ; les images de modèles générées servent de fallback et portent une mention explicite d'illustration. Les panneaux restent lisibles par leur hiérarchie, leurs alignements et leurs séparateurs.",
+    "overview": "Drivio est un registre automobile personnel mat et précis, sombre par défaut. Les surfaces graphite, les règles minérales et les chiffres tabulaires font passer les faits avant les ornements. Le cuivre apporte une chaleur mesurée aux commandes et aux informations utiles ; le logo conserve son éclair angulaire cuivre. La variante claire minérale et l’accent ardoise prolongent ce même registre, avec les mêmes rôles et hiérarchies.\n\nLa photographie donne au véhicule sa place dans le dossier lorsqu’elle est affichée ; les données gardent la priorité de lecture. Une photo personnelle est prioritaire ; les images de modèles générées servent de fallback et portent une mention explicite d'illustration. Les panneaux restent lisibles par leur hiérarchie, leurs alignements et leurs séparateurs.\n\nClassic reste l’interface par défaut. Horizon est une présentation alternative choisie dans « Accueil et interface » : fonds ardoise, contours visibles, marque automobile linéaire et navigation regroupée. Cette extension conserve les données, la provenance et les droits de Classic. Les règles ci-dessous restent celles de Classic sauf lorsqu’un paragraphe est explicitement marqué Horizon ; les variantes de luminosité et de palette restent indépendantes du choix d’interface.",
     "keyCharacteristics": [
       "Graphite mat par défaut, variante claire minérale et profondeur par couches tonales.",
       "Cuivre fonctionnel ou accent ardoise pour les actions, la sélection et les données visualisées.",
@@ -617,6 +775,8 @@
       "Do conserver Geist Sans et les chiffres tabulaires pour les faits comparables.",
       "Do privilégier la photo personnelle et identifier les images générées comme illustrations.",
       "Do garder un focus clavier visible, des libellés explicites et le menu mobile Plus fonctionnel.",
+      "Do appliquer les règles Horizon uniquement à cette interface et préserver les variantes de luminosité et de palette.",
+      "Do conserver la modale native, les brouillons de cet onglet et les conditions de modification dans chaque accès à la saisie.",
       "Do contenir le défilement des tableaux dans leur panneau.",
       "Do préserver les valeurs saisies et laisser les suggestions de classification facultatives et modifiables.",
       "Do présenter ensemble le périmètre et les droits du véhicule partagé, avec des commandes et des aides cohérentes avec cet accès."

@@ -8,15 +8,18 @@ import { LoaderCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export function ApiForm({ endpoint, children, submitLabel, className, transform, method = "POST", resetOnSuccess = true, successMessage }: { endpoint: string; method?: "POST" | "PATCH"; resetOnSuccess?: boolean; children: React.ReactNode; submitLabel: string; className?: string; successMessage?: string; transform?: (data: Record<string, FormDataEntryValue>) => Record<string, unknown> }) {
+export function ApiForm({ endpoint, children, submitLabel, className, transform, method = "POST", resetOnSuccess = true, successMessage, onSuccess, onPendingChange }: { endpoint: string; method?: "POST" | "PATCH"; resetOnSuccess?: boolean; children: React.ReactNode; submitLabel: string; className?: string; successMessage?: string; onSuccess?: () => void; onPendingChange?: (pending: boolean) => void; transform?: (data: Record<string, FormDataEntryValue>) => Record<string, unknown> }) {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
+  const submitting = useRef(false);
   const [resetKey, setResetKey] = useState(0);
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState<{ type: "error" | "success"; text: string } | null>(null);
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setPending(true);
+    if (submitting.current) return;
+    submitting.current = true;
+    setPending(true); onPendingChange?.(true);
     setMessage(null);
     const raw = Object.fromEntries(new FormData(event.currentTarget));
     try {
@@ -27,13 +30,15 @@ export function ApiForm({ endpoint, children, submitLabel, className, transform,
       if (resetOnSuccess) { formRef.current?.reset(); setResetKey(key => key + 1); }
       setMessage({ type: "success", text: successMessage ?? (method === "PATCH" ? "Modifications enregistrées." : "Enregistrement ajouté.") });
       router.refresh();
+      onSuccess?.();
     } catch (error) {
       setMessage({ type: "error", text: error instanceof Error && error.name === "TimeoutError" ? "La requête a expiré. Vérifiez le registre avant de réessayer." : error instanceof Error ? error.message : "Une erreur est survenue." });
     } finally {
-      setPending(false);
+      submitting.current = false;
+      setPending(false); onPendingChange?.(false);
     }
   }
   const canWrite = useVehicleWrite();
   if (!canWrite) return null;
-  return <form ref={formRef} onSubmit={submit} className={cn("space-y-5", className)}><div key={resetKey} className="space-y-5">{children}</div>{message ? <p role="status" className={cn("text-sm", message.type === "error" ? "text-[var(--danger)]" : "text-[var(--accent)]")}>{message.text}</p> : null}<Button type="submit" disabled={pending}>{pending ? <LoaderCircle className="size-4 animate-spin" /> : null}{pending ? "Enregistrement…" : submitLabel}</Button></form>;
+  return <form aria-busy={pending} ref={formRef} onSubmit={submit} className={cn("space-y-5", className)}><div key={resetKey} className="space-y-5">{children}</div>{message ? <p role="status" className={cn("text-sm", message.type === "error" ? "text-[var(--danger)]" : "text-[var(--accent)]")}>{message.text}</p> : null}<Button type="submit" disabled={pending}>{pending ? <LoaderCircle className="size-4 animate-spin" /> : null}{pending ? "Enregistrement…" : submitLabel}</Button></form>;
 }

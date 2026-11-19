@@ -1,0 +1,135 @@
+{
+  "scope": "Chrome headless, isolated synthetic SQLite and encrypted sessions. Installed mode simulated via navigator.standalone; no real Kyros or device installation.",
+  "checks": [
+    "Functional vehicle selector, grouped Horizon navigation, overdue danger color computed in Chrome",
+    "Account settings via UI, Classic/Horizon switching, browser and simulated installed home, explicit preference and direct-link priority",
+    "Central action chooser, separate retained drafts, Escape, all three real API saves without duplicate mirrors, selected vehicle after success, 320px layout",
+    "Appearance independent of interface, automatic system theme, install manifest and PNG icons",
+    "Horizon shared read-only hides creation, Simple dossier remains private, revoked modal fails server-side",
+    "Manual fuel satisfies the automatic prompt without reopening",
+    "Automatic fuel once per login and deferred behind a manual entry, with one dialog at a time"
+  ],
+  "pages": [
+    {
+      "route": "/dashboard",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "route": "/parametres",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "route": "/",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/dashboard?vehicle=qa-cupra",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "route": "/dashboard?vehicle=qa-cupra",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/parametres",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/dashboard?vehicle=qa-cupra",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/ajouter?vehicle=qa-cupra",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/ajouter?vehicle=qa-clio",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "route": "/parametres",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/parametres",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/ajouter",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/dashboard",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/parametres",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/garage",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/ajouter",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/dashboard?vehicle=qa-cupra",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/ajouter?vehicle=qa-cupra",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/ajouter?vehicle=qa-cupra",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/ajouter",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/dashboard",
+      "width": 390,
+      "scroll": 390
+    }
+  ],
+  "errors": []
+}

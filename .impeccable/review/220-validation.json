@@ -1,0 +1,67 @@
+{
+  "date": "2026-11-19",
+  "applicationVersion": "2.1.0",
+  "scope": "Local isolated copies; synthetic SQLite and encrypted sessions; disposable local PostgreSQL. Chrome for Testing headless via Puppeteer.",
+  "checks": {
+    "vitest": {
+      "passed": 206,
+      "files": 27
+    },
+    "typescript": "passed, noEmit incremental false",
+    "eslint": "passed",
+    "browser220": {
+      "groups": 7,
+      "pageStates": 24,
+      "javascriptErrors": 0,
+      "widths": [
+        1440,
+        390,
+        320
+      ],
+      "installedMode": "simulated navigator.standalone",
+      "quickActionsAboveNavigationAt390x960": true,
+      "mobileMetricIconsVisible": true
+    },
+    "browser210": {
+      "groups": 12,
+      "pageStates": 13,
+      "javascriptErrors": 0
+    },
+    "browserSharing": {
+      "groups": 6,
+      "pageStates": 27,
+      "javascriptErrors": 0
+    },
+    "postgresMigrations": {
+      "count": 9,
+      "legacyDataPreserved": true,
+      "sqlRecipe": "temporary schema with transaction rollback",
+      "prismaDeploy": "empty disposable local database"
+    },
+    "postgresGeneratedClient": "defaults, saved preferences, retained appearance/fuel flags and SQL CHECK constraints passed",
+    "productionBuild": {
+      "clientProvider": "PostgreSQL",
+      "status": "passed",
+      "generatedPages": 51
+    },
+    "independentVisualReview": {
+      "initialDisposition": "fix",
+      "finalDisposition": "ship",
+      "finalScope": "three scored fixes, no material regression observed"
+    }
+  },
+  "limits": [
+    "No user or production database migrated",
+    "No deployment, push or version bump",
+    "No physical iOS/Android installation",
+    "No real Kyros or LUMA consent flow",
+    "No assistive-technology device testing"
+  ],
+  "evidence": [
+    "220-browser-report.json",
+    "220-regression-210.json",
+    "220-regression-sharing.json",
+    "220-horizon-review.md",
+    "220-*.png"
+  ]
+}

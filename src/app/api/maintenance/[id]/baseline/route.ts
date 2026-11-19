@@ -1,4 +1,4 @@
-import { requireVehicleAccess, vehicleWhere } from "@/lib/vehicle-access";
+import { requireVehicleAccess, vehicleWhere, withVehicleWrite } from "@/lib/vehicle-access";
 // src/app/api/maintenance/[id]/baseline/route.ts
 import { NextResponse } from "next/server";
 import { apiError, apiUser } from "@/lib/api";
@@ -13,9 +13,13 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     if (!schedule) return NextResponse.json({ error: "Échéance introuvable." }, { status: 404 });
     await requireVehicleAccess(user.id, schedule.vehicleId, "COMPLETE", true);
     const data = maintenanceCycleSchema.parse(await request.json());
-    if (data.cycleStartDate && schedule.dueDate && data.cycleStartDate >= schedule.dueDate) return NextResponse.json({ error: "La référence doit précéder la date d'échéance." }, { status: 400 });
-    if (data.cycleStartMileage !== undefined && schedule.dueMileage !== null && data.cycleStartMileage >= schedule.dueMileage) return NextResponse.json({ error: "Le compteur de référence doit précéder le compteur d'échéance." }, { status: 400 });
-    const updated = await db.maintenanceSchedule.updateMany({ where: { id, completedAt: null, vehicle: vehicleWhere(user.id) }, data: { cycleStartDate: data.cycleStartDate ?? null, cycleStartMileage: data.cycleStartMileage ?? null } });
+    const updated = await withVehicleWrite(user.id, schedule.vehicleId, "COMPLETE", async tx => {
+      const current = await tx.maintenanceSchedule.findUniqueOrThrow({ where: { id } });
+      if (data.cycleStartDate && current.dueDate && data.cycleStartDate >= current.dueDate) return NextResponse.json({ error: "La référence doit précéder la date d'échéance." }, { status: 400 });
+      if (data.cycleStartMileage !== undefined && current.dueMileage !== null && data.cycleStartMileage >= current.dueMileage) return NextResponse.json({ error: "Le compteur de référence doit précéder le compteur d'échéance." }, { status: 400 });
+      return tx.maintenanceSchedule.updateMany({ where: { id, completedAt: null }, data: { cycleStartDate: data.cycleStartDate ?? null, cycleStartMileage: data.cycleStartMileage ?? null } });
+    });
+    if (updated instanceof NextResponse) return updated;
     if (!updated.count) return NextResponse.json({ error: "Cette échéance a déjà été réalisée." }, { status: 409 });
     return NextResponse.json({ ok: true });
   } catch (error) { return apiError(error); }

@@ -1,4 +1,4 @@
-import { requireVehicleAccess } from "@/lib/vehicle-access";
+import { withVehicleWrite } from "@/lib/vehicle-access";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { apiError, apiUser } from "@/lib/api";
@@ -9,7 +9,7 @@ export async function POST(request: NextRequest, context: { params: Promise<{ ki
   try {
     const kind = recordKind.parse((await context.params).kind), body = await request.json();
     const { vehicleId } = z.object({ vehicleId: z.string() }).parse(body);
-    await requireVehicleAccess(user.id, vehicleId, "COMPLETE", true);
-    return NextResponse.json({ record: await persistRecord(kind, body) }, { status: 201 });
+    const record = await withVehicleWrite(user.id, vehicleId, "COMPLETE", tx => persistRecord(kind, body, undefined, tx));
+    return NextResponse.json({ record }, { status: 201 });
   } catch (error) { return apiError(error); }
 }

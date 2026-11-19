@@ -22,8 +22,9 @@ try {
         INSERT INTO "FuelEntry" (id, "vehicleId", date, mileage, liters, "totalPrice", "unitPrice", "updatedAt") VALUES ('fill', 'car', NOW(), 10500, 20, 40, 2, NOW());
         INSERT INTO "Expense" (id, "vehicleId", category, amount, date, "fuelEntryId", "updatedAt") VALUES ('expense', 'car', 'CARBURANT', 40, NOW(), 'fill', NOW());`);
     }
+    if (name === "20261118100000_drivio_210") await client.query(`UPDATE "User" SET "themeMode" = 'light', "themePalette" = 'slate' WHERE id = 'validation'`);
   }
-  const { rows } = await client.query(`SELECT e."fuelEntryId", e.amount, u."autoFuelMobile", u."autoFuelDesktop" FROM "Expense" e JOIN "Vehicle" v ON v.id = e."vehicleId" JOIN "User" u ON u.id = v."userId"`);
-  if (rows.length !== 1 || rows[0].fuelEntryId !== "fill" || rows[0].autoFuelMobile !== false || Number(rows[0].amount) !== 40) throw new Error("La migration a altéré les données de validation.");
+  const { rows } = await client.query(`SELECT e."fuelEntryId", e.amount, u."autoFuelMobile", u."autoFuelDesktop", u."homePage", u."interfaceStyle", u."themeMode", u."themePalette" FROM "Expense" e JOIN "Vehicle" v ON v.id = e."vehicleId" JOIN "User" u ON u.id = v."userId"`);
+  if (rows.length !== 1 || rows[0].fuelEntryId !== "fill" || rows[0].autoFuelMobile !== false || Number(rows[0].amount) !== 40 || rows[0].homePage !== "auto" || rows[0].interfaceStyle !== "classic" || rows[0].themeMode !== "light" || rows[0].themePalette !== "slate") throw new Error("La migration a altéré les données de validation.");
   console.log(`${names.length} migrations PostgreSQL vérifiées, données et liens conservés.`);
 } finally { await client.query("ROLLBACK"); await client.end(); }
