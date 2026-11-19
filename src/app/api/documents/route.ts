@@ -1,10 +1,9 @@
-import { requireVehicleAccess } from "@/lib/vehicle-access";
+import { requireVehicleAccess, withVehicleWrite } from "@/lib/vehicle-access";
 import { randomUUID } from "node:crypto";
 import { mkdir, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { NextRequest, NextResponse } from "next/server";
 import { apiError, apiUser } from "@/lib/api";
-import { db } from "@/lib/db";
 import { documentSchema } from "@/lib/validations";
 import { detectFileType, documentDirectory } from "@/lib/uploads";
 export const runtime = "nodejs";
@@ -23,7 +22,7 @@ export async function POST(request: NextRequest) {
     await mkdir(directory, { recursive: true });
     await writeFile(path.join(/* turbopackIgnore: true */ directory, storageKey), buffer, { flag: "wx", mode: 0o600 });
     try {
-      const document = await db.vehicleDocument.create({ data: { ...data, storageKey, originalName: path.basename(file.name).replace(/[\r\n]/g, ""), mimeType: type.mime, size: file.size } });
+      const document = await withVehicleWrite(user.id, data.vehicleId, "COMPLETE", tx => tx.vehicleDocument.create({ data: { ...data, storageKey, originalName: path.basename(file.name).replace(/[\r\n]/g, ""), mimeType: type.mime, size: file.size } }));
       return NextResponse.json({ document: { id: document.id, title: document.title } }, { status: 201 });
     } catch (error) { await unlink(path.join(/* turbopackIgnore: true */ directory, storageKey)); throw error; }
   } catch (error) { return apiError(error); }

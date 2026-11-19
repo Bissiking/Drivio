@@ -1,0 +1,149 @@
+{
+  "scope": "Isolated synthetic SQLite, two independent local encrypted sessions, Chrome headless; no real Kyros or production",
+  "checks": [
+    "Owner invitation and recipient acceptance through UI, separate browser contexts",
+    "Simple read: private HTML/RSC omitted on every route, mutation denied, private file denied",
+    "Simple write: existing fuel edited through form; maintenance still denied",
+    "Complete read: dossier and private download allowed, edit forms absent, delete denied",
+    "Complete write: maintenance created through actual form",
+    "Revocation denies a stale editor request and removes received vehicle"
+  ],
+  "pages": [
+    {
+      "route": "/garage",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "route": "/garage",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/dashboard?vehicle=qa-cupra",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/dashboard?vehicle=qa-cupra",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/garage?vehicle=qa-cupra",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/carburant?vehicle=qa-cupra",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/depenses?vehicle=qa-cupra",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/kilometrage?vehicle=qa-cupra",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/historique?vehicle=qa-cupra",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/entretiens?vehicle=qa-cupra",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/suivi?vehicle=qa-cupra",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/documents?vehicle=qa-cupra",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/previsions?vehicle=qa-cupra",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/statistiques?vehicle=qa-cupra",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/rapports?vehicle=qa-cupra",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/carburant?vehicle=qa-cupra",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "route": "/garage",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "route": "/carburant?vehicle=qa-cupra&edit=qa-fuel-3",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/garage",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "route": "/suivi?vehicle=qa-cupra",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/entretiens?vehicle=qa-cupra",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/documents?vehicle=qa-cupra",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/garage",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "route": "/entretiens?vehicle=qa-cupra",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/garage",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "route": "/carburant?vehicle=qa-cupra&edit=qa-fuel-3",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/garage",
+      "width": 390,
+      "scroll": 390
+    }
+  ],
+  "errors": []
+}

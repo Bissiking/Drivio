@@ -1,0 +1,97 @@
+{
+  "scope": "Local Chrome headless, synthetic SQLite and encrypted session; no real Kyros or LUMA",
+  "checks": [
+    "Vehicle switching and empty dashboard",
+    "Cross-user dashboard denied",
+    "Mobile menu Escape",
+    "Consistent estimate across dashboard, gauge and maintenance; annualized rate explicitly named",
+    "Keyword suggestion accepted, manually corrected, saved and form reset",
+    "Fuel form PATCH, no duplicate create",
+    "Expense form PATCH with subtype",
+    "Real local HTTP Hub contract, isolation, read-only methods and revocation",
+    "Hub token management through actual settings controls",
+    "Appearance saved through form and rendered on reload",
+    "Automatic theme follows live OS preference changes",
+    "Fuel dialog keyboard close at 320 px"
+  ],
+  "pages": [
+    {
+      "route": "/dashboard",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "route": "/dashboard?vehicle=qa-clio",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "route": "/dashboard?vehicle=qa-private",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "route": "/dashboard",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/dashboard",
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "route": "/entretiens?vehicle=qa-cupra",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/carburant?vehicle=qa-cupra&edit=qa-fuel-3",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/depenses?edit=qa-expense",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/parametres",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "route": "/dashboard",
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "route": "/parametres",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/dashboard",
+      "width": 390,
+      "scroll": 390
+    },
+    {
+      "route": "/carburant?vehicle=qa-cupra",
+      "width": 320,
+      "scroll": 320
+    }
+  ],
+  "errors": [],
+  "api": {
+    "ids": [
+      "qa-clio",
+      "qa-cupra"
+    ],
+    "denied": 404,
+    "cookieOnly": 401,
+    "readOnly": 405,
+    "revoked": 401,
+    "fuelEntries": 3,
+    "expenseTotal": 238
+  }
+}

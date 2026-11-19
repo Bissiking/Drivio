@@ -1,9 +1,9 @@
-import { requireVehicleAccess } from "@/lib/vehicle-access";
+import { withVehicleWrite } from "@/lib/vehicle-access";
 // src/app/api/maintenance/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { apiError, apiUser } from "@/lib/api";
-import { db } from "@/lib/db";
 import { maintenanceRecordSchema, maintenanceScheduleSchema } from "@/lib/validations";
+import { maintenanceExpenseSubtype } from "@/lib/taxonomy";
 
 export async function POST(request: NextRequest) {
   const user = await apiUser();
@@ -12,15 +12,13 @@ export async function POST(request: NextRequest) {
     const body = (await request.json()) as { kind?: string };
     if (body.kind === "schedule") {
       const data = maintenanceScheduleSchema.parse(body);
-      await requireVehicleAccess(user.id, data.vehicleId, "COMPLETE", true);
-      const schedule = await db.maintenanceSchedule.create({ data });
+      const schedule = await withVehicleWrite(user.id, data.vehicleId, "COMPLETE", tx => tx.maintenanceSchedule.create({ data }));
       return NextResponse.json({ schedule }, { status: 201 });
     }
     const data = maintenanceRecordSchema.parse(body);
-    await requireVehicleAccess(user.id, data.vehicleId, "COMPLETE", true);
-    const record = await db.$transaction(async (tx) => {
+    const record = await withVehicleWrite(user.id, data.vehicleId, "COMPLETE", async tx => {
       const created = await tx.maintenanceRecord.create({ data });
-      if (data.cost && data.cost > 0) await tx.expense.create({ data: { vehicleId: data.vehicleId, maintenanceRecordId: created.id, category: "ENTRETIEN", amount: data.cost, date: data.date, mileage: data.mileage, comment: data.title } });
+      if (data.cost && data.cost > 0) await tx.expense.create({ data: { vehicleId: data.vehicleId, maintenanceRecordId: created.id, category: "ENTRETIEN", subcategory: maintenanceExpenseSubtype(data.type), amount: data.cost, date: data.date, mileage: data.mileage, comment: data.title } });
       return created;
     });
     return NextResponse.json({ record }, { status: 201 });

@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { apiError, apiUser } from "@/lib/api";
 import { db } from "@/lib/db";
 import { expenseSchema } from "@/lib/validations";
+import { RecordExpenseConflict } from "@/lib/record-expenses";
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const user = await apiUser();
@@ -19,8 +20,11 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     const saved = await db.$transaction(async tx => {
       await tx.vehicle.update({ where: { id: expense.vehicleId }, data: { updatedAt: new Date() } });
       await requireVehicleAccess(user.id, expense.vehicleId, "SIMPLE", true, tx);
-      if (expense.maintenanceRecordId) await requireVehicleAccess(user.id, expense.vehicleId, "COMPLETE", true, tx);
-      if (expense.maintenanceRecordId) await tx.maintenanceRecord.update({ where: { id: expense.maintenanceRecordId }, data: { cost: data.amount, date: data.date, mileage: data.mileage ?? null } });
+      const current = await tx.expense.findUniqueOrThrow({ where: { id } });
+      if (current.maintenanceRecordId) await requireVehicleAccess(user.id, expense.vehicleId, "COMPLETE", true, tx);
+      if (current.fuelEntryId) throw new RecordExpenseConflict("Cette dépense est liée à un plein. Modifiez le plein pour actualiser ses données et son montant.");
+      if (current.maintenanceRecordId && data.category !== "ENTRETIEN") throw new RecordExpenseConflict("Une dépense liée à un entretien doit conserver le type Entretien.");
+      if (current.maintenanceRecordId) await tx.maintenanceRecord.update({ where: { id: current.maintenanceRecordId }, data: { cost: data.amount, date: data.date, mileage: data.mileage ?? null } });
       return tx.expense.update({ where: { id }, data: { ...data, subcategory: data.subcategory ?? null, mileage: data.mileage ?? null, comment: data.comment ?? null } });
     });
     return NextResponse.json({ expense: saved });

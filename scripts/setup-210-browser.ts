@@ -33,8 +33,10 @@ async function main() {
   }
   const expiry = Date.now() + 86400000;
   const token = await createSessionToken({ userId: "qa-owner", subject: "qa-owner", refreshToken: "synthetic-only", accessExpiresAt: expiry, refreshExpiresAt: expiry });
+  const mobileTokens: Record<string, string> = {};
+  if (process.argv.includes("--mobile")) for (const name of ["automaticToken", "priorityToken", "manualToken"]) mobileTokens[name] = await createSessionToken({ userId: "qa-owner", subject: "qa-owner", refreshToken: "synthetic-only", accessExpiresAt: expiry, refreshExpiresAt: expiry, loginId: `qa220-${name}` });
   await mkdir("tmp", { recursive: true });
-  await writeFile("tmp/210-browser-session.json", JSON.stringify({ database: `${fixture.directory}/test.db`, directory: fixture.directory, token, guestToken, secret: process.env.SESSION_SECRET }));
+  await writeFile("tmp/210-browser-session.json", JSON.stringify({ database: `${fixture.directory}/test.db`, directory: fixture.directory, token, guestToken, ...mobileTokens, secret: process.env.SESSION_SECRET }));
   await client.$disconnect();
   console.log("Isolated synthetic browser fixture ready.");
 }

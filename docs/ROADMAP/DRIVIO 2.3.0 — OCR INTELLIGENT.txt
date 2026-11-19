@@ -1,0 +1,30 @@
+# DRIVIO 2.3.0 — OCR INTELLIGENT
+
+Dépôt : Bissiking/Drivio
+Branche : 2.x.x
+
+Objectif : faciliter la saisie des données à partir de photographies.
+
+## Fonctionnalités
+
+1. Photographier un compteur kilométrique.
+2. Extraire la valeur kilométrique.
+3. Photographier un ticket de carburant.
+4. Extraire la date, le montant, les litres et le prix unitaire lorsque disponibles.
+5. Photographier une facture d'entretien.
+6. Extraire les informations pertinentes : date, montant, kilométrage et interventions.
+7. Préremplir les formulaires existants.
+8. Exiger une validation humaine avant tout enregistrement.
+
+## Contraintes
+- Aucune écriture automatique en base sans validation.
+- Ne jamais inventer une donnée illisible.
+- Afficher les champs incertains ou manquants.
+- Privilégier une solution locale ou auto-hébergée si techniquement pertinente.
+- Étudier les coûts, performances et dépendances.
+- Réutiliser les formulaires existants.
+- Prévoir les limites de taille, format et sécurité des fichiers.
+
+Commence par une étude comparative de solutions OCR compatibles avec l'architecture actuelle.
+
+Ne développe rien avant validation de la solution technique.

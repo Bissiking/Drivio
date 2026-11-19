@@ -1,5 +1,5 @@
 // src/app/api/vehicles/[id]/route.ts
-import { requireVehicleAccess } from "@/lib/vehicle-access";
+import { requireVehicleAccess, withVehicleWrite } from "@/lib/vehicle-access";
 import { NextRequest, NextResponse } from "next/server";
 import { apiError, apiUser } from "@/lib/api";
 import { db } from "@/lib/db";
@@ -24,37 +24,41 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
   if (!user) return NextResponse.json({ error: "Session expirée." }, { status: 401 });
   try {
     const { id } = await params;
-    const access = await requireVehicleAccess(user.id, id, "COMPLETE", true);
     const body = (await request.json()) as { action?: string };
     if (body.action === "primary") {
+      const access = await requireVehicleAccess(user.id, id, "COMPLETE", true);
       if (!access.owner) return NextResponse.json({ error: "Seul le propriétaire peut choisir son véhicule principal." }, { status: 403 });
       await db.$transaction([
         db.vehicle.updateMany({ where: { userId: user.id }, data: { isPrimary: false } }),
         db.vehicle.update({ where: { id }, data: { isPrimary: true, status: "ACTIVE" } }),
       ]);
-    } else if (body.action === "archive") {
-      const archive = archiveSchema.parse(body);
-      const vehicle = await db.vehicle.findUniqueOrThrow({ where: { id } });
-      await db.vehicle.update({ where: { id }, data: { status: "ARCHIVED", isPrimary: false, ...archive } });
-      if (vehicle.isPrimary) {
-        const replacement = await db.vehicle.findFirst({ where: { userId: access.vehicle.userId, status: "ACTIVE" }, orderBy: { createdAt: "asc" } });
-        if (replacement) await db.vehicle.update({ where: { id: replacement.id }, data: { isPrimary: true } });
-      }
-    } else if (body.action === "restore") {
-      await db.vehicle.update({ where: { id }, data: { status: "ACTIVE" } });
-    } else if (body.action === "drivetrain") {
-      const data = z.object({ drivetrain: z.enum(DRIVETRAINS) }).parse(body);
-      await db.vehicle.update({ where: { id }, data });
-    } else if (body.action === "photo") {
-      const photo = photoSchema.parse(body);
-      await db.vehicle.update({
-        where: { id },
-        data: { photoPath: photo.photoPath ?? null, photoUrl: photo.photoUrl ?? null },
-      });
-    } else {
-      return NextResponse.json({ error: "Action inconnue." }, { status: 400 });
+      return NextResponse.json({ ok: true });
     }
-    return NextResponse.json({ ok: true });
+    return await withVehicleWrite(user.id, id, "COMPLETE", async (tx, access) => {
+      if (body.action === "archive") {
+        const archive = archiveSchema.parse(body);
+        const vehicle = await tx.vehicle.findUniqueOrThrow({ where: { id } });
+        await tx.vehicle.update({ where: { id }, data: { status: "ARCHIVED", isPrimary: false, ...archive } });
+        if (vehicle.isPrimary) {
+          const replacement = await tx.vehicle.findFirst({ where: { userId: access.vehicle.userId, status: "ACTIVE" }, orderBy: { createdAt: "asc" } });
+          if (replacement) await tx.vehicle.update({ where: { id: replacement.id }, data: { isPrimary: true } });
+        }
+      } else if (body.action === "restore") {
+        await tx.vehicle.update({ where: { id }, data: { status: "ACTIVE" } });
+      } else if (body.action === "drivetrain") {
+        const data = z.object({ drivetrain: z.enum(DRIVETRAINS) }).parse(body);
+        await tx.vehicle.update({ where: { id }, data });
+      } else if (body.action === "photo") {
+        const photo = photoSchema.parse(body);
+        await tx.vehicle.update({
+          where: { id },
+          data: { photoPath: photo.photoPath ?? null, photoUrl: photo.photoUrl ?? null },
+        });
+      } else {
+        return NextResponse.json({ error: "Action inconnue." }, { status: 400 });
+      }
+      return NextResponse.json({ ok: true });
+    });
   } catch (error) {
     return apiError(error);
   }

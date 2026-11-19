@@ -1,4 +1,4 @@
-import { requireVehicleAccess, vehicleWhere } from "@/lib/vehicle-access";
+import { requireVehicleAccess, vehicleWhere, withVehicleWrite } from "@/lib/vehicle-access";
 import { readFile, unlink } from "node:fs/promises";
 import path from "node:path";
 import { NextRequest, NextResponse } from "next/server";
@@ -24,9 +24,10 @@ export async function DELETE(_request: NextRequest, context: Context) {
   const document = await db.vehicleDocument.findFirst({ where: { id: (await context.params).id, vehicle: vehicleWhere(user.id, "COMPLETE") } });
   if (!document) return NextResponse.json({ error: "Document introuvable." }, { status: 404 });
   try {
-    await requireVehicleAccess(user.id, document.vehicleId, "COMPLETE", true);
-    await unlink(path.join(/* turbopackIgnore: true */ documentDirectory(), path.basename(document.storageKey))).catch((error: NodeJS.ErrnoException) => { if (error.code !== "ENOENT") throw error; });
-    await db.vehicleDocument.delete({ where: { id: document.id } });
+    await withVehicleWrite(user.id, document.vehicleId, "COMPLETE", async tx => {
+      await unlink(path.join(/* turbopackIgnore: true */ documentDirectory(), path.basename(document.storageKey))).catch((error: NodeJS.ErrnoException) => { if (error.code !== "ENOENT") throw error; });
+      await tx.vehicleDocument.delete({ where: { id: document.id } });
+    });
     return NextResponse.json({ ok: true });
   } catch (error) { return apiError(error); }
 }

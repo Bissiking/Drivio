@@ -8,10 +8,11 @@ import { toDateInput } from "@/lib/format";
 
 type VehicleOption = { id: string; brand: string; model: string };
 
-export function MileageForm({ vehicles }: { vehicles: VehicleOption[] }) {
-  return <ApiForm endpoint="/api/mileage" submitLabel="Ajouter le relevé" className="max-w-3xl">
+export function MileageForm({ vehicles, defaultVehicleId, onSuccess, onPendingChange }: { vehicles: VehicleOption[]; defaultVehicleId?: string; onSuccess?: () => void; onPendingChange?: (pending: boolean) => void }) {
+  const availableVehicleId = defaultVehicleId && !vehicles.some(vehicle => vehicle.id === defaultVehicleId) ? "" : defaultVehicleId;
+  return <ApiForm onSuccess={onSuccess} onPendingChange={onPendingChange} endpoint="/api/mileage" submitLabel="Ajouter le relevé" className="max-w-3xl">
     <div className="grid gap-4 sm:grid-cols-3">
-      <Field label="Véhicule"><Select name="vehicleId" required>{vehicles.map((v) => <option key={v.id} value={v.id}>{v.brand} {v.model}</option>)}</Select></Field>
+      <Field label="Véhicule"><Select name="vehicleId" required defaultValue={availableVehicleId}>{availableVehicleId === "" ? <option value="" disabled>Choisir un véhicule modifiable</option> : null}{vehicles.map((v) => <option key={v.id} value={v.id}>{v.brand} {v.model}</option>)}</Select></Field>
       <Field label="Kilométrage"><Input name="mileage" type="number" min="0" required /></Field>
       <Field label="Date"><Input name="date" type="date" defaultValue={toDateInput()} required /></Field>
     </div>

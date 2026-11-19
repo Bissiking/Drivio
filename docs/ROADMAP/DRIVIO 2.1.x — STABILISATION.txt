@@ -1,0 +1,25 @@
+# DRIVIO 2.1.x — STABILISATION
+
+Dépôt : Bissiking/Drivio
+Branche : 2.x.x
+
+Objectif : stabiliser la version actuelle sans ajouter de fonctionnalités.
+
+## Missions
+- Vérifier les migrations PostgreSQL et les permissions.
+- Contrôler les fonctionnalités récemment intégrées : API Hub LUMA, partage de véhicules, thèmes, modification des pleins et dépenses.
+- Vérifier les contrôles d'accès et la cohérence des données.
+- Identifier les erreurs susceptibles d'affecter la production.
+- Exécuter les tests existants pertinents.
+
+## Contraintes
+- Aucun changement de design.
+- Aucune refonte.
+- Aucune migration destructive.
+- Ne pas modifier les fonctionnalités déjà opérationnelles sans nécessité.
+- Limiter l'analyse aux composants concernés.
+- Ne pas effectuer de déploiement.
+
+Commence uniquement par un audit en lecture seule.
+
+Présente les anomalies confirmées, leur gravité et les corrections proposées. Attends mon accord avant toute modification.

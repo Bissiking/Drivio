@@ -14,6 +14,8 @@ Drivio 2.1.0 est une application web personnelle de suivi automobile. Elle réun
 - Apparence conservée sur le compte : clair, sombre ou automatique, cuivre ou ardoise.
 
 Lire [le guide 2.1.0 et les résultats de validation](docs/2.1.0.md) avant la mise à niveau.
+Les corrections de cohérence et de partage sont suivies dans [la stabilisation 2.1.x](docs/STABILISATION-2.1.x.md).
+Le chantier [expérience mobile et interfaces Classic/Horizon](docs/2.2.0.md) ajoute les préférences d’accueil et la saisie rapide ; sa validation précède le changement de version.
 
 ## Fonctionnalités
 

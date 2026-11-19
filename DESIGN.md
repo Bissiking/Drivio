@@ -33,6 +33,16 @@ colors:
   slate-accent: "#9ac5f5"
   slate-accent-ink: "#12283e"
   light-slate-accent: "#285e93"
+  horizon-ink: "#101720"
+  horizon-navigation: "#141d27"
+  horizon-surface: "#1b2632"
+  horizon-surface-raised: "#25323f"
+  horizon-surface-soft: "#2b3948"
+  horizon-line: "#465362"
+  horizon-line-soft: "#34414f"
+  horizon-text: "#f2f4f7"
+  horizon-muted: "#bec6cf"
+  horizon-quiet: "#a5b0bd"
 typography:
   display:
     fontSize: "3.75rem"
@@ -79,6 +89,8 @@ rounded:
   control-sm: "8px"
   control: "12px"
   panel: "16px"
+  horizon-panel: "14px"
+  horizon-control: "10px"
 spacing:
   xs: "4px"
   sm: "8px"
@@ -175,6 +187,8 @@ La photographie donne au véhicule sa place dans le dossier lorsqu’elle est af
 - Registres continus et séparateurs fins.
 - Provenance Réel, Calculé et Estimé explicitement lisible.
 
+Classic reste l’interface par défaut. Horizon est une présentation alternative choisie dans « Accueil et interface » : fonds ardoise, contours visibles, marque automobile linéaire et navigation regroupée. Cette extension conserve les données, la provenance et les droits de Classic. Les règles ci-dessous restent celles de Classic sauf lorsqu’un paragraphe est explicitement marqué Horizon ; les variantes de luminosité et de palette restent indépendantes du choix d’interface.
+
 ## Colors
 
 Le graphite neutre accueille un accent cuivre chaud par défaut ; le mode clair inverse les rôles de luminosité et la palette ardoise substitue un accent bleu. Les alertes gardent leurs propres couleurs sémantiques. Le frontmatter enregistre les rôles sombres sans préfixe, leurs variantes `light-*` et les substitutions `slate-*` ; les composants consomment toujours les variables CSS sémantiques, jamais une valeur sombre figée.
@@ -208,6 +222,10 @@ Les rôles `light-navigation`, `light-ink`, `light-surface`, `light-surface-rais
 
 La luminosité propose Sombre, Clair et Automatique ; la palette propose Cuivre et Ardoise. Les choix sont conservés sur le compte. Le layout serveur applique `data-theme` et `data-palette` sur `<html>` depuis ce compte, avec le cookie comme repli hors session. Automatique suit `prefers-color-scheme` en CSS, y compris lors d’un changement système, sans script de détection de luminosité.
 
+### Horizon
+
+Les jetons `horizon-*` remplacent uniquement les rôles neutres pour Horizon en Sombre, ou en Automatique lorsque le système est sombre. Ils décrivent l’ardoise bleutée du fond, de la navigation et des surfaces, les contours ardoise et les textes froids. Les accents Cuivre/Ardoise et les couleurs d’alerte restent ceux de la palette choisie. En Clair ou en Automatique clair, Horizon consomme les rôles `light-*` existants. Le dernier bloc Horizon de la feuille globale fait autorité sur les premières règles Horizon : les cartes sont bordées et légèrement dégradées, plutôt que des registres graphite sans contour.
+
 ### Named Rules
 
 **The Useful Copper Rule.** Le cuivre, ou l’accent ardoise choisi, indique une action, une sélection, un focus ou une donnée visualisée ; il ne remplit pas les surfaces d’ambiance.
@@ -237,9 +255,11 @@ La luminosité propose Sombre, Clair et Automatique ; la palette propose Cuivre 
 
 **The Direct Title Rule.** Un titre de page commence directement par son intitulé ; les badges de provenance restent attachés aux valeurs qu'ils qualifient.
 
+Horizon conserve cette famille et les chiffres tabulaires, avec une hiérarchie plus affirmée : titre de bureau de 1.9 rem en graisse 600, valeurs des mesures en graisse 600, réduites à 1 rem sur mobile. Les intitulés de groupes dans le rail servent à organiser les destinations ; ce traitement fonctionnel ne crée pas de surtitre décoratif de page.
+
 ## Layout
 
-La coque de bureau utilise un rail fixe de 240 px à partir de 1024 px. Le contenu est fluide, avec des marges latérales de 16 px sur mobile, 28 px à partir de 640 px, 36 px à partir de 1024 px et 48 px à partir de 1280 px. L'espacement courant entre groupes est de 28 px.
+La coque Classic de bureau utilise un rail fixe de 240 px à partir de 1024 px. Le contenu est fluide, avec des marges latérales de 16 px sur mobile, 28 px à partir de 640 px, 36 px à partir de 1024 px et 48 px à partir de 1280 px. L'espacement courant entre groupes est de 28 px.
 
 Sous 1024 px, une barre inférieure fixe de 72 px remplace le rail. La réserve basse du contenu est de 112 px ; les champs et ancres gardent une marge de défilement adaptée à cette barre. Les formulaires sont monocolonne sur mobile et peuvent passer à deux colonnes à partir de 640 px. Les bandes de statistiques restent en deux colonnes sur mobile et passent à quatre à partir de 1280 px lorsqu’elles comportent quatre valeurs. Les commandes courantes se replient en grille mobile avec une action principale sur toute la largeur, puis se disposent en ligne souple à partir de 640 px. Les liens d’action du dashboard gardent une hauteur minimale de 44 px.
 
@@ -249,9 +269,21 @@ Dans le Garage, les détails de partage s’ouvrent sous la rangée photo et mé
 
 **The Continuous Register Rule.** Les mesures apparentées et les listes partagent une surface et se séparent par des règles ; leur lecture reste alignée et continue.
 
+### Horizon responsive
+
+Horizon conserve le rail de 240 px à partir de 1024 px et la barre basse sous ce seuil ; son contenu a une largeur maximale de 1800 px. Le dashboard utilise des écarts de 22 px sur bureau et 14 px sous 768 px. À partir de 768 px, la synthèse véhicule est un bandeau photographique immersif, avec identité à droite et quatre mesures bordées en une rangée ; les prochaines actions et l’activité occupent deux colonnes. Les trois commandes d’ajout rapide partagent une rangée sur toute la largeur.
+
+Sous 768 px, une identité compacte avec vignette et sélecteur remplace le bandeau et sa grande photo. Les quatre mesures passent à deux colonnes, puis viennent les prochaines actions, l’ajout rapide et l’activité, dans cet ordre. Le sélecteur occupe toute la largeur ; le lien Garage adjacent du bureau est masqué. Les mesures mobiles ont une hauteur minimale de 80 px, avec une icône de 20 px et une valeur de 1 rem sur la même ligne de lecture. Les détails supplémentaires et les badges de provenance de cette synthèse sont masqués visuellement mais restent accessibles dans le DOM ; les analyses détaillées plus bas conservent leur provenance visible. Le titre principal reste accessible et visuellement masqué, sans répétition visible du titre mobile. Les en-têtes de panneaux utilisent un padding de 12 px × 16 px ; les liens de pied gardent une cible minimale de 44 px.
+
+### Safe areas partagées
+
+La barre basse de Classic et Horizon ajoute `env(safe-area-inset-bottom, 0px)` à sa hauteur de 72 px et à son padding inférieur. Le menu mobile se positionne à 82 px plus cette zone ; la confirmation de saisie à 90 px plus cette zone. Le contenu garde sa réserve basse de 112 px. La modale de saisie mobile réserve aussi la zone sûre basse dans son corps et la zone sûre haute dans sa hauteur maximale.
+
 ## Elevation & Depth
 
 Les panneaux courants et les bandeaux photographiques sont plats au repos. La profondeur vient des couches tonales, des séparateurs et du cadre photographique, graphite en mode sombre et minérale en mode clair. Le menu mobile Plus utilise une ombre diffuse parce qu'il chevauche le contenu ; les tooltips combinent surface relevée et contour minéral.
+
+Horizon ajoute des contours ardoise et de faibles dégradés entre `surface-raised` et `surface`. Le cadre photographique de bureau est limité à 375 px de large, au plus 52 % du bandeau, et 250 px de haut ; l’image entière est contenue dans ce cadre, avec un fondu sur son bord droit. L’identité conserve une hauteur minimale de 250 px ; le fondu vers la surface sert la lisibilité du texte. Les cartes et mesures restent sans ombre au repos.
 
 ### Shadow Vocabulary
 
@@ -266,6 +298,8 @@ Les panneaux courants et les bandeaux photographiques sont plats au repos. La pr
 Les panneaux ont des angles arrondis contenus (`panel`), les contrôles des angles plus serrés (`control`), les petits contrôles et sélecteurs de véhicule des coins compacts (`control-sm`), et les badges de provenance de petites courbes (`badge`). Les règles mesurent 1 px. Les images et lignes sont découpées au rayon du panneau quand elles rejoignent son bord.
 
 Les sommets des barres de données utilisent le petit rayon `bar`, avec une base alignée. Les icônes Lucide sont linéaires, généralement de 16 à 20 px, avec un trait de 1.7 dans la navigation. La chronologie peut utiliser des repères circulaires fonctionnels ; cette forme n'étend pas les contrôles ordinaires en pilules.
+
+Horizon utilise `horizon-panel` pour les panneaux et le bandeau, `control` pour les mesures, et `horizon-control` pour le sélecteur et les tuiles d’action. Ses destinations de rail gardent des coins `control-sm`. Le bouton central Ajouter est un disque fonctionnel de 46 px : cette silhouette distingue l’action centrale de saisie.
 
 ## Components
 
@@ -308,9 +342,23 @@ Les sélecteurs de périmètre et de droits restent natifs. Les options courtes 
 
 ### Navigation
 
-Le rail de bureau affiche normalement treize destinations avec icône linéaire et libellé. Pour un compte ne contenant que des véhicules reçus en partage Simple, il en affiche sept : Dashboard, Garage, Kilométrage, Carburant, Dépenses, Historique et Paramètres. Les lignes mesurent 44 px, avec texte de 14 px et icône de 18 px. L’état actif combine surface active, texte principal, icône dans l’accent choisi et `aria-current`.
+Le rail Classic de bureau affiche normalement quatorze destinations avec icône linéaire et libellé. Pour un compte ne contenant que des véhicules reçus en partage Simple, il en affiche huit : Dashboard, Garage, Kilométrage, Carburant, Dépenses, Historique, Paramètres et Ajouter. Les lignes mesurent 44 px, avec texte de 14 px et icône de 18 px. L’état actif combine surface active, texte principal, icône dans l’accent choisi et `aria-current`.
 
-La barre mobile affiche Dashboard, Garage, Kilométrage, Entretiens et Plus. Pour les comptes limités aux partages Simple, Carburant remplace Entretiens. Plus ouvre les neuf destinations restantes, ou les trois restantes en navigation Simple, dans un menu de 224 px, limité à 65dvh avec défilement local. Les liens mesurent 48 px. Le bouton expose `aria-expanded` et `aria-controls` ; le menu se ferme après navigation et via Échap. L’accent choisi distingue la destination active.
+La barre mobile affiche Dashboard, Garage, Kilométrage, Entretiens et Plus. Pour les comptes limités aux partages Simple, Carburant remplace Entretiens. Plus ouvre les dix destinations restantes, ou les quatre restantes en navigation Simple, dans un menu de 224 px, limité à 65dvh avec défilement local. Les liens mesurent 48 px. Le bouton expose `aria-expanded` et `aria-controls` ; le menu se ferme après navigation et via Échap. L’accent choisi distingue la destination active.
+
+### Horizon Navigation
+
+Le rail utilise une marque automobile Lucide CarFront, le nom Drivio et la version réelle ; Classic conserve son éclair et les icônes PWA restent inchangées. « Ajouter au registre » précède quatre groupes : Vue d’ensemble, Suivi, Entretien, Documents et analyses. Les groupes sans destination autorisée sont omis ; Pneumatiques et Échéances rejoignent les destinations d’entretien. Paramètres reste à la base du rail. Le menu central défile localement si la hauteur manque. Les liens courants mesurent au moins 40 px, avec des libellés de 14 px, des icônes de 18 px et un fond d’accent mélangé à la navigation pour la destination active.
+
+Sur mobile, Dashboard et Garage précèdent le bouton central Ajouter ; Suivi véhicule et Menu le suivent. Historique remplace Suivi véhicule pour un compte limité aux partages Simple. Le bouton Ajouter ouvre la modale partagée et est désactivé sans véhicule actif modifiable. Menu réutilise les comportements accessibles de Plus, avec les destinations restantes et sans doublonner Ajouter. Les destinations du rail liées au véhicule conservent son contexte dans l’URL.
+
+L’activité récente utilise une icône correspondant à son type réel : compteur pour un kilométrage, pompe pour un plein, reçu pour une dépense, clé pour un entretien.
+
+### Quick Entry Dialog
+
+Classic et Horizon partagent le même dialogue natif `<dialog>`, titré par `aria-labelledby` et ouvert avec `showModal()`. Le titre reçoit le focus à l’ouverture et le défilement du document est verrouillé. Le dialogue reste centré sur bureau, limité à 48 rem et 90dvh, avec un en-tête fixe dans sa zone de défilement et une fermeture d’au moins 44 px. Sous 640 px, il devient une feuille pleine largeur ancrée en bas, arrondie en haut, avec hauteur adaptée aux zones sûres. Les champs mobiles utilisent 16 px. L’arrivée dure 180 ms et respecte la réduction des animations.
+
+Kilométrage, Plein de carburant et Dépense ouvrent les formulaires partagés ; la page Ajouter reste accessible directement. Les champs restent montés lors d’un changement de type ou d’une fermeture : le brouillon reste dans cet onglet jusqu’à l’enregistrement réussi ou au rechargement de la page. Un envoi en cours bloque fermeture, Échap et changement de type ; hors envoi, Échap, la croix et le fond ferment le dialogue natif. Une réussite ferme la modale, réinitialise le formulaire concerné et annonce la confirmation dans `role="status"`. Les commandes de saisie restent cohérentes avec le droit de modification ; les états vides expliquent la condition requise.
 
 ### Vehicle Sharing
 
@@ -322,7 +370,9 @@ La lecture seule retire les formulaires et commandes de modification des donnée
 
 ### Vehicle Image
 
-La photo personnelle locale précède l'URL personnelle, puis l'illustration du modèle ou l'illustration générique. Les images générées portent « Illustration · image générée » et un texte alternatif explicite. L’image occupe son cadre lorsqu’elle est affichée. Dans le dashboard, la photographie est masquée sous 1280 px pour privilégier identité, compteur et prochaine échéance ; elle reste contenue dans la première colonne du bandeau sur bureau. Le Garage conserve ses photos sur mobile. La photo se change dans le Garage.
+La photo personnelle locale précède l'URL personnelle, puis l'illustration du modèle ou l'illustration générique. Les images générées portent « Illustration · image générée » et un texte alternatif explicite. L’image occupe son cadre lorsqu’elle est affichée. Dans le dashboard Classic, la photographie est masquée sous 1280 px pour privilégier identité, compteur et prochaine échéance ; elle reste contenue dans la première colonne du bandeau sur bureau. Le Garage conserve ses photos sur mobile. La photo se change dans le Garage.
+
+Dans Horizon, le bandeau photographique est affiché à partir de 768 px ; sous ce seuil, seule la vignette du sélecteur véhicule conserve l’image avec sa mention « Illustration » si nécessaire. La grande image garde « Illustration · image générée » et un texte alternatif qui annonce sa nature lorsqu’il s’agit d’un modèle généré.
 
 ### Data Chart
 
@@ -338,6 +388,8 @@ Une suggestion locale apparaît sous les champs avec une commande explicite « U
 
 Les formulaires d’édition reprennent les valeurs enregistrées et gardent une action d’enregistrement explicite ainsi qu’un retour. Les préférences d’apparence utilisent deux sélecteurs et une commande « Appliquer l’apparence », avec état d’attente désactivé et message `role="status"`. Les accès Hub présentent création, remplacement et révocation comme des actions distinctes ; le jeton révélé une fois reste un champ de copie sélectionnable, accompagné de son expiration et de son périmètre en lecture seule.
 
+Les préférences « Accueil et interface » ajoutent deux choix indépendants : page d’accueil Automatique/Dashboard/Ajouter et interface Classic/Horizon. Elles conservent les mêmes contrôles de formulaire et une confirmation explicite ; leur enregistrement ne remplace pas les préférences de luminosité et de palette.
+
 ## Do's and Don'ts
 
 ### Do:
@@ -348,6 +400,8 @@ Les formulaires d’édition reprennent les valeurs enregistrées et gardent une
 - **Do** conserver Geist Sans et les chiffres tabulaires pour les faits comparables.
 - **Do** privilégier la photo personnelle et identifier les images générées comme illustrations.
 - **Do** garder un focus clavier visible, des libellés explicites et le menu mobile Plus fonctionnel.
+- **Do** appliquer les règles Horizon uniquement à cette interface et préserver les variantes de luminosité et de palette.
+- **Do** conserver la modale native, les brouillons de cet onglet et les conditions de modification dans chaque accès à la saisie.
 - **Do** contenir le défilement des tableaux dans leur panneau.
 - **Do** préserver les valeurs saisies et laisser les suggestions de classification facultatives et modifiables.
 - **Do** présenter ensemble le périmètre et les droits du véhicule partagé, avec des commandes et des aides cohérentes avec cet accès.
